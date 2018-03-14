@@ -1,11 +1,12 @@
 package entities;
+import sharedRegions.*;
 
 /**
  *  General description:
  *      definition of the broker..
  */
 
-public class B extends thread
+public class B extends Thread
 {
 
     /**
@@ -13,7 +14,7 @@ public class B extends thread
    */
 
    private int id;                                            // Broker thread ID
-   private STATE state;                             // Broker state
+   private state state;                                 // Broker state of the life cycle
 
    /**
    *    Constructor
@@ -22,38 +23,39 @@ public class B extends thread
    *    @param brokerID broker ID
    */
 
-   public HJ (String name, int brokerID)
+   public B (String name, int brokerID)
    {
      super (name);
-     id = HJID;
-     
+     id = brokerID;
+     state = state.OPENING_THE_EVENT;
    }
 
   /**
    *   Life cycle
    */
 
-public class B
-{
-    void run ()
+   @Override
+    public void run ()
     {
         for(int k = 0; k < K - 1; k++)                  // K is the number of races
         {
-            Stable.summonHorsesToPaddock(raceID);       // call the horses for this race
-            Paddock.summonHorsesToPaddock();                // sleep
+            Stable.summonHorsesToPaddock(k);                    // call the horses for a race
+            Paddock.summonHorsesToPaddock();                 // sleep (woken up by last last spectator to go see horses)
 
-            Paddock.acceptTheBets();                                       // wake
-            ControlCenter.acceptTheBets();                            // sleep
+            ControlCenter.acceptTheBets(k);                          // sleep (woken up by each spectator to place  bet
+                                                                                                        // transition occurs when all have placed bets)
 
-            RaceTrack.startTheRace();
+            RaceTrack.startTheRace(k);                                     // call horse/jockey pairs
+            ControlCenter.startTheRace();                              // sleep (woken up by last horse to cross finish line)
 
-            ControlCenter.reportResults();
+            ControlCenter.reportResults();                              // call the spectators
 
-            if(RaceTrack.areThereAnyWinners())
+            if(BettingCenter.areThereAnyWinners(k))
             {
-                BettingCenter.honourTheBets();
+                BettingCenter.honourTheBets(k);                      // sleep (woken up by each winner
+                                                                                                        // transition occurs when all winner have been paid)
             }
-            ControlCenter.entertainTheGuests();
         }
+        ControlCenter.entertainTheGuests();                      //sleep (final state)
     }
 }
