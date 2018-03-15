@@ -19,3 +19,6 @@ nbproject/*
 *.swp
 *.DS_Store
 *.lock
+*.iml
+../.idea/*
+
