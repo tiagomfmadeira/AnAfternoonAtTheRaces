@@ -14,7 +14,8 @@ public class HorseJockey extends Thread
    */
 
     private int id,                                             // Horse/Jockey thread ID
-            agility;                                     // size of pace during race
+            agility,
+            raceId;                                     // size of pace during race
     private HorseJockeyState state;                                 // Horse/Jockey state of the life cycle
     private final Stable stable;
     private final Paddock paddock;
@@ -29,11 +30,12 @@ public class HorseJockey extends Thread
    *    @param agility Horse agility
    */
 
-   public HorseJockey(String name, int HJID, int agility,
+   public HorseJockey(String name, int HJID, int agility, int raceId,
                       Stable stable, Paddock paddock, RaceTrack raceTrack, ControlCenter controlCenter)
    {
      super (name);
      this.id = HJID;
+     this.raceId = raceId;
      this.agility = agility;
      this.state = HorseJockeyState.AT_THE_STABLE;
      this.stable = stable;
@@ -69,5 +71,35 @@ public class HorseJockey extends Thread
         } while(!raceTrack.hasFinishLineBeenCrossed());
 
         stable.proceedToStable();                               // sleep (final state)
+    }
+
+    public HorseJockeyState getHorseJockeyState() {
+        return state;
+    }
+
+    public void setHorseJockeyState(HorseJockeyState state) {
+        this.state = state;
+    }
+
+    public int getHJID() {
+        return id;
+    }
+
+    public int getAgility() {
+        return agility;
+    }
+
+    public int getRaceId() {
+        return raceId;
+    }
+
+    @Override
+    public String toString() {
+        return "HorseJockey{" +
+                "id=" + id +
+                ", agility=" + agility +
+                ", raceId=" + raceId +
+                ", state=" + state +
+                '}';
     }
 }

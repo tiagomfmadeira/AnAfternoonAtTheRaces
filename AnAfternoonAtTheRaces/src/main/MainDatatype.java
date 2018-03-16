@@ -5,12 +5,15 @@ import entities.HorseJockey;
 import entities.Spectator;
 import genclass.GenericIO;
 import sharedRegions.*;
-;import java.util.Random;
+import java.util.Random;
 
 public class MainDatatype
 {
+
     public static void main(String [] args)
     {
+
+
         // static for now
         int K_numRaces = 5;
         int N_numCompetitors = 4;
@@ -20,33 +23,35 @@ public class MainDatatype
 
         //A bird told me shared regions shouldn't be static
         BettingCenter bettingCenter = new BettingCenter();
-        ControlCenter controlCenter = new ControlCenter();
+        ControlCenter controlCenter = new ControlCenter(K_numRaces,M_numSpectators);
         Paddock  paddock = new Paddock();
         RaceTrack raceTrack = new RaceTrack();
-        Stable stable = new Stable();
+        Stable stable = new Stable(K_numRaces, N_numCompetitors);
 
         Spectator[] spectators = new Spectator[M_numSpectators];                                // array of producer threads
-        HorseJockey[] horseJockeyPairs = new HorseJockey[N_numCompetitors*K_numRaces];          // array of consumer threads
+        HorseJockey[] horseJockeyPairs = new HorseJockey[K_numRaces*N_numCompetitors];          // array of consumer threads
 
         Broker broker = new Broker("Broker",1, K_numRaces , raceTrack , stable,
                                 bettingCenter, paddock, controlCenter );
 
+        Random rand = new Random();
         for (int i = 0; i < M_numSpectators; i++)
         {
-            spectators[i] = new Spectator("spectator_" + i,i,controlCenter, paddock, bettingCenter);
+            int wallet = rand.nextInt(7)+2;
+            spectators[i] = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter);
             spectators[i].start ();
             GenericIO.writelnString ("Current state of the spectator " + i + " thread is " + spectators[i].getState ().toString ());
         }
 
-        Random rand = new Random();
-        for (int i = 0; i < N_numCompetitors; i++)
+        for (int i = 0; i < K_numRaces; i++)
         {
-            for(int j = 0; j < K_numRaces; j++) {
+
+            for(int j = 0; j < N_numCompetitors; j++) {
 
                 int HJID = i*K_numRaces+j;
                 int agility = rand.nextInt(2)+1;
 
-                horseJockeyPairs[HJID] = new HorseJockey("horse_jockey_" + i + "_race_" + j, HJID, agility,
+                horseJockeyPairs[HJID] = new HorseJockey("horse_jockey_" + i + "_race_" + j, j, HJID, agility,
                                                     stable, paddock, raceTrack, controlCenter);
 
                 horseJockeyPairs[HJID].start();

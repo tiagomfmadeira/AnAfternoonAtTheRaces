@@ -74,4 +74,22 @@ public class Broker extends Thread
         }
         controlCenter.entertainTheGuests();                      //sleep (final state)
     }
+
+
+    public BrokerState getBorkerState() {
+        return state;
+    }
+
+    public void setBrokerState(BrokerState state) {
+        this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "Broker{" +
+                "id=" + id +
+                ", numRaces=" + numRaces +
+                ", state=" + state +
+                '}';
+    }
 }

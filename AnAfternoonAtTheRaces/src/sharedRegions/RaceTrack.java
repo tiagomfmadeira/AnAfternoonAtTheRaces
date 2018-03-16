@@ -4,14 +4,14 @@ package sharedRegions;
 public class RaceTrack {
 
     //Horse Jockey
-    public void proceedToStartLine(){}
+    public synchronized void proceedToStartLine(){}
 
-    public void makeAMove(){}
+    public synchronized void makeAMove(){}
 
-    public boolean hasFinishLineBeenCrossed(){}
+    public synchronized boolean hasFinishLineBeenCrossed(){}
 
 
     //Broker
-    public void startTheRace(int k){}
+    public synchronized void startTheRace(int k){}
     
 }

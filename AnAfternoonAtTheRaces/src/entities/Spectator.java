@@ -14,6 +14,7 @@ public class Spectator extends Thread
    */
 
    private int id;                                             // Spectator thread ID
+   private int wallet;
    private SpectatorState state;                                  // Spectatorstate of the life cycle
    private ControlCenter controlCenter;
    private Paddock paddock;
@@ -26,15 +27,17 @@ public class Spectator extends Thread
    *    @param spectatorID Spectator ID
    */
 
-   public Spectator(String name, int spectatorID,
+   public Spectator(String name, int spectatorID,int wallet,
                     ControlCenter controlCenter, Paddock paddock, BettingCenter bettingCenter)
    {
      super (name);
      this.id = spectatorID;
+     this.wallet = wallet;
      this.state = SpectatorState.WAITING_FOR_A_RACE_TO_START;
      this.controlCenter = controlCenter;
      this.paddock = paddock;
      this.bettingCenter = bettingCenter;
+
 
    }
 
@@ -68,5 +71,23 @@ public class Spectator extends Thread
             }
         }
         controlCenter.relaxABit();                                      // sleep (final state)
+    }
+
+
+    public SpectatorState getSpectatorState() {
+        return state;
+    }
+
+    public void setSpectatorState(SpectatorState state) {
+        this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "Spectator{" +
+                "id=" + id +
+                ", wallet=" + wallet +
+                ", state=" + state +
+                '}';
     }
 }
