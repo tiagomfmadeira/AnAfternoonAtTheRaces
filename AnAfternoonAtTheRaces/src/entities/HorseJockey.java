@@ -58,7 +58,7 @@ public class HorseJockey extends Thread
         }
         paddock.proceedToPaddock();                             // sleep (woken up by last last spectator to go see horses)
 
-        paddock.proceedToStartLine();
+        paddock.proceedToStartLine();                           // if  is last horse to go to start line call spectators
 
         raceTrack.proceedToStartLine();                          // sleep (woken up by broker with startTheRace()
                                                                                                    //          or by another horse with makeAMove())

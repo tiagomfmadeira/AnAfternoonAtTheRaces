@@ -60,8 +60,8 @@ public class Spectator extends Thread
 
             last = bettingCenter.placeABet(horse);            // sleep (woken up by broker when bet's done)
             if(last)
-            {                                                                                       // if is last to place a bet
-                bettingCenter.lastToPlaceBet();                    // call Broker
+            {                                                                                       // additional function not needed
+                bettingCenter.lastToPlaceBet();                    // being used only to print final information about bets
             }
 
             controlCenter.goWatchTheRace();                  //sleep (woken up by  reportResults() of broker)
