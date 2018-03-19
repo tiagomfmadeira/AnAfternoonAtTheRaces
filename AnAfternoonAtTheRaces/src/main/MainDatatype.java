@@ -7,6 +7,10 @@ import genclass.GenericIO;
 import sharedRegions.*;
 import java.util.Random;
 
+import static main.SimulPar.K_numRaces;
+import static main.SimulPar.M_numSpectators;
+import static main.SimulPar.N_numCompetitors;
+
 public class MainDatatype
 {
 
@@ -15,23 +19,20 @@ public class MainDatatype
 
 
         // static for now
-        int K_numRaces = 5;
-        int N_numCompetitors = 4;
-        int M_numSpectators = 4;
         int distance = 20;
 
 
         //A bird told me shared regions shouldn't be static
         BettingCenter bettingCenter = new BettingCenter();
-        ControlCenter controlCenter = new ControlCenter(K_numRaces,M_numSpectators);
+        ControlCenter controlCenter = new ControlCenter();
         Paddock  paddock = new Paddock();
-        RaceTrack raceTrack = new RaceTrack();
-        Stable stable = new Stable(K_numRaces, N_numCompetitors);
+        RaceTrack raceTrack = new RaceTrack(distance);
+        Stable stable = new Stable();
 
         Spectator[] spectators = new Spectator[M_numSpectators];                                // array of producer threads
         HorseJockey[] horseJockeyPairs = new HorseJockey[K_numRaces*N_numCompetitors];          // array of consumer threads
 
-        Broker broker = new Broker("Broker",1, K_numRaces , raceTrack , stable,
+        Broker broker = new Broker("Broker",1, raceTrack , stable,
                                 bettingCenter, paddock, controlCenter );
 
         Random rand = new Random();
@@ -48,7 +49,8 @@ public class MainDatatype
 
             for(int j = 0; j < N_numCompetitors; j++) {
 
-                int HJID = i*K_numRaces+j;
+                //HJID alone isn't enough to identify horse instance
+                int HJID = j;
                 int agility = rand.nextInt(2)+1;
 
                 horseJockeyPairs[HJID] = new HorseJockey("horse_jockey_" + i + "_race_" + j, j, HJID, agility,

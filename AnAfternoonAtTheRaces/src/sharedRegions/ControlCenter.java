@@ -3,20 +3,17 @@ package sharedRegions;
 
 import entities.Spectator;
 import entities.SpectatorState;
+import main.SimulPar;
 
 // TODO: interface to exclude access from undesired entities
 public class ControlCenter {
 
     private boolean nextRaceStarted;
     private boolean nextRaceExists;
-    private final int M_numSpectators;
-    private final int K_numRaces;
     private int spectatorsGoCheckHorsesCounter;
 
 
-    public ControlCenter(int K_numRaces, int M_numSpectators){
-        this.M_numSpectators = M_numSpectators;
-        this.K_numRaces = K_numRaces;
+    public ControlCenter(){
         this.nextRaceStarted = false;
         this.nextRaceExists = true;
     }
@@ -31,13 +28,19 @@ public class ControlCenter {
     //Spectator
     public synchronized boolean waitForNextRace(){
 
-        if(nextRaceExists)
+        if(nextRaceExists) {
+
+            //WFR
             while (!nextRaceStarted) {
                 try {
-                    wait ();
+                    wait();
+                } catch (InterruptedException e) {
                 }
-                catch (InterruptedException e) {}
             }
+
+            ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
+
+        }
 
         return nextRaceExists;
     }
@@ -47,14 +50,13 @@ public class ControlCenter {
         boolean isLastSpectator = false;
 
         spectatorsGoCheckHorsesCounter++;
-        if(spectatorsGoCheckHorsesCounter == M_numSpectators){
+
+        if(spectatorsGoCheckHorsesCounter == SimulPar.M_numSpectators){
 
             isLastSpectator = true;
             spectatorsGoCheckHorsesCounter = 0;
             nextRaceStarted = false;
         }
-
-        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
 
         return isLastSpectator;
     }

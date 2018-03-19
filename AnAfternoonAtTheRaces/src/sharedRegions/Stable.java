@@ -1,9 +1,10 @@
 package sharedRegions;
 
 import entities.Broker;
+import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
-
+import main.SimulPar;
 
 
 public class Stable {
@@ -11,28 +12,26 @@ public class Stable {
     //here for now, later in main
 
     // prob one for each one
-    private boolean[] proceedToStableFlag;
+    private boolean[] proceedToPaddockFlag;
     private int[] proceededHorsesCount;
-    private final int K_numRaces;
-    private final int N_numCompetitors;
 
 
     // boolean bidimension array that indicates if a specific horse can advance
-    public Stable(int K_numRaces, int N_numCompetitors){
-        this.K_numRaces = K_numRaces;
-        this.N_numCompetitors = N_numCompetitors;
-        this.proceedToStableFlag = new boolean[K_numRaces];
+    public Stable(){
+        this.proceedToPaddockFlag = new boolean[SimulPar.K_numRaces];
+        this.proceededHorsesCount = new int[SimulPar.K_numRaces];
     }
 
 
-
+    // HorseJockey
     public synchronized boolean proceedToStable() {
 
         boolean isLastHorse = false;
 
         int raceId = ((HorseJockey) Thread.currentThread()).getRaceId();
 
-        while (!proceedToStableFlag[raceId]) {
+
+        while (!proceedToPaddockFlag[raceId]) {
             try {
                 wait ();
             }
@@ -41,8 +40,9 @@ public class Stable {
 
         proceededHorsesCount[raceId]++;
 
-        if(proceededHorsesCount[raceId] == N_numCompetitors){
+        if(proceededHorsesCount[raceId] == SimulPar.N_numCompetitors){
             isLastHorse = true;
+            proceedToPaddockFlag[raceId] = false;
         }
 
         ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
@@ -51,10 +51,14 @@ public class Stable {
 
     }
 
+    // Broker
     public synchronized void summonHorsesToPaddock(int k) {
 
-        proceedToStableFlag[k] = true;
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
+
+        proceedToPaddockFlag[k] = true;
         notifyAll();
+
 
     }
 

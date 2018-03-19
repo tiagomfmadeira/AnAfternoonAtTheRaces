@@ -1,5 +1,8 @@
 package entities;
+import main.SimulPar;
 import sharedRegions.*;
+
+import static main.SimulPar.K_numRaces;
 
 /**
  *  General description:
@@ -27,16 +30,16 @@ public class Broker extends Thread
    *
    *    @param name broker thread name
    *    @param brokerID broker ID
-   *    @param numRaces number of races to happen
+   *
    */
 
    // Regions are passed in constructor for now
-   public Broker (String name, int brokerID, int numRaces, RaceTrack race_track, Stable stable,
+   public Broker (String name, int brokerID, RaceTrack race_track, Stable stable,
                   BettingCenter bettingCenter, Paddock paddock, ControlCenter controlCenter)
    {
      super (name);
      this.id = brokerID;
-     this.numRaces = numRaces;
+     this.numRaces = SimulPar.K_numRaces;
      this.state = BrokerState.OPENING_THE_EVENT;
      this.controlCenter = controlCenter;
      this.paddock = paddock;
@@ -61,7 +64,7 @@ public class Broker extends Thread
             controlCenter.acceptTheBets();                           // sleep (woken up by each spectator to place  bet
                                                                                                         // transition occurs when all have placed bets)
 
-            raceTrack.startTheRace(k);                                     // call horse/jockey pairs
+            raceTrack.startTheRace();                                     // call horse/jockey pairs
             controlCenter.startTheRace();                              // sleep (woken up by last horse to cross finish line)
 
             controlCenter.reportResults();                              // call the spectators
