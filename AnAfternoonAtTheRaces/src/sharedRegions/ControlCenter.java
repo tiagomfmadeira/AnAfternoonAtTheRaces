@@ -1,79 +1,144 @@
 package sharedRegions;
 
-
+import entities.Broker;
+import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
+import genclass.GenericIO;
 import main.SimulPar;
 
 // TODO: interface to exclude access from undesired entities
-public class ControlCenter {
+public class ControlCenter
+{
 
     private boolean nextRaceStarted;
     private boolean nextRaceExists;
+
+    private boolean lastSpectatorGoCheckHorses = false;
+    private boolean raceHasEnded = false;
+
     private int spectatorsGoCheckHorsesCounter;
 
 
-    public ControlCenter(){
+    public ControlCenter()
+    {
         this.nextRaceStarted = false;
         this.nextRaceExists = true;
     }
 
-    //HorseJockey
-    //Only called by last horse to leave the stable
-    public synchronized void proceedToPaddock(){
+    // HorseJockey
+    // Last horse to leave the Stable wakes up the Spectators
+    public synchronized void proceedToPaddock()
+    {
+        GenericIO.writelnString(Thread.currentThread().getName() +  " says: The spectators can come see us!");
         nextRaceStarted = true;
         notifyAll();
     }
 
-    //Spectator
-    public synchronized boolean waitForNextRace(){
-
-        if(nextRaceExists) {
-
-            //WFR
-            while (!nextRaceStarted) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                }
-            }
-
-            ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
-
-        }
-
+    // Spectator
+    public synchronized boolean waitForNextRace()
+    {
+        // Changed by the Broker
         return nextRaceExists;
     }
 
-    public synchronized boolean goCheckHorses(){
-
+    public synchronized boolean goCheckHorses()
+    {
         boolean isLastSpectator = false;
+
+        while (!nextRaceStarted)
+        {
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException e)
+            {
+
+            }
+        }
+
+        GenericIO.writelnString(Thread.currentThread().getName() +  " says: Time to appraise the horses!");
 
         spectatorsGoCheckHorsesCounter++;
 
-        if(spectatorsGoCheckHorsesCounter == SimulPar.M_numSpectators){
-
+        if(spectatorsGoCheckHorsesCounter == SimulPar.M_numSpectators)
+        {
+            GenericIO.writelnString(Thread.currentThread().getName() +  " says: I'm the Spectator last to appraise horses!");
             isLastSpectator = true;
             spectatorsGoCheckHorsesCounter = 0;
             nextRaceStarted = false;
+            lastSpectatorGoCheckHorses = true;
+            notifyAll();
         }
-
         return isLastSpectator;
     }
 
-    public synchronized void goWatchTheRace(){}
+    public synchronized void goWatchTheRace()
+    {
+        //  Change Spectator state to WATCHING_A_RACE
+        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.WATCHING_A_RACE);
+         GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm at the Control Center to watch the race!");
 
-    public synchronized boolean haveIWon(){}
+          while (!raceHasEnded)
+        {
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException e)
+            {
 
-    public synchronized void relaxABit(){}
+            }
+        }
 
+    }
+
+    public synchronized boolean haveIWon()
+    {
+        return false;
+    }
+
+    public synchronized void relaxABit()
+    {
+
+    }
 
     //Broker
-    public synchronized void acceptTheBets(){}
+    public synchronized void summonHorsesToPaddock()
+    {
+        // Change Broker state to ANNOUNCING_NEXT_RACE
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
 
-    public synchronized void startTheRace(){}
+        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm sleeping at the Control Center!");
 
-    public synchronized void reportResults(){}
+        while (!lastSpectatorGoCheckHorses)
+        {
+            try
+            {
+                wait ();
+            }
+            catch (InterruptedException e)
+            {
 
-    public synchronized void entertainTheGuests(){}
+            }
+        }
+
+        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm off to the Betting Center!");
+    }
+
+    public synchronized void startTheRace()
+    {
+
+    }
+
+    public synchronized void reportResults()
+    {
+
+    }
+
+    public synchronized void entertainTheGuests()
+    {
+        this.nextRaceExists = false;
+    }
 }

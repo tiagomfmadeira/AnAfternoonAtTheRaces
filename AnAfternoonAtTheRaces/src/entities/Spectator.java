@@ -13,26 +13,27 @@ public class Spectator extends Thread
    *    Internal data
    */
 
-   private int id;                                             // Spectator thread ID
-   private int wallet;
-   private SpectatorState state;                                  // Spectatorstate of the life cycle
-   private ControlCenter controlCenter;
-   private Paddock paddock;
-   private BettingCenter bettingCenter;
+   private final int id;                                      // Spectator thread ID
+   private int wallet;                                        // Amount of money Spectator owns
+   private SpectatorState state;                // Spectatorstate of the life cycle
+   private final ControlCenter controlCenter;
+   private final Paddock paddock;
+   private final BettingCenter bettingCenter;
 
    /**
    *    Constructor
    *
    *    @param name Spectator thread name
    *    @param spectatorID Spectator ID
+   *    @param money Amount of money Spectator starts with
    */
 
-   public Spectator(String name, int spectatorID,int wallet,
-                    ControlCenter controlCenter, Paddock paddock, BettingCenter bettingCenter)
+   public Spectator(String name, int spectatorID,int money,
+                                       ControlCenter controlCenter, Paddock paddock, BettingCenter bettingCenter)
    {
      super (name);
      this.id = spectatorID;
-     this.wallet = wallet;
+     this.wallet = money;
      this.state = SpectatorState.WAITING_FOR_A_RACE_TO_START;
      this.controlCenter = controlCenter;
      this.paddock = paddock;
@@ -55,9 +56,9 @@ public class Spectator extends Thread
             {                                                                                      // if is last spectator to go check horses
                 paddock.lastToCheckHorses();                       // call the horse/jockey pairs and Broker
             }
-            paddock.goCheckHorses();                                  // sleep (woken up by last horse to leave paddock)
+            int horse = paddock.goCheckHorses();           // sleep (woken up by last horse to leave paddock)
 
-            last = bettingCenter.placeABet();                     // sleep (woken up by broker when bet's done)
+            last = bettingCenter.placeABet(horse);            // sleep (woken up by broker when bet's done)
             if(last)
             {                                                                                       // if is last to place a bet
                 bettingCenter.lastToPlaceBet();                    // call Broker
@@ -73,13 +74,49 @@ public class Spectator extends Thread
         controlCenter.relaxABit();                                      // sleep (final state)
     }
 
+    /**
+   *   Updates the state of the Spectator
+   *
+   * @param newState state to update Spectator to
+   */
+    public void setSpectatorState (SpectatorState newState)
+   {
+       state = newState;
+   }
 
-    public SpectatorState getSpectatorState() {
-        return state;
-    }
+   /**
+   *   Returns the state of the Spectator
+   *
+   * @return current state of the Spectator
+   */
+    public SpectatorState getSpectatorState ()
+   {
+       return this.state;
+   }
 
-    public void setSpectatorState(SpectatorState state) {
-        this.state = state;
+   /**
+   *   Updates  the amount of money currently in the wallet
+   *
+   * @param transaction amount of money gained or lost
+   */
+    public void updateWalletValue (int transaction)
+   {
+       wallet = wallet + transaction;
+   }
+
+   /**
+   *   Returns the amount of money currently in the wallet
+   *
+   * @return current value in the wallet
+   */
+    public int getWalletValue ()
+   {
+       return this.wallet;
+   }
+    
+    public int getSpectatorID()
+    {
+        return this.id;
     }
 
     @Override

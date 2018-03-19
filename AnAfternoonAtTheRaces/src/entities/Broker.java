@@ -13,17 +13,17 @@ public class Broker extends Thread
 {
 
     /**
-   *    Internal data
-   */
+    *    Internal data
+    */
 
-    private int id,                              // Broker thread ID
-         numRaces;                               // number of races
-    private BrokerState state;                   // Broker state of the life cycle
-    private Stable stable;
-    private ControlCenter controlCenter;
-    private Paddock paddock;
-    private BettingCenter bettingCenter;
-    private RaceTrack raceTrack;
+    private final int id,                                   // Broker thread ID
+                                    numRaces;                   // number of races
+    private BrokerState state;                    // Broker state of the life cycle
+    private final Stable stable;
+    private final ControlCenter controlCenter;
+    private final Paddock paddock;
+    private final BettingCenter bettingCenter;
+    private final RaceTrack raceTrack;
 
    /**
    *    Constructor
@@ -35,7 +35,7 @@ public class Broker extends Thread
 
    // Regions are passed in constructor for now
    public Broker (String name, int brokerID, RaceTrack race_track, Stable stable,
-                  BettingCenter bettingCenter, Paddock paddock, ControlCenter controlCenter)
+                                 BettingCenter bettingCenter, Paddock paddock, ControlCenter controlCenter)
    {
      super (name);
      this.id = brokerID;
@@ -48,43 +48,54 @@ public class Broker extends Thread
      this.raceTrack = race_track;
    }
 
-  /**
-   *   Life cycle
-   */
+    /**
+    *   Life cycle
+    */
 
-   @Override
+    @Override
     public void run ()
     {
-        for(int k = 0; k < numRaces; k++)                                            // for each race
+        for(int k = 0; k < numRaces; k++)                               // for each race
         {
 
-            stable.summonHorsesToPaddock(k);                 // call the horses for a race
-            paddock.summonHorsesToPaddock();                 // sleep (woken up by last last spectator to go see horses)
+            stable.summonHorsesToPaddock(k);                   // call the horses for a race
+            controlCenter.summonHorsesToPaddock();                // sleep (woken up by last last spectator to go see horses)
 
-            controlCenter.acceptTheBets();                           // sleep (woken up by each spectator to place  bet
-                                                                                                        // transition occurs when all have placed bets)
+            bettingCenter.acceptTheBets();                             // sleep (woken up by each spectator to place  bet
+                                                                                                         // transition occurs when all have placed bets)
 
-            raceTrack.startTheRace();                                     // call horse/jockey pairs
-            controlCenter.startTheRace();                              // sleep (woken up by last horse to cross finish line)
+            raceTrack.startTheRace();                                          // call horse/jockey pairs
+            controlCenter.startTheRace();                                 // sleep (woken up by last horse to cross finish line)
 
-            controlCenter.reportResults();                              // call the spectators
+            controlCenter.reportResults();                                // call the spectators
 
             if(bettingCenter.areThereAnyWinners())
             {
-                bettingCenter.honourTheBets();                       // sleep (woken up by each winner
-                                                                                                        // transition occurs when all winner have been paid)
+                bettingCenter.honourTheBets();                         // sleep (woken up by each winner
+                                                                                                          // transition occurs when all winner have been paid)
             }
         }
-        controlCenter.entertainTheGuests();                      //sleep (final state)
+        controlCenter.entertainTheGuests();                         //sleep (final state)
     }
 
-
-    public BrokerState getBorkerState() {
-        return state;
+    /**
+    *   Updates the state of the Broker
+    *
+    * @param newState state to update Broker to
+    */
+    public void setBrokerState (BrokerState newState)
+    {
+      state = newState;
     }
 
-    public void setBrokerState(BrokerState state) {
-        this.state = state;
+    /**
+    *   Returns the state of the Broker
+    *
+    * @return current state of the broker
+    */
+    public BrokerState getBrokerState ()
+    {
+      return this.state;
     }
 
     @Override

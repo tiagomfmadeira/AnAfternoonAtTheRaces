@@ -1,69 +1,68 @@
 package sharedRegions;
 
-import entities.Broker;
-import entities.BrokerState;
 import entities.HorseJockey;
-import entities.HorseJockeyState;
+import genclass.GenericIO;
 import main.SimulPar;
 
 
-public class Stable {
+public class Stable
+{
 
     //here for now, later in main
 
     // prob one for each one
-    private boolean[] proceedToPaddockFlag;
-    private int[] proceededHorsesCount;
+    private boolean[ ] proceedToPaddockFlag;
+    private int[ ] proceededHorsesCount;
 
 
     // boolean bidimension array that indicates if a specific horse can advance
-    public Stable(){
+    public Stable()
+    {
         this.proceedToPaddockFlag = new boolean[SimulPar.K_numRaces];
         this.proceededHorsesCount = new int[SimulPar.K_numRaces];
     }
 
 
-    // HorseJockey
-    public synchronized boolean proceedToStable() {
+    // Broker
+    public synchronized void summonHorsesToPaddock(int raceID)
+    {
+        GenericIO.writelnString(Thread.currentThread().getName() +  " says: Bring the horses for race " + raceID +"!");
 
+        proceedToPaddockFlag[raceID] = true;
+        notifyAll();
+    }
+
+    // Horse/Jockey
+    public synchronized boolean proceedToStable()
+    {
         boolean isLastHorse = false;
 
-        int raceId = ((HorseJockey) Thread.currentThread()).getRaceId();
+        // Get race ID
+        int raceID = ((HorseJockey) Thread.currentThread()).getRaceId();
 
-
-        while (!proceedToPaddockFlag[raceId]) {
-            try {
+        // Check the flag for this race
+        while (!proceedToPaddockFlag[raceID])
+        {
+            try
+            {
                 wait ();
             }
-            catch (InterruptedException e) {}
+            catch (InterruptedException e)
+            {
+
+            }
         }
 
-        proceededHorsesCount[raceId]++;
+        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm headed to the paddock!");
 
-        if(proceededHorsesCount[raceId] == SimulPar.N_numCompetitors){
+        proceededHorsesCount[raceID]++;
+
+        if(proceededHorsesCount[raceID] == SimulPar.N_numCompetitors)
+        {
+            GenericIO.writelnString(Thread.currentThread().getName() + " says: I am the last horse leaving for the Paddock!");
             isLastHorse = true;
-            proceedToPaddockFlag[raceId] = false;
+            proceedToPaddockFlag[raceID] = false;
         }
-
-        ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
-
         return isLastHorse;
-
     }
-
-    // Broker
-    public synchronized void summonHorsesToPaddock(int k) {
-
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
-
-        proceedToPaddockFlag[k] = true;
-        notifyAll();
-
-
-    }
-
-
-
-
-
 }
