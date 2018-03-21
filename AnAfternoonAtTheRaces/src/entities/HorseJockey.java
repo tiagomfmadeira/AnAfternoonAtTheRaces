@@ -51,21 +51,28 @@ public class HorseJockey extends Thread
     @Override
     public void run ()
     {
-        boolean last = stable.proceedToStable();
+        stable.proceedToStable();
+        boolean last = paddock.proceedToPaddock();
         if(last)
-        {                                                                                           // if is last horse to go to paddock
+        {                                                                                           // if is last horse to reach the paddock
             controlCenter.proceedToPaddock();              // call spectators
         }
-        paddock.proceedToPaddock();                             // sleep (woken up by last last spectator to go see horses)
+        paddock.sleepAtThePaddock();                           // sleep (woken up by last last spectator to reach the paddock)
 
         paddock.proceedToStartLine();                           // if  is last horse to go to start line call spectators
 
         raceTrack.proceedToStartLine();                          // sleep (woken up by broker with startTheRace()
                                                                                                    //          or by another horse with makeAMove())
-        do
+        boolean lastToCross = false;
+        while(!raceTrack. hasRaceEnded())
         {
-            raceTrack.makeAMove();                                      // sleep (woken up by previous horse)
-        } while(!raceTrack.hasFinishLineBeenCrossed());
+           lastToCross = raceTrack.makeAMove();         // sleep (woken up by previous horse)
+        }
+
+        if (lastToCross)
+        {
+            controlCenter.makeAMove();
+        }
 
         stable.proceedToStable();                                       // sleep (final state)
     }

@@ -6,7 +6,7 @@ import static main.SimulPar.K_numRaces;
 
 /**
  *  General description:
- *      definition of the broker..
+ *      definition of the broker.
  */
 
 public class Broker extends Thread
@@ -69,19 +69,20 @@ public class Broker extends Thread
 
             controlCenter.reportResults();                                // call the spectators
 
-            if(bettingCenter.areThereAnyWinners())
+            if(controlCenter.areThereAnyWinners())
             {
                 bettingCenter.honourTheBets();                         // sleep (woken up by each winner
                                                                                                           // transition occurs when all winner have been paid)
             }
         }
+        stable.entertainTheGuests();
         controlCenter.entertainTheGuests();                         //sleep (final state)
     }
 
     /**
     *   Updates the state of the Broker
     *
-    * @param newState state to update Broker to
+    *   @param newState state to update Broker to
     */
     public void setBrokerState (BrokerState newState)
     {
@@ -91,7 +92,7 @@ public class Broker extends Thread
     /**
     *   Returns the state of the Broker
     *
-    * @return current state of the broker
+    *   @return current state of the broker
     */
     public BrokerState getBrokerState ()
     {

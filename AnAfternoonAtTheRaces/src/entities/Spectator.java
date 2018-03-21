@@ -1,4 +1,5 @@
 package entities;
+import genclass.GenericIO;
 import sharedRegions.*;
 
 /**
@@ -51,15 +52,17 @@ public class Spectator extends Thread
     {
         while( controlCenter.waitForNextRace())         // while there are races
         {                                                                                          // sleep (woken up by last pair horse/jockey to reach paddock)
-            boolean last = controlCenter.goCheckHorses();
+           controlCenter.goCheckHorses();
+           boolean last = paddock.goCheckHorses();
             if(last)
-            {                                                                                      // if is last spectator to go check horses
-                paddock.lastToCheckHorses();                       // call the horse/jockey pairs and Broker
+            {                                                                                      // if is last spectator to go reach the paddock
+                paddock.lastToCheckHorses();                       // call the horse/jockey pairs
+                controlCenter.lastToCheckHorses();
             }
-            int horse = paddock.goCheckHorses();           // sleep (woken up by last horse to leave paddock)
+            int horse =  paddock.appraisingHorses();         // sleep (woken up by last horse to leave paddock)
 
-            last = bettingCenter.placeABet(horse);            // sleep (woken up by broker when bet's done)
-            if(last)
+            boolean lastBet = bettingCenter.placeABet(horse);            // sleep (woken up by broker when bet's done)
+            if(lastBet)
             {                                                                                       // additional function not needed
                 bettingCenter.lastToPlaceBet();                    // being used only to print final information about bets
             }
