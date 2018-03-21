@@ -61,15 +61,11 @@ public class Spectator extends Thread
             }
             int horse =  paddock.appraisingHorses();         // sleep (woken up by last horse to leave paddock)
 
-            boolean lastBet = bettingCenter.placeABet(horse);            // sleep (woken up by broker when bet's done)
-            if(lastBet)
-            {                                                                                       // additional function not needed
-                bettingCenter.lastToPlaceBet();                    // being used only to print final information about bets
-            }
+            bettingCenter.placeABet(horse);                     // sleep (woken up by broker when bet's done)
 
             controlCenter.goWatchTheRace();                  //sleep (woken up by  reportResults() of broker)
 
-            if(controlCenter.haveIWon())
+            if(controlCenter.haveIWon(horse))
             {
                 bettingCenter.goCollectTheGains();            // sleep (woken up by broker when transaction is done)
             }
@@ -116,7 +112,7 @@ public class Spectator extends Thread
    {
        return this.wallet;
    }
-    
+
     public int getSpectatorID()
     {
         return this.id;

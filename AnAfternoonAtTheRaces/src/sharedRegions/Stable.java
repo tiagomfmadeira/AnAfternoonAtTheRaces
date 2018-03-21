@@ -1,31 +1,19 @@
 package sharedRegions;
 
-import entities.Broker;
-import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
 import genclass.GenericIO;
-import main.SimulPar;
+import static main.SimulPar.K_numRaces;
 import static main.SimulPar.N_numCompetitors;
 
 
 public class Stable
 {
-
-    //here for now, later in main
-
-    // prob one for each one
-    private boolean[ ] proceedToPaddockFlag;
-    private int[ ] proceededHorsesCount;
+    // array of flags indexed per race
+    private boolean[ ] proceedToPaddockFlag = new boolean[K_numRaces];
+    // counter of horses that left the paddock per race
+    private int[ ] proceededHorsesCount = new int[K_numRaces];
     private boolean nextRaceExists = true;
-
-
-    // boolean bidimension array that indicates if a specific horse can advance
-    public Stable()
-    {
-        this.proceedToPaddockFlag = new boolean[SimulPar.K_numRaces];
-        this.proceededHorsesCount = new int[SimulPar.K_numRaces];
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Broker
@@ -73,7 +61,7 @@ public class Stable
 
         if (proceededHorsesCount[raceID] ==N_numCompetitors)        // last horse to leave stable
         {
-            // reset var for next run
+            // reset var, the horses for this race have left
             proceedToPaddockFlag[raceID] = false;
         }
     }

@@ -15,8 +15,8 @@ public class MainDatatype
 {
     public static void main(String [] args)
     {
-        // static for now
-        int distance = 20;
+        Random rand = new Random();
+        int distance = +15 + rand.nextInt(10);
 
         //A bird told me shared regions shouldn't be static
         BettingCenter bettingCenter = new BettingCenter();
@@ -31,10 +31,9 @@ public class MainDatatype
         Broker broker = new Broker("Broker",1, raceTrack , stable,
                                 bettingCenter, paddock, controlCenter );
 
-        Random rand = new Random();
         for (int i = 0; i < M_numSpectators; i++)
         {
-            int wallet = rand.nextInt(7)+2;
+            int wallet = rand.nextInt(1000)+4;
             spectators[ i ] = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter);
             spectators[ i ].start ();
             GenericIO.writelnString ("Current state of the spectator " + i + " thread is " + spectators[ i ].getState ().toString ());
@@ -47,7 +46,7 @@ public class MainDatatype
                 //HJID alone isn't enough to identify horse instance
                 int race = i;
                 int HJID = j;
-                int agility = rand.nextInt(2)+1;
+                int agility = 1 + rand.nextInt(4);
 
                 horseJockeyPairs[race][HJID] = new HorseJockey("horse_jockey_" + HJID + "_race_" + race , HJID, agility, race,
                                                                                                             stable, paddock, raceTrack, controlCenter);

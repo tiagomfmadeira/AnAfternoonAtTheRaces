@@ -1,8 +1,7 @@
 package entities;
 import main.SimulPar;
 import sharedRegions.*;
-
-import static main.SimulPar.K_numRaces;
+import java.util.HashSet;
 
 /**
  *  General description:
@@ -57,19 +56,20 @@ public class Broker extends Thread
     {
         for(int k = 0; k < numRaces; k++)                               // for each race
         {
-
             stable.summonHorsesToPaddock(k);                   // call the horses for a race
-            controlCenter.summonHorsesToPaddock();                // sleep (woken up by last last spectator to go see horses)
+            controlCenter.summonHorsesToPaddock();    // sleep (woken up by last last spectator to go see horses)
 
-            bettingCenter.acceptTheBets();                             // sleep (woken up by each spectator to place  bet
+           double [ ] odds = paddock.acceptTheBets();
+            bettingCenter.acceptTheBets(odds);                    // sleep (woken up by each spectator to place  bet
                                                                                                          // transition occurs when all have placed bets)
 
             raceTrack.startTheRace();                                          // call horse/jockey pairs
             controlCenter.startTheRace();                                 // sleep (woken up by last horse to cross finish line)
 
-            controlCenter.reportResults();                                // call the spectators
+            HashSet horseJockeyWinners = raceTrack.reportResults();                   // gather information about winners
+            controlCenter.reportResults(horseJockeyWinners);                                // call the spectators
 
-            if(controlCenter.areThereAnyWinners())
+            if(bettingCenter.areThereAnyWinners(horseJockeyWinners))
             {
                 bettingCenter.honourTheBets();                         // sleep (woken up by each winner
                                                                                                           // transition occurs when all winner have been paid)

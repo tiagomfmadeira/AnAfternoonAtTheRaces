@@ -5,30 +5,22 @@ import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
 import genclass.GenericIO;
+import java.util.HashSet;
 import static main.SimulPar.M_numSpectators;
 
-// TODO: interface to exclude access from undesired entities
 public class ControlCenter
 {
 
-    private boolean nextRaceStarted;
-    private boolean nextRaceExists;
+    private boolean nextRaceStarted = false,
+                                    nextRaceExists = true,
+                                    lastSpectatorGoCheckHorses = false,
+                                    raceHasEnded = false,
+                                    reportedResults = false;
 
-    private boolean lastSpectatorGoCheckHorses = false;
+    private int spectatorsGoCheckHorsesCounter = 0,
+                          spectatorsWatchedRaceCounter = 0;
 
-    private boolean raceHasEnded = false;
-
-    private boolean reportedResults = false;
-
-    private int spectatorsGoCheckHorsesCounter = 0;
-    private int spectatorsWatchedRaceCounter = 0;
-
-
-    public ControlCenter()
-    {
-        this.nextRaceStarted = false;
-        this.nextRaceExists = true;
-    }
+    HashSet horseJockeysWinners = new HashSet();
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // HorseJockey
@@ -45,17 +37,17 @@ public class ControlCenter
     {
         // wake up the broker
         //called by last horse to cross the finish line
-
         raceHasEnded = true;
         notifyAll();
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Spectator
+
     public synchronized boolean waitForNextRace()
     {
          GenericIO.writelnString(Thread.currentThread().getName() +  " says: Waiting for next race!");
 
-         // breaks if nextRace does not exit, broker determines this
+         // wake up if next race starts or if race does not exit, broker determines this
         while (!nextRaceStarted && nextRaceExists)
         {
             try
@@ -67,8 +59,6 @@ public class ControlCenter
 
             }
         }
-
-        // Changed by the Broker
         return nextRaceExists;
     }
 
@@ -121,14 +111,16 @@ public class ControlCenter
         }
     }
 
-    public synchronized boolean haveIWon()
+    public synchronized boolean haveIWon(int horseJockey)
     {
-        return false;
+            return horseJockeysWinners.contains(horseJockey);
     }
 
     public synchronized void relaxABit()
     {
-
+        //  Change Spectator state to CELEBRATING
+        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.CELEBRATING);
+         GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm celebrating!");
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,18 +172,13 @@ public class ControlCenter
         GenericIO.writelnString(Thread.currentThread().getName() + " I have finished watching the race!");
     }
 
-    public synchronized void reportResults()
+    public synchronized void reportResults( HashSet horseJockeysDeclaredWinners )
     {
-        // TODO fill in information about the winner
+        horseJockeysWinners = horseJockeysDeclaredWinners;
 
         // wake up the spectators
         reportedResults = true;
         notifyAll();
-    }
-
-    public synchronized boolean areThereAnyWinners()
-    {
-        return false;
     }
 
     public synchronized void entertainTheGuests()

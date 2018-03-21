@@ -1,20 +1,14 @@
 package sharedRegions;
 
-import entities.Broker;
-import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
-import entities.Spectator;
-import entities.SpectatorState;
 import genclass.GenericIO;
 import main.SimulPar;
-
-import static main.SimulPar.K_numRaces;
-import static main.SimulPar.N_numCompetitors;
-import static main.SimulPar.M_numSpectators;
-
+import java.util.HashSet;
 import java.util.Arrays;
 import java.util.Random;
+
+import static main.SimulPar.N_numCompetitors;
 
 // TODO: interface to exclude access from undesired entities
 public class RaceTrack
@@ -26,12 +20,12 @@ public class RaceTrack
     private boolean[ ] crossedFinish = new boolean[SimulPar.N_numCompetitors];
     private boolean[ ] winners = new boolean[SimulPar.N_numCompetitors];
 
-    private boolean lastArrived = false;
-    private boolean winnersChosen = false;
+    private boolean lastArrived = false,
+                                     winnersChosen = false;
 
-    private int horseMoveCounter = 0;
-    private int finishLineCount = 0;
-    private int helperHorse = 0;
+    private int horseMoveCounter = 0,
+                          finishLineCount = 0,
+                          helperHorse = 0;
 
     public RaceTrack(int distance)
     {
@@ -65,7 +59,6 @@ public class RaceTrack
 
         // Change Horse/Jockey state to RUNNING
         ((HorseJockey)Thread.currentThread()).setHorseJockeyState(HorseJockeyState.RUNNING);
-
     }
 
     public synchronized boolean makeAMove()
@@ -82,10 +75,9 @@ public class RaceTrack
             racePosition[horseId] += rand.nextInt(agility) + 1;
         }
 
-        // number of horses  so far this iteration
+        // number of horses awaken so far this iteration
         horseMoveCounter++;
 
-        //GenericIO.writelnString(Thread.currentThread().getName() + " Gonna wake up horse  " + (horseId + 1) % SimulPar.N_numCompetitors  );
         // wake up the next horse
         raceTurn[(horseId + 1) % SimulPar.N_numCompetitors] = true;
         notifyAll();
@@ -108,6 +100,8 @@ public class RaceTrack
         {
             // mark that it has crossed the finish line
             crossedFinish[horseId] = true;
+            //  Change HorseJockey state to AT_THE_FINNISH_LINE
+            ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
             GenericIO.writelnString(Thread.currentThread().getName() + " I have crossed the finish line!");
 
             // another horse has finished
@@ -137,25 +131,22 @@ public class RaceTrack
             lastArrived = true;
         }
 
+        // all the horses have crossed the finish line
         if(lastArrived == true)
         {
-            //GenericIO.writelnString(Thread.currentThread().getName() + " Gonna wake up horse  " + (horseId + 1) % SimulPar.N_numCompetitors  );
-
-            //  Change HorseJockey state to AT_THE_FINNISH_LINE
-            ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
-
             // wake up the next horse
             raceTurn[(horseId + 1) % SimulPar.N_numCompetitors] = true;
             notifyAll();
             helperHorse++;
 
+            // if is the last horse to be released from the race track
             if(helperHorse==N_numCompetitors)
             {
-                //debug print
+                // debug print
                 for (int i = 0; i < N_numCompetitors; i++) {
                     GenericIO.writelnString("Horse " + i + " is winner = " + winners[i]);
                 }
-                //reset the vars
+                // reset the vars
                 Arrays.fill(racePosition, 0);
                 Arrays.fill(crossedFinish, false);
                 Arrays.fill(raceTurn, false);
@@ -165,7 +156,6 @@ public class RaceTrack
                 winnersChosen=false;
             }
         }
-
         return lastToCross;
     }
 
@@ -185,5 +175,36 @@ public class RaceTrack
         notifyAll();
 
         GenericIO.writelnString(Thread.currentThread().getName() + " says: The race can begin!");
+    }
+
+    public synchronized HashSet reportResults()
+    {
+        HashSet declaredWinners = new HashSet();
+        int tmpWinner = 0;
+        int maxPosition = 0;
+
+        // for each competitor
+        for (int i = 0; i < N_numCompetitors; i++)
+        {
+            if (winners[ i ] == true && racePosition[ i ] > maxPosition)
+            {
+                // save the id of HorseJockey
+                tmpWinner = i ;
+                // save the max position encountered
+                maxPosition = racePosition[ i ] ;
+            }
+        }
+        // found a winner
+        declaredWinners.add(tmpWinner);
+
+        // check for multiple winners
+        for (int i = 0; i < N_numCompetitors; i++)
+        {
+            if (winners[ i ] == true && racePosition[ i ] == maxPosition)
+            {
+                declaredWinners.add( i );
+            }
+        }
+        return declaredWinners ;
     }
 }
