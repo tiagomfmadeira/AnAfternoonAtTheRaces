@@ -28,7 +28,7 @@ public class MainDatatype
         for (int i = 0; i < M_numSpectators; i++)
         {
             int wallet = rand.nextInt(1000)+4;
-            Spectator spectator = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter);
+            Spectator spectator = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter, logger);
             spectator.start ();
         }
 
@@ -36,17 +36,17 @@ public class MainDatatype
         {
             for(int j = 0; j < N_numCompetitors; j++) {
 
+                //HJID alone isn't enough to identify horse instance
                 int race = i;
                 int HJID = j;
                 int agility = 1 + rand.nextInt(4);
 
                 HorseJockey horseJockeyPair = new HorseJockey("horse_jockey_" + HJID + "_race_" + race , HJID, agility, race,
-                                                                                                            stable, paddock, raceTrack, controlCenter);
+                                                                stable, paddock, raceTrack, controlCenter, logger);
                 horseJockeyPair.start();
             }
         }
-
-        Broker broker = new Broker("Broker",1, raceTrack , stable, bettingCenter, paddock, controlCenter );
+        Broker broker = new Broker("Broker",1, raceTrack , stable, bettingCenter, paddock, controlCenter, logger);
         broker.start();
     }
 }

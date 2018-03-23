@@ -29,9 +29,10 @@ public class Paddock
         boolean isLastHorse = false;
 
         //  Change HorseJockey state to AT_THE_PADDOCK
-        ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
+        HorseJockey hj = (HorseJockey) Thread.currentThread();
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK,
-                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+                                    hj.getHorseJockeyID(),hj.getRaceId());
 
 
         horsesAtPaddockCount++;
@@ -162,18 +163,12 @@ public class Paddock
         for (int i = 0; i < N_numCompetitors; i++) {
            totalAgility += horses[ i ].getAgility();
         }
-        //GenericIO.writelnString("Total Agility: " + totalAgility);
 
         // calculate the odds of each horse
         for (int i = 0; i < N_numCompetitors; i++) {
            odds[ i ]= horses[ i ].getAgility()/totalAgility;
-                   //GenericIO.writelnString("Agility: " +  horses[ i ].getAgility());
         }
 
-        // debug print
-        for (int i = 0; i < N_numCompetitors; i++) {
-            //GenericIO.writelnString("Horse " + i + " " + odds[i]);
-        }
         return odds;
     }
 }

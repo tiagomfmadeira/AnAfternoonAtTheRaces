@@ -39,11 +39,14 @@ public class RaceTrack
     public synchronized void proceedToStartLine()
     {
         //  Change HorseJockey state to AT_THE_START_LINE
-        ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE);
-        logger.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE,
-                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+        HorseJockey hj  = (HorseJockey) Thread.currentThread();
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE);
+        int horseId = hj.getHorseJockeyID();
+        int raceId = hj.getRaceId();
 
-        int horseId = ((HorseJockey)Thread.currentThread()).getHorseJockeyID();
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE,
+                                    horseId,raceId);
+
 
         while (!raceTurn[horseId])
         {
@@ -59,15 +62,15 @@ public class RaceTrack
         raceTurn[horseId] = false;
 
         // Change Horse/Jockey state to RUNNING
-        ((HorseJockey)Thread.currentThread()).setHorseJockeyState(HorseJockeyState.RUNNING);
-        logger.setHorseJockeyState(HorseJockeyState.RUNNING,
-                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+        hj.setHorseJockeyState(HorseJockeyState.RUNNING);
+        logger.setHorseJockeyState(HorseJockeyState.RUNNING, horseId, raceId);
     }
 
     public synchronized boolean makeAMove()
     {
-
-        int horseId = ((HorseJockey)Thread.currentThread()).getHorseJockeyID();
+        HorseJockey hj = ((HorseJockey)Thread.currentThread());
+        int horseId = hj.getHorseJockeyID();
+        int raceId = hj.getRaceId();
 
         // if the horse is not beyond the finish
         if(racePosition[horseId]<distance)
@@ -77,11 +80,12 @@ public class RaceTrack
 
             // make a move
             racePosition[horseId] += rand.nextInt(agility) + 1;
-            logger.setHorsePosition(racePosition[horseId], horseId);
+            logger.setHorsePosition(racePosition[horseId], horseId, raceId);
 
             // iteration number for each horse
             iterationCounter[horseId]++;
-            logger.setHorseIteration(iterationCounter[horseId],horseId);
+           logger.setHorseIteration(iterationCounter[horseId], horseId, raceId);
+
         }
 
         // if the horse is beyond the finish line and it hasn't been recorded yet
@@ -89,12 +93,11 @@ public class RaceTrack
         {
             // mark that it has crossed the finish line
             crossedFinish[horseId] = true;
-            logger.setHorseAtEnd(crossedFinish[horseId],horseId);
+            logger.setHorseAtEnd(crossedFinish[horseId], horseId, raceId);
 
             //  Change HorseJockey state to AT_THE_FINNISH_LINE
-            ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
-            logger.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE,
-                    ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+            hj.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
+            logger.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE, horseId, raceId);
 
             // another horse has finished
             finishLineCount++;
@@ -103,14 +106,6 @@ public class RaceTrack
         // if all the horses have finished the race
         if(finishLineCount==N_numCompetitors)
         {
-                // reset the vars
-                Arrays.fill(racePosition, 0);
-                Arrays.fill(crossedFinish, false);
-                Arrays.fill(iterationCounter,0);
-                logger.setHorseIteration(iterationCounter);
-                logger.setHorsePosition(racePosition);
-                logger.setHorseAtEnd(crossedFinish);
-
                 // wake up the horses at finish line
                 raceEnded = true;
                 notifyAll();
@@ -152,7 +147,6 @@ public class RaceTrack
         raceEnded = false;
         raceTurn[0] = true;
         notifyAll();
-
     }
 
     public synchronized boolean [ ] reportResults()
@@ -188,6 +182,11 @@ public class RaceTrack
                 winners[ i ] = true;
             }
         }
+
+        // reset vars
+        Arrays.fill(iterationCounter,0);
+        Arrays.fill(racePosition, 0);
+        Arrays.fill(crossedFinish, false);
 
         return winners ;
     }

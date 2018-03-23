@@ -38,8 +38,11 @@ public class Stable
         //  Change HorseJockey state to AT_THE_STABLE
         HorseJockey hj = ((HorseJockey) Thread.currentThread());
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
-        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, hj.getHorseJockeyID());
-        logger.setMaxMovingLength(hj.getAgility(),hj.getHorseJockeyID());
+        int horseId = hj.getHorseJockeyID();
+        int raceId = hj.getRaceId();
+
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, horseId, raceId );
+        logger.setMaxMovingLength(hj.getAgility(), horseId, raceId);
 
 
         // Get race ID
@@ -72,7 +75,9 @@ public class Stable
         //  Change HorseJockey state to AT_THE_STABLE
         HorseJockey hj = ((HorseJockey) Thread.currentThread());
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
-        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, hj.getHorseJockeyID());
-        logger.setMaxMovingLength(hj.getAgility(),hj.getHorseJockeyID());
+        int horseId = hj.getHorseJockeyID();
+        int raceId = hj.getRaceId();
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, horseId, raceId );
+        logger.setMaxMovingLength(hj.getAgility(), horseId, raceId);
     }
 }

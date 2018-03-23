@@ -23,6 +23,7 @@ public class Broker extends Thread
     private final BettingCenter bettingCenter;
     private final RaceTrack raceTrack;
     private int currentRace; // current race
+    private Logger logger;
 
    /**
    *    Constructor
@@ -34,7 +35,7 @@ public class Broker extends Thread
 
    // Regions are passed in constructor for now
    public Broker (String name, int brokerID, RaceTrack race_track, Stable stable,
-                                 BettingCenter bettingCenter, Paddock paddock, ControlCenter controlCenter)
+                                 BettingCenter bettingCenter, Paddock paddock, ControlCenter controlCenter, Logger logger)
    {
      super (name);
      this.id = brokerID;
@@ -46,6 +47,9 @@ public class Broker extends Thread
      this.stable = stable;
      this.raceTrack = race_track;
      this.currentRace = 0;
+     this.logger = logger;
+     logger.setBrokerState(BrokerState.OPENING_THE_EVENT);
+     logger.setRaceNumber(this.currentRace);
    }
 
     /**
