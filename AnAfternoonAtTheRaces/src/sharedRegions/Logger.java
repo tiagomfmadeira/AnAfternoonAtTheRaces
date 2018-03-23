@@ -21,7 +21,7 @@ public class Logger {
     private int[] spectatorBetSelection = new int[SimulPar.M_numSpectators];
     private int[] spectatorBetAmount = new int[SimulPar.M_numSpectators];
     private double[] horseOdds = new double[SimulPar.N_numCompetitors];
-    private int[] n_iteration = new int[SimulPar.N_numCompetitors];
+    private int[] horseIteration = new int[SimulPar.N_numCompetitors];
     private boolean[] horseAtEnd = new boolean[SimulPar.N_numCompetitors];
     private int[] horsePosition = new int[SimulPar.N_numCompetitors];
 
@@ -105,21 +105,36 @@ public class Logger {
         logState();
     }
 
-    public synchronized void setN_iteration(int[] n_iteration) {
-        this.n_iteration = n_iteration;
+    public synchronized void setHorseIteration(int horseIteration, int horseId) {
+        this.horseIteration[horseId] = horseIteration;
+        logState();
+    }
+
+    public synchronized void setHorseIteration(int[] horseIteration) {
+        System.arraycopy(horseIteration, 0, this.horseIteration, 0,horseIteration.length);
+        logState();
+    }
+
+    public synchronized void setHorsePosition(int horsePosition, int horseId) {
+        this.horsePosition[horseId] = horsePosition;
         logState();
     }
 
     public synchronized void setHorsePosition(int[] horsePosition) {
-        this.horsePosition = horsePosition;
+        System.arraycopy(horsePosition, 0, this.horsePosition, 0,horsePosition.length);
+        logState();
+    }
+
+
+    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId) {
+        this.horseAtEnd[horseId] = horseAtEnd;
         logState();
     }
 
     public synchronized void setHorseAtEnd(boolean[] horseAtEnd) {
-        this.horseAtEnd = horseAtEnd;
+        System.arraycopy(horseAtEnd, 0, this.horseAtEnd, 0,horseAtEnd.length);
         logState();
     }
-
 
     public synchronized void logState(){
         // retrieve variables
@@ -153,7 +168,7 @@ public class Logger {
 
         for(int i=0;i < SimulPar.N_numCompetitors; i++) {
             line2+=" "+String.format("%-4.2f",horseOdds[i]);
-            line2+=" "+String.format("%-2d",n_iteration[i]);
+            line2+=" "+String.format("%-2d",horseIteration[i]);
             line2+="  "+String.format("%-2d", horsePosition[i]);
             line2+="  "+(horseAtEnd[i] ? "T" : "F");
         }

@@ -52,7 +52,7 @@ public class ControlCenter
         Spectator spec =  ((Spectator) Thread.currentThread());
         int specId = spec.getSpectatorID();
         spec.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START);
-        logger.setSpectatorState(SpectatorState.WATCHING_A_RACE, specId);
+        logger.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START, specId);
         logger.setMoneyAmount(spec.getWalletValue(),specId);
 
          // wake up if next race starts or if race does not exit, broker determines this

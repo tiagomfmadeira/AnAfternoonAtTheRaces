@@ -82,11 +82,13 @@ public class RaceTrack
             Random rand = new Random();
             // make a move
             racePosition[horseId] += rand.nextInt(agility) + 1;
+            logger.setHorsePosition(racePosition[horseId], horseId);
         }
 
         // number of horses awaken so far this iteration
         horseMoveCounter++;
         iterationCounter[horseId]++;
+        logger.setHorseIteration(iterationCounter[horseId],horseId);
 
         // wake up the next horse
         raceTurn[(horseId + 1) % SimulPar.N_numCompetitors] = true;
@@ -110,6 +112,8 @@ public class RaceTrack
         {
             // mark that it has crossed the finish line
             crossedFinish[horseId] = true;
+            logger.setHorseAtEnd(crossedFinish[horseId],horseId);
+
             //  Change HorseJockey state to AT_THE_FINNISH_LINE
             ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
             logger.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE,
@@ -165,6 +169,9 @@ public class RaceTrack
                 lastArrived = false;
                 winnersChosen=false;
                 Arrays.fill(iterationCounter,0);
+                logger.setHorseIteration(iterationCounter);
+                logger.setHorsePosition(racePosition);
+                logger.setHorseAtEnd(crossedFinish);
             }
         }
         return lastToCross;
