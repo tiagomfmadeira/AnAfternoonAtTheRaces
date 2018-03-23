@@ -30,12 +30,6 @@ public class Stable
         notifyAll();
     }
 
-    public synchronized void entertainTheGuests()
-    {
-        nextRaceExists = false;
-        notifyAll();
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Horse/Jockey
 
@@ -55,7 +49,7 @@ public class Stable
         int raceID = ((HorseJockey) Thread.currentThread()).getRaceId();
 
         // Check the flag for this race
-        while (!proceedToPaddockFlag[raceID] && nextRaceExists)
+        while (!proceedToPaddockFlag[raceID])
         {
             try
             {
@@ -74,5 +68,16 @@ public class Stable
             // reset var, the horses for this race have left
             proceedToPaddockFlag[raceID] = false;
         }
+    }
+
+    public synchronized void proceedToEnd()
+    {
+        //  Change HorseJockey state to AT_THE_STABLE
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
+        int horseId = hj.getHorseJockeyID();
+        int raceId = hj.getRaceId();
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, horseId, raceId );
+        logger.setMaxMovingLength(hj.getAgility(), horseId, raceId);
     }
 }

@@ -4,7 +4,6 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
-import java.util.HashSet;
 
 import static main.SimulPar.N_numCompetitors;
 import static main.SimulPar.M_numSpectators;
@@ -79,13 +78,13 @@ public class BettingCenter {
         lastSpectatorToPlaceBet = false;
     }
 
-    public synchronized boolean areThereAnyWinners(HashSet horseJockeyWinners)
+    public synchronized boolean areThereAnyWinners(boolean [ ] horseJockeyWinners)
     {
         // iterate the array of bets
         for (int[ ] bet : bets)
         {
             // check if the horse is in the winner list
-            if (horseJockeyWinners.contains(bet[ 0 ]))
+            if (horseJockeyWinners[bet[ 0 ]] == true)
             {
                 numBetsToBeSettled++;
             }
@@ -141,16 +140,6 @@ public class BettingCenter {
         int specId = spec.getSpectatorID();
         spec.setSpectatorState(SpectatorState.PLACING_A_BET);
         logger.setSpectatorState(SpectatorState.PLACING_A_BET, specId);
-        logger.setSpectatorBetSelection(horseID, specId);
-
-
-        // fill out the bet information
-        bets[specId][0] = horseID;
-        // TODO: improve logic of bet value
-        int betAmt = (int) Math.floor(((Spectator)Thread.currentThread()).getWalletValue()*0.25);
-        bets[specId][1] = betAmt;
-
-        logger.setSpectatorBetAmount(betAmt, specId);
 
         while (!canPlaceBet)
         {
@@ -163,8 +152,15 @@ public class BettingCenter {
 
             }
         }
-
         canPlaceBet = false;
+
+        // fill out the bet information
+        bets[specId][0] = horseID;
+        logger.setSpectatorBetSelection(horseID, specId);
+        // TODO: improve logic of bet value
+        int betAmt = (int) Math.floor(((Spectator)Thread.currentThread()).getWalletValue()*0.25);
+        bets[specId][1] = betAmt;
+        logger.setSpectatorBetAmount(betAmt, specId);
 
         ((Spectator)Thread.currentThread()).updateWalletValue(- bets[specId][1]);
 

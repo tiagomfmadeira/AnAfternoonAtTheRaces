@@ -1,7 +1,7 @@
 package sharedRegions;
 
 import entities.*;
-import genclass.GenericIO;
+
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
 
@@ -163,18 +163,12 @@ public class Paddock
         for (int i = 0; i < N_numCompetitors; i++) {
            totalAgility += horses[ i ].getAgility();
         }
-        //GenericIO.writelnString("Total Agility: " + totalAgility);
 
         // calculate the odds of each horse
         for (int i = 0; i < N_numCompetitors; i++) {
            odds[ i ]= horses[ i ].getAgility()/totalAgility;
-                   //GenericIO.writelnString("Agility: " +  horses[ i ].getAgility());
         }
 
-        // debug print
-        for (int i = 0; i < N_numCompetitors; i++) {
-            //GenericIO.writelnString("Horse " + i + " " + odds[i]);
-        }
         return odds;
     }
 }

@@ -78,7 +78,7 @@ public class HorseJockey extends Thread
             // other name would be best maybe
             controlCenter.makeAMove();
         }
-        stable.proceedToStable();                                       // sleep (final state)
+        stable.proceedToEnd();                                       // sleep (final state)
     }
 
     /**
