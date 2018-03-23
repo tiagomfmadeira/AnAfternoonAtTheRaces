@@ -6,6 +6,8 @@ import genclass.GenericIO;
 import genclass.TextFile;
 import main.SimulPar;
 
+import java.util.Arrays;
+
 import static main.SimulPar.N_numCompetitors;
 
 public class Logger {
@@ -28,6 +30,15 @@ public class Logger {
     private int[][] maxMovingLength = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
 
     public Logger(){
+
+        //initialize default states
+        brokerState=BrokerState.OPENING_THE_EVENT;
+        Arrays.fill(spectatorStates,SpectatorState.WAITING_FOR_A_RACE_TO_START);
+        for(HorseJockeyState[] hj: horseJockeyState)
+            Arrays.fill(hj,HorseJockeyState.AT_THE_STABLE);
+
+
+
         String headerLine1 = "MAN/BRK           SPECTATOR/BETTER              HORSE/JOCKEY PAIR at Race RN";
 
         String headerLine2 = "  Stat ";
@@ -58,89 +69,122 @@ public class Logger {
     }
 
     public synchronized void setBrokerState(BrokerState brokerState) {
-        this.brokerState = brokerState;
-        logState();
+        if(this.brokerState != brokerState) {
+            this.brokerState = brokerState;
+            logState();
+        }
     }
 
     public synchronized void setSpectatorState(SpectatorState spectatorState, int spectatorId) {
-        this.spectatorStates[spectatorId] = spectatorState;
-        logState();
+        if(this.spectatorStates[spectatorId] != spectatorState) {
+            this.spectatorStates[spectatorId] = spectatorState;
+            logState();
+        }
     }
 
     public synchronized void setMoneyAmount(int spectatorMoneyAmount, int spectatorId) {
-        this.moneyAmount[spectatorId] = spectatorMoneyAmount;
-        logState();
+        if(this.moneyAmount[spectatorId] != spectatorMoneyAmount) {
+            this.moneyAmount[spectatorId] = spectatorMoneyAmount;
+            logState();
+        }
     }
 
     public synchronized void setRaceNumber(int raceNumber) {
-        this.raceNumber = raceNumber;
-        logState();
+        if(this.raceNumber != raceNumber) {
+            this.raceNumber = raceNumber;
+            logState();
+        }
     }
 
-    public synchronized void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId) {
-        this.horseJockeyState[this.raceNumber][horseJockeyId] = horseJockeyState;
-        logState();
+
+    public synchronized void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId) {
+        if(this.horseJockeyState[raceId][horseJockeyId] != horseJockeyState) {
+            this.horseJockeyState[raceId][horseJockeyId] = horseJockeyState;
+            logState();
+        }
     }
 
-    public synchronized void setMaxMovingLength(int maxMovingLength, int horseId) {
-        this.maxMovingLength[this.raceNumber][horseId] = maxMovingLength;
-        logState();
+    public synchronized void setMaxMovingLength(int maxMovingLength, int horseId, int raceId) {
+        if(this.maxMovingLength[raceId][horseId] != maxMovingLength) {
+            this.maxMovingLength[raceId][horseId] = maxMovingLength;
+            logState();
+        }
     }
 
     public synchronized void setDistanceInRace(int distanceInRace) {
-        this.distanceInRace = distanceInRace;
-        logState();
+        if(this.distanceInRace != distanceInRace) {
+            this.distanceInRace = distanceInRace;
+            logState();
+        }
     }
 
     public synchronized void setSpectatorBetSelection(int spectatorBetSelection, int specId) {
-        this.spectatorBetSelection[specId] = spectatorBetSelection;
-        logState();
+        if(this.spectatorBetSelection[specId] != spectatorBetSelection) {
+            this.spectatorBetSelection[specId] = spectatorBetSelection;
+            logState();
+        }
     }
 
     public synchronized void setSpectatorBetAmount(int spectatorBetAmount, int specId) {
-        this.spectatorBetAmount[specId] = spectatorBetAmount;
-        logState();
+        if(this.spectatorBetAmount[specId] != spectatorBetAmount) {
+            this.spectatorBetAmount[specId] = spectatorBetAmount;
+            logState();
+        }
     }
 
-    public synchronized void setHorseOdds(double[] horseOdds) {
-        System.arraycopy(horseOdds, 0, this.horseOdds[this.raceNumber], 0,horseOdds.length);
-        logState();
+    public synchronized void setHorseOdds(double[] horseOdds, int raceId) {
+        if(!Arrays.equals(this.horseOdds[raceId], horseOdds)) {
+            System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0,horseOdds.length);
+            logState();
+        }
     }
 
-    public synchronized void setHorseIteration(int horseIteration, int horseId) {
-        this.horseIteration[this.raceNumber][horseId] = horseIteration;
-        logState();
+    public synchronized void setHorseIteration(int horseIteration, int horseId, int raceId) {
+        if(this.horseIteration[raceId][horseId] != horseIteration) {
+            this.horseIteration[raceId][horseId] = horseIteration;
+            logState();
+        }
     }
 
-    public synchronized void setHorseIteration(int[] horseIteration) {
-        System.arraycopy(horseIteration, 0, this.horseIteration[this.raceNumber], 0,horseIteration.length);
-        logState();
+    public synchronized void setHorseIteration(int[] horseIteration, int raceId) {
+        if(!Arrays.equals(this.horseIteration[raceId], horseIteration)) {
+            System.arraycopy(horseIteration, 0, this.horseIteration[raceId], 0,horseIteration.length);
+            logState();
+        }
     }
 
-    public synchronized void setHorsePosition(int horsePosition, int horseId) {
-        this.horsePosition[this.raceNumber][horseId] = horsePosition;
-        logState();
+    public synchronized void setHorsePosition(int horsePosition, int horseId, int raceId) {
+        if(this.horsePosition[raceId][horseId] != horsePosition) {
+            this.horsePosition[raceId][horseId] = horsePosition;
+            logState();
+        }
     }
 
-    public synchronized void setHorsePosition(int[] horsePosition) {
-        System.arraycopy(horsePosition, 0, this.horsePosition[this.raceNumber], 0,horsePosition.length);
-        logState();
+    public synchronized void setHorsePosition(int[] horsePosition, int raceId) {
+        if(!Arrays.equals(this.horsePosition[raceId], horsePosition)) {
+            System.arraycopy(horsePosition, 0, this.horsePosition[raceId], 0,horsePosition.length);
+            logState();
+        }
     }
 
 
-    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId) {
-        this.horseAtEnd[this.raceNumber][horseId] = horseAtEnd;
-        logState();
+    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId, int raceId) {
+        if(this.horseAtEnd[raceId][horseId] != horseAtEnd) {
+            this.horseAtEnd[raceId][horseId] = horseAtEnd;
+            logState();
+        }
     }
 
-    public synchronized void setHorseAtEnd(boolean[] horseAtEnd) {
-        System.arraycopy(horseAtEnd, 0, this.horseAtEnd[this.raceNumber], 0,horseAtEnd.length);
-        logState();
+    public synchronized void setHorseAtEnd(boolean[] horseAtEnd, int raceId) {
+        if(!Arrays.equals(this.horseAtEnd[raceId], horseAtEnd)) {
+            System.arraycopy(horseAtEnd, 0, this.horseAtEnd[raceId], 0, horseAtEnd.length);
+            logState();
+        }
     }
 
     public synchronized void logState(){
         // retrieve variables
-        String line1 = "  "+ String.format("%4s",brokerState != null ? brokerState.getAcronym() : "####")+" ";
+        String line1 = "  "+ String.format("%-4s",brokerState != null ? brokerState.getAcronym() : "####")+" ";
 
         for(int i = 0; i < SimulPar.M_numSpectators;i++) {
             SpectatorState s = spectatorStates[i];
@@ -158,7 +202,7 @@ public class Logger {
         }
 
         //String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
-        String line2  = "  "+this.raceNumber+"  "+this.distanceInRace+"  ";
+        String line2  = "  "+this.raceNumber+"  "+this.distanceInRace+" ";
 
 
         for(int i=0;i < SimulPar.M_numSpectators; i++) {

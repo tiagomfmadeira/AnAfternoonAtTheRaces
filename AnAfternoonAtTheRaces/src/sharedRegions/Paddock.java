@@ -29,9 +29,10 @@ public class Paddock
         boolean isLastHorse = false;
 
         //  Change HorseJockey state to AT_THE_PADDOCK
-        ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
+        HorseJockey hj = (HorseJockey) Thread.currentThread();
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK,
-                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+                                    hj.getHorseJockeyID(),hj.getRaceId());
 
 
         horsesAtPaddockCount++;

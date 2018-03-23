@@ -39,8 +39,8 @@ public class BettingCenter {
     {
         // copy the odds
         System.arraycopy(horseOdds, 0, odds, 0, N_numCompetitors);
-
-        logger.setHorseOdds(odds);
+        int currentRace = ((Broker)Thread.currentThread()).getCurrentRace();
+        logger.setHorseOdds(odds, currentRace);
 
         // Change Broker state to WAITING_FOR_BETS
         ((Broker)Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);

@@ -44,8 +44,8 @@ public class HorseJockey extends Thread
      this.raceTrack = raceTrack;
      this.controlCenter = controlCenter;
      this.logger = logger;
-     logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, this.id);
-     logger.setMaxMovingLength(this.agility, this.id);
+     logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, this.id, this.raceId);
+     logger.setMaxMovingLength(this.agility, this.id, this.raceId);
    }
 
   /**
