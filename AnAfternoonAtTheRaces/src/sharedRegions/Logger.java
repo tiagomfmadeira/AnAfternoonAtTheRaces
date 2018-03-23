@@ -30,12 +30,36 @@ public class Logger {
     private int[][] maxMovingLength = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
 
     public Logger(){
+        //invalidate not yet set amounts
+        double[] negDoubleArray = new double[SimulPar.N_numCompetitors];
+        Arrays.fill(negDoubleArray,-1);
+        int[] negIntArray = new int[SimulPar.N_numCompetitors];
+        Arrays.fill(negDoubleArray,-1);
+        boolean[] negBooleanArray = new boolean[SimulPar.N_numCompetitors];
+        Arrays.fill(negDoubleArray,-1);
+
+
+
+        Arrays.fill(moneyAmount ,-1);
+        Arrays.fill(spectatorBetSelection,-1);
+        Arrays.fill(spectatorBetAmount,-1);
+
+
+        Arrays.fill(horseOdds,negDoubleArray);
+        Arrays.fill(horseAtEnd,negBooleanArray);
+        Arrays.fill(horsePosition,negIntArray);
+        Arrays.fill(maxMovingLength,negIntArray);
+
+
+
+
+
 
         //initialize default states
-        brokerState=BrokerState.OPENING_THE_EVENT;
-        Arrays.fill(spectatorStates,SpectatorState.WAITING_FOR_A_RACE_TO_START);
-        for(HorseJockeyState[] hj: horseJockeyState)
-            Arrays.fill(hj,HorseJockeyState.AT_THE_STABLE);
+//        brokerState=BrokerState.OPENING_THE_EVENT;
+//        Arrays.fill(spectatorStates,SpectatorState.WAITING_FOR_A_RACE_TO_START);
+//        for(HorseJockeyState[] hj: horseJockeyState)
+//            Arrays.fill(hj,HorseJockeyState.AT_THE_STABLE);
 
 
 
@@ -189,7 +213,11 @@ public class Logger {
         for(int i = 0; i < SimulPar.M_numSpectators;i++) {
             SpectatorState s = spectatorStates[i];
             line1 += " "+ String.format( "%-3s",s != null ? s.getAcronym() : "###");
-            line1 += " "+ String.format( "%-4d",moneyAmount[i]);
+
+
+            line1 += " "+String.format("%-4"+ (moneyAmount[i] != -1 ? "d" : "s"),
+                                        moneyAmount[i] != -1 ? moneyAmount[i] : "####")+" ";
+
         }
 
         line1+="  "+this.raceNumber;
@@ -197,8 +225,12 @@ public class Logger {
         for(int i = 0; i < SimulPar.N_numCompetitors;i++){
             HorseJockeyState hj = horseJockeyState[this.raceNumber][i];
 
+            int maxMovLen = maxMovingLength[this.raceNumber][i];
+
             line1 += " "+String.format("%-3s",hj != null ? hj.getAcronym() : "###");
-            line1 += "  "+String.format("%-2d",maxMovingLength[this.raceNumber][i])+" ";
+
+            line1 += "  "+String.format("%-2"+ (maxMovLen != -1 ? "d" : "s")
+                                        ,maxMovLen != -1 ? maxMovLen : "##")+" ";
         }
 
         //String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
@@ -207,15 +239,31 @@ public class Logger {
 
         for(int i=0;i < SimulPar.M_numSpectators; i++) {
 
-            line2 += "  "+spectatorBetSelection[i];
-            line2 += "  "+String.format("%-4d",spectatorBetAmount[i]);
+            line2 += "  "+ (spectatorBetSelection[i] != -1 ? spectatorBetSelection[i] : "#");
+
+            int betAmt = spectatorBetAmount[i];
+
+            line2 += "  "+String.format("%-4"+ (betAmt != -1 ? "d" : "s"),
+                                            betAmt != -1 ? betAmt : "####");
 
         }
 
         for(int i=0;i < SimulPar.N_numCompetitors; i++) {
-            line2+=" "+String.format("%-4.2f",horseOdds[this.raceNumber][i]);
-            line2+=" "+String.format("%-2d",horseIteration[this.raceNumber][i]);
-            line2+="  "+String.format("%-2d", horsePosition[this.raceNumber][i]);
+
+            double odds = horseOdds[this.raceNumber][i];
+            line2+=" "+String.format("%-4" + (odds != -1 ? ".2f" : "s"),
+                                        odds != -1 ? odds : "####");
+
+
+            int horseIter = horseIteration[this.raceNumber][i];
+
+            line2+=" "+String.format("%-2"+ (horseIter != -1 ? "d" : "s"),
+                    horseIter != -1 ? horseIter : "##");
+
+            int horsePos = horsePosition[this.raceNumber][i];
+            line2+="  "+String.format("%-2"+ (horsePos != -1 ? "d" : "s"),
+                    horsePos != -1 ? horsePos : "##");
+
             line2+="  "+(horseAtEnd[this.raceNumber][i] ? "T" : "F");
         }
 

@@ -41,8 +41,8 @@ public class Spectator extends Thread
      this.paddock = paddock;
      this.bettingCenter = bettingCenter;
      this.logger = logger;
-     logger.setMoneyAmount(money,spectatorID);
      logger.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START, spectatorID);
+     logger.setMoneyAmount(money,spectatorID);
    }
 
   /**
