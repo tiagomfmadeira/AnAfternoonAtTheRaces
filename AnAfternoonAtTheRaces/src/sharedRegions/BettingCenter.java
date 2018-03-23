@@ -40,9 +40,12 @@ public class BettingCenter {
         // copy the odds
         System.arraycopy(horseOdds, 0, odds, 0, N_numCompetitors);
 
+        logger.setHorseOdds(odds);
+
         // Change Broker state to WAITING_FOR_BETS
         ((Broker)Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
         logger.setBrokerState(BrokerState.WAITING_FOR_BETS);
+
 
         canPlaceBet = true;
         notifyAll();
@@ -134,16 +137,20 @@ public class BettingCenter {
     public synchronized void placeABet(int horseID)
     {
         //  Change Spectator state to PLACING_A_BET
-        ((Spectator)Thread.currentThread()).setSpectatorState(SpectatorState.PLACING_A_BET);
-        logger.setSpectatorState(SpectatorState.PLACING_A_BET,
-                ((Spectator) Thread.currentThread()).getSpectatorID() );
+        Spectator spec = ((Spectator)Thread.currentThread());
+        int specId = spec.getSpectatorID();
+        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
+        logger.setSpectatorState(SpectatorState.PLACING_A_BET, specId);
+        logger.setSpectatorBetSelection(horseID, specId);
 
 
         // fill out the bet information
-        int specID = ((Spectator)Thread.currentThread()).getSpectatorID();
-        bets[specID][0] = horseID;
+        bets[specId][0] = horseID;
         // TODO: improve logic of bet value
-        bets[specID][1] = (int) Math.floor(((Spectator)Thread.currentThread()).getWalletValue()*0.25);
+        int betAmt = (int) Math.floor(((Spectator)Thread.currentThread()).getWalletValue()*0.25);
+        bets[specId][1] = betAmt;
+
+        logger.setSpectatorBetAmount(betAmt, specId);
 
         while (!canPlaceBet)
         {
@@ -159,7 +166,7 @@ public class BettingCenter {
 
         canPlaceBet = false;
 
-        ((Spectator)Thread.currentThread()).updateWalletValue(- bets[specID][1]);
+        ((Spectator)Thread.currentThread()).updateWalletValue(- bets[specId][1]);
 
         numBets++;
 

@@ -35,6 +35,7 @@ public class RaceTrack
         //later this should be an array or something
         this.distance = distance;
         this.logger = logger;
+        this.logger.setDistanceInRace(distance);
     }
 
 

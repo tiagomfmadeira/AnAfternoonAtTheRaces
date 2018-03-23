@@ -6,6 +6,8 @@ import genclass.GenericIO;
 import genclass.TextFile;
 import main.SimulPar;
 
+import static main.SimulPar.N_numCompetitors;
+
 public class Logger {
 
     private BrokerState brokerState;
@@ -14,7 +16,8 @@ public class Logger {
     private int raceNumber;//broker
     private HorseJockeyState[] horseJockeyState = new HorseJockeyState[SimulPar.N_numCompetitors];
     private int[] maxMovingLength = new int[SimulPar.N_numCompetitors];
-    private int[] distanceInRace = new int[SimulPar.K_numRaces];
+    //private int[] distanceInRace = new int[SimulPar.K_numRaces];
+    private int distanceInRace;
     private int[] spectatorBetSelection = new int[SimulPar.M_numSpectators];
     private int[] spectatorBetAmount = new int[SimulPar.M_numSpectators];
     private double[] horseOdds = new double[SimulPar.N_numCompetitors];
@@ -77,28 +80,28 @@ public class Logger {
         logState();
     }
 
-    public synchronized void setMaxMovingLength(int[] maxMovingLength) {
-        this.maxMovingLength = maxMovingLength;
+    public synchronized void setMaxMovingLength(int maxMovingLength, int horseId) {
+        this.maxMovingLength[horseId] = maxMovingLength;
         logState();
     }
 
-    public synchronized void setDistanceInRace(int[] distanceInRace) {
+    public synchronized void setDistanceInRace(int distanceInRace) {
         this.distanceInRace = distanceInRace;
         logState();
     }
 
-    public synchronized void setSpectatorBetSelection(int[] spectatorBetSelection) {
-        this.spectatorBetSelection = spectatorBetSelection;
+    public synchronized void setSpectatorBetSelection(int spectatorBetSelection, int specId) {
+        this.spectatorBetSelection[specId] = spectatorBetSelection;
         logState();
     }
 
-    public synchronized void setSpectatorBetAmount(int[] spectatorBetAmount) {
-        this.spectatorBetAmount = spectatorBetAmount;
+    public synchronized void setSpectatorBetAmount(int spectatorBetAmount, int specId) {
+        this.spectatorBetAmount[specId] = spectatorBetAmount;
         logState();
     }
 
     public synchronized void setHorseOdds(double[] horseOdds) {
-        this.horseOdds = horseOdds;
+        System.arraycopy(horseOdds, 0, this.horseOdds, 0,horseOdds.length);
         logState();
     }
 
@@ -137,7 +140,8 @@ public class Logger {
             line1 += "  "+String.format("%-2d",maxMovingLength[i])+" ";
         }
 
-        String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
+        //String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
+        String line2  = "  "+this.raceNumber+"  "+this.distanceInRace+"  ";
 
 
         for(int i=0;i < SimulPar.M_numSpectators; i++) {

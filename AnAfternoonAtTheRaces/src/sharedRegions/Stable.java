@@ -25,6 +25,7 @@ public class Stable
 
     public synchronized void summonHorsesToPaddock(int raceID)
     {
+        logger.setRaceNumber(raceID);
         proceedToPaddockFlag[raceID] = true;
         notifyAll();
     }
@@ -41,9 +42,11 @@ public class Stable
     public synchronized void proceedToStable()
     {
         //  Change HorseJockey state to AT_THE_STABLE
-        ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
-        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE,
-                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, hj.getHorseJockeyID());
+        logger.setMaxMovingLength(hj.getAgility(),hj.getHorseJockeyID());
+
 
         // Get race ID
         int raceID = ((HorseJockey) Thread.currentThread()).getRaceId();

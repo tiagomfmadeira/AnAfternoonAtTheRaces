@@ -49,9 +49,11 @@ public class ControlCenter
 
     public synchronized boolean waitForNextRace()
     {
-        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START);
-        logger.setSpectatorState(SpectatorState.WATCHING_A_RACE,
-                ((Spectator) Thread.currentThread()).getSpectatorID());
+        Spectator spec =  ((Spectator) Thread.currentThread());
+        int specId = spec.getSpectatorID();
+        spec.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START);
+        logger.setSpectatorState(SpectatorState.WATCHING_A_RACE, specId);
+        logger.setMoneyAmount(spec.getWalletValue(),specId);
 
          // wake up if next race starts or if race does not exit, broker determines this
         while (!nextRaceStarted && nextRaceExists)

@@ -40,7 +40,6 @@ public class Spectator extends Thread
      this.paddock = paddock;
      this.bettingCenter = bettingCenter;
 
-
    }
 
   /**
