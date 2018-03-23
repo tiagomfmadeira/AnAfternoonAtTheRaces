@@ -20,6 +20,7 @@ public class Spectator extends Thread
    private final ControlCenter controlCenter;
    private final Paddock paddock;
    private final BettingCenter bettingCenter;
+   private Logger logger;
 
    /**
    *    Constructor
@@ -29,8 +30,8 @@ public class Spectator extends Thread
    *    @param money Amount of money Spectator starts with
    */
 
-   public Spectator(String name, int spectatorID,int money,
-                                       ControlCenter controlCenter, Paddock paddock, BettingCenter bettingCenter)
+   public Spectator(String name, int spectatorID, int money, ControlCenter controlCenter,
+                        Paddock paddock, BettingCenter bettingCenter,Logger logger)
    {
      super (name);
      this.id = spectatorID;
@@ -39,7 +40,9 @@ public class Spectator extends Thread
      this.controlCenter = controlCenter;
      this.paddock = paddock;
      this.bettingCenter = bettingCenter;
-
+     this.logger = logger;
+     logger.setMoneyAmount(money,spectatorID);
+     logger.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START, spectatorID);
    }
 
   /**

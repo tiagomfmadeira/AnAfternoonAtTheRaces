@@ -33,14 +33,13 @@ public class MainDatatype
         HorseJockey[ ][ ]horseJockeyPairs = new HorseJockey[K_numRaces][N_numCompetitors];          // array of consumer threads
 
         Broker broker = new Broker("Broker",1, raceTrack , stable,
-                                bettingCenter, paddock, controlCenter );
+                                bettingCenter, paddock, controlCenter, logger );
 
         for (int i = 0; i < M_numSpectators; i++)
         {
             int wallet = rand.nextInt(1000)+4;
-            spectators[ i ] = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter);
+            spectators[ i ] = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter, logger);
             spectators[ i ].start ();
-            GenericIO.writelnString ("Current state of the spectator " + i + " thread is " + spectators[ i ].getState ().toString ());
         }
 
         for (int i = 0; i < K_numRaces; i++)
@@ -53,12 +52,10 @@ public class MainDatatype
                 int agility = 1 + rand.nextInt(4);
 
                 horseJockeyPairs[race][HJID] = new HorseJockey("horse_jockey_" + HJID + "_race_" + race , HJID, agility, race,
-                                                                                                            stable, paddock, raceTrack, controlCenter);
+                                                                stable, paddock, raceTrack, controlCenter, logger);
                 horseJockeyPairs[race][HJID].start();
-                GenericIO.writelnString("Current state of the horseJockeyPairs " + "horse_jockey_" + HJID + "_race_" + race  + " thread is " + horseJockeyPairs[ race][HJID].getState().toString());
             }
         }
         broker.start();
-        GenericIO.writelnString("Current state of the Broker thread is " +broker.getState().toString());
     }
 }

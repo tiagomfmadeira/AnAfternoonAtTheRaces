@@ -13,17 +13,19 @@ public class Logger {
     private BrokerState brokerState;
     private SpectatorState[] spectatorStates = new SpectatorState[SimulPar.M_numSpectators];
     private int[] moneyAmount = new int[SimulPar.M_numSpectators];
-    private int raceNumber;//broker
-    private HorseJockeyState[] horseJockeyState = new HorseJockeyState[SimulPar.N_numCompetitors];
-    private int[] maxMovingLength = new int[SimulPar.N_numCompetitors];
-    //private int[] distanceInRace = new int[SimulPar.K_numRaces];
-    private int distanceInRace;
     private int[] spectatorBetSelection = new int[SimulPar.M_numSpectators];
     private int[] spectatorBetAmount = new int[SimulPar.M_numSpectators];
-    private double[] horseOdds = new double[SimulPar.N_numCompetitors];
-    private int[] horseIteration = new int[SimulPar.N_numCompetitors];
-    private boolean[] horseAtEnd = new boolean[SimulPar.N_numCompetitors];
-    private int[] horsePosition = new int[SimulPar.N_numCompetitors];
+
+    private int raceNumber = 0;//broker
+    //private int[] distanceInRace = new int[SimulPar.K_numRaces];
+    private int distanceInRace;
+
+    private HorseJockeyState[][] horseJockeyState = new HorseJockeyState[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private double[][] horseOdds = new double[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private int[][] horseIteration = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private boolean[][] horseAtEnd = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private int[][] horsePosition = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private int[][] maxMovingLength = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
 
     public Logger(){
         String headerLine1 = "MAN/BRK           SPECTATOR/BETTER              HORSE/JOCKEY PAIR at Race RN";
@@ -76,12 +78,12 @@ public class Logger {
     }
 
     public synchronized void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId) {
-        this.horseJockeyState[horseJockeyId] = horseJockeyState;
+        this.horseJockeyState[this.raceNumber][horseJockeyId] = horseJockeyState;
         logState();
     }
 
     public synchronized void setMaxMovingLength(int maxMovingLength, int horseId) {
-        this.maxMovingLength[horseId] = maxMovingLength;
+        this.maxMovingLength[this.raceNumber][horseId] = maxMovingLength;
         logState();
     }
 
@@ -101,38 +103,38 @@ public class Logger {
     }
 
     public synchronized void setHorseOdds(double[] horseOdds) {
-        System.arraycopy(horseOdds, 0, this.horseOdds, 0,horseOdds.length);
+        System.arraycopy(horseOdds, 0, this.horseOdds[this.raceNumber], 0,horseOdds.length);
         logState();
     }
 
     public synchronized void setHorseIteration(int horseIteration, int horseId) {
-        this.horseIteration[horseId] = horseIteration;
+        this.horseIteration[this.raceNumber][horseId] = horseIteration;
         logState();
     }
 
     public synchronized void setHorseIteration(int[] horseIteration) {
-        System.arraycopy(horseIteration, 0, this.horseIteration, 0,horseIteration.length);
+        System.arraycopy(horseIteration, 0, this.horseIteration[this.raceNumber], 0,horseIteration.length);
         logState();
     }
 
     public synchronized void setHorsePosition(int horsePosition, int horseId) {
-        this.horsePosition[horseId] = horsePosition;
+        this.horsePosition[this.raceNumber][horseId] = horsePosition;
         logState();
     }
 
     public synchronized void setHorsePosition(int[] horsePosition) {
-        System.arraycopy(horsePosition, 0, this.horsePosition, 0,horsePosition.length);
+        System.arraycopy(horsePosition, 0, this.horsePosition[this.raceNumber], 0,horsePosition.length);
         logState();
     }
 
 
     public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId) {
-        this.horseAtEnd[horseId] = horseAtEnd;
+        this.horseAtEnd[this.raceNumber][horseId] = horseAtEnd;
         logState();
     }
 
     public synchronized void setHorseAtEnd(boolean[] horseAtEnd) {
-        System.arraycopy(horseAtEnd, 0, this.horseAtEnd, 0,horseAtEnd.length);
+        System.arraycopy(horseAtEnd, 0, this.horseAtEnd[this.raceNumber], 0,horseAtEnd.length);
         logState();
     }
 
@@ -149,10 +151,10 @@ public class Logger {
         line1+="  "+this.raceNumber;
 
         for(int i = 0; i < SimulPar.N_numCompetitors;i++){
-            HorseJockeyState hj = horseJockeyState[i];
+            HorseJockeyState hj = horseJockeyState[this.raceNumber][i];
 
             line1 += " "+String.format("%-3s",hj != null ? hj.getAcronym() : "###");
-            line1 += "  "+String.format("%-2d",maxMovingLength[i])+" ";
+            line1 += "  "+String.format("%-2d",maxMovingLength[this.raceNumber][i])+" ";
         }
 
         //String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
@@ -167,10 +169,10 @@ public class Logger {
         }
 
         for(int i=0;i < SimulPar.N_numCompetitors; i++) {
-            line2+=" "+String.format("%-4.2f",horseOdds[i]);
-            line2+=" "+String.format("%-2d",horseIteration[i]);
-            line2+="  "+String.format("%-2d", horsePosition[i]);
-            line2+="  "+(horseAtEnd[i] ? "T" : "F");
+            line2+=" "+String.format("%-4.2f",horseOdds[this.raceNumber][i]);
+            line2+=" "+String.format("%-2d",horseIteration[this.raceNumber][i]);
+            line2+="  "+String.format("%-2d", horsePosition[this.raceNumber][i]);
+            line2+="  "+(horseAtEnd[this.raceNumber][i] ? "T" : "F");
         }
 
         GenericIO.writelnString(line1);

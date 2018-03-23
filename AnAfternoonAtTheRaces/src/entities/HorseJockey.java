@@ -21,6 +21,7 @@ public class HorseJockey extends Thread
     private final Paddock paddock;
     private final RaceTrack raceTrack;
     private final ControlCenter controlCenter;
+    private Logger logger;
 
    /**
    *    Constructor
@@ -30,8 +31,8 @@ public class HorseJockey extends Thread
    *    @param agility Horse agility
    */
 
-   public HorseJockey (String name, int horseJockeyID, int agility, int raceId,
-                                                Stable stable, Paddock paddock, RaceTrack raceTrack, ControlCenter controlCenter)
+   public HorseJockey (String name, int horseJockeyID, int agility, int raceId, Stable stable, Paddock paddock,
+                            RaceTrack raceTrack, ControlCenter controlCenter, Logger logger)
    {
      super (name);
      this.id = horseJockeyID;
@@ -42,6 +43,9 @@ public class HorseJockey extends Thread
      this.paddock = paddock;
      this.raceTrack = raceTrack;
      this.controlCenter = controlCenter;
+     this.logger = logger;
+     logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, this.id);
+     logger.setMaxMovingLength(this.agility, this.id);
    }
 
   /**
