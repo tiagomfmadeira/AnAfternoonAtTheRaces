@@ -14,6 +14,12 @@ public class Paddock
     private int horsesAtPaddockCount = 0,
                           spectatorsAtPaddockCount = 0;
 
+    private Logger logger;
+
+    public Paddock(Logger logger){
+        this.logger = logger;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //HorseJockey
 
@@ -24,7 +30,9 @@ public class Paddock
 
         //  Change HorseJockey state to AT_THE_PADDOCK
         ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm at the Paddock!");
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK,
+                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
+
 
         horsesAtPaddockCount++;
 
@@ -36,7 +44,6 @@ public class Paddock
 
          if(horsesAtPaddockCount == N_numCompetitors)
         {
-            GenericIO.writelnString(Thread.currentThread().getName() + " says: I am the last horse to arrive at the Paddock!");
             isLastHorse = true;
         }
         return isLastHorse;
@@ -61,14 +68,12 @@ public class Paddock
 
     public synchronized void proceedToStartLine()
     {
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm headed to the start line!");
 
         horsesAtPaddockCount--;
 
         // if is last horse to leave paddock
         if(horsesAtPaddockCount == 0)
         {
-            GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm the last horse to leave for the start line!");
             lastHorseProceedToStartLine = true;
             notifyAll();
 
@@ -87,12 +92,13 @@ public class Paddock
 
         //  Change Spectator state to APPRAISING_THE_HORSES
         ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
+        logger.setSpectatorState(SpectatorState.APPRAISING_THE_HORSES,
+                ((Spectator) Thread.currentThread()).getSpectatorID() );
 
         spectatorsAtPaddockCount++;
 
         if(spectatorsAtPaddockCount == M_numSpectators)
         {
-            GenericIO.writelnString(Thread.currentThread().getName() +  " says: I'm the last Spectator to reach the Paddock");
             // return var
             isLastSpectator = true;
             notifyAll();
@@ -139,7 +145,6 @@ public class Paddock
 
     public synchronized void lastToCheckHorses()
     {
-        GenericIO.writelnString(Thread.currentThread().getName() +  " says: The horses can leave to the start line!");
         lastSpectatorGoCheckHorses = true;
         notifyAll();
     }
@@ -157,17 +162,17 @@ public class Paddock
         for (int i = 0; i < N_numCompetitors; i++) {
            totalAgility += horses[ i ].getAgility();
         }
-        GenericIO.writelnString("Total Agility: " + totalAgility);
+        //GenericIO.writelnString("Total Agility: " + totalAgility);
 
         // calculate the odds of each horse
         for (int i = 0; i < N_numCompetitors; i++) {
            odds[ i ]= horses[ i ].getAgility()/totalAgility;
-                   GenericIO.writelnString("Agility: " +  horses[ i ].getAgility());
+                   //GenericIO.writelnString("Agility: " +  horses[ i ].getAgility());
         }
 
         // debug print
         for (int i = 0; i < N_numCompetitors; i++) {
-            GenericIO.writelnString("Horse " + i + " " + odds[i]);
+            //GenericIO.writelnString("Horse " + i + " " + odds[i]);
         }
         return odds;
     }

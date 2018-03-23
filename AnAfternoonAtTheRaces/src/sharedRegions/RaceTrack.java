@@ -26,12 +26,17 @@ public class RaceTrack
     private int horseMoveCounter = 0,
                           finishLineCount = 0,
                           helperHorse = 0;
+    private int[] iterationCounter = new int[SimulPar.N_numCompetitors];
 
-    public RaceTrack(int distance)
+    private Logger logger;
+
+    public RaceTrack(int distance, Logger logger)
     {
         //later this should be an array or something
         this.distance = distance;
+        this.logger = logger;
     }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Horse/Jockey
@@ -40,7 +45,8 @@ public class RaceTrack
     {
         //  Change HorseJockey state to AT_THE_START_LINE
         ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE);
-        GenericIO.writelnString(Thread.currentThread().getName() + " I'm at the Start line!");
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE,
+                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
 
         int horseId = ((HorseJockey)Thread.currentThread()).getHorseJockeyID();
 
@@ -59,6 +65,8 @@ public class RaceTrack
 
         // Change Horse/Jockey state to RUNNING
         ((HorseJockey)Thread.currentThread()).setHorseJockeyState(HorseJockeyState.RUNNING);
+        logger.setHorseJockeyState(HorseJockeyState.RUNNING,
+                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
     }
 
     public synchronized boolean makeAMove()
@@ -77,6 +85,7 @@ public class RaceTrack
 
         // number of horses awaken so far this iteration
         horseMoveCounter++;
+        iterationCounter[horseId]++;
 
         // wake up the next horse
         raceTurn[(horseId + 1) % SimulPar.N_numCompetitors] = true;
@@ -102,7 +111,8 @@ public class RaceTrack
             crossedFinish[horseId] = true;
             //  Change HorseJockey state to AT_THE_FINNISH_LINE
             ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
-            GenericIO.writelnString(Thread.currentThread().getName() + " I have crossed the finish line!");
+            logger.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE,
+                    ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
 
             // another horse has finished
             finishLineCount++;
@@ -125,7 +135,6 @@ public class RaceTrack
         // if all the horses have finished the race
         if(finishLineCount==N_numCompetitors && !lastArrived)
         {
-            GenericIO.writelnString(Thread.currentThread().getName() + " I was the last to cross the finish line!");
 
             lastToCross = true;
             lastArrived = true;
@@ -144,7 +153,7 @@ public class RaceTrack
             {
                 // debug print
                 for (int i = 0; i < N_numCompetitors; i++) {
-                    GenericIO.writelnString("Horse " + i + " is winner = " + winners[i]);
+                    //GenericIO.writelnString("Horse " + i + " is winner = " + winners[i]);
                 }
                 // reset the vars
                 Arrays.fill(racePosition, 0);
@@ -154,6 +163,7 @@ public class RaceTrack
                 helperHorse = 0;
                 lastArrived = false;
                 winnersChosen=false;
+                Arrays.fill(iterationCounter,0);
             }
         }
         return lastToCross;
@@ -174,7 +184,6 @@ public class RaceTrack
         raceTurn[0] = true;
         notifyAll();
 
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: The race can begin!");
     }
 
     public synchronized HashSet reportResults()
@@ -207,4 +216,5 @@ public class RaceTrack
         }
         return declaredWinners ;
     }
+
 }

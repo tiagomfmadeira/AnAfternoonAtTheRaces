@@ -64,16 +64,16 @@ public class HorseJockey extends Thread
         raceTrack.proceedToStartLine();                          // sleep (woken up by broker with startTheRace()
                                                                                                    //          or by another horse with makeAMove())
         boolean lastToCross = false;
-        while(!raceTrack. hasRaceEnded())
+        while(!raceTrack.hasRaceEnded())
         {
            lastToCross = raceTrack.makeAMove();         // sleep (woken up by previous horse)
         }
 
         if (lastToCross)
         {
+            // other name would be best maybe
             controlCenter.makeAMove();
         }
-
         stable.proceedToStable();                                       // sleep (final state)
     }
 

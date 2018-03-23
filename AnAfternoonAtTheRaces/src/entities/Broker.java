@@ -23,6 +23,7 @@ public class Broker extends Thread
     private final Paddock paddock;
     private final BettingCenter bettingCenter;
     private final RaceTrack raceTrack;
+    private int currentRace; // current race
 
    /**
    *    Constructor
@@ -45,6 +46,7 @@ public class Broker extends Thread
      this.bettingCenter = bettingCenter;
      this.stable = stable;
      this.raceTrack = race_track;
+     this.currentRace = 0;
    }
 
     /**
@@ -54,12 +56,13 @@ public class Broker extends Thread
     @Override
     public void run ()
     {
-        for(int k = 0; k < numRaces; k++)                               // for each race
+        for(currentRace = 0; currentRace < numRaces; currentRace++)                               // for each race
         {
-            stable.summonHorsesToPaddock(k);                   // call the horses for a race
-            controlCenter.summonHorsesToPaddock();    // sleep (woken up by last last spectator to go see horses)
 
-           double [ ] odds = paddock.acceptTheBets();
+            stable.summonHorsesToPaddock(currentRace);                   // call the horses for a race
+            controlCenter.summonHorsesToPaddock();                // sleep (woken up by last last spectator to go see horses)
+
+            double [ ] odds = paddock.acceptTheBets();
             bettingCenter.acceptTheBets(odds);                    // sleep (woken up by each spectator to place  bet
                                                                                                          // transition occurs when all have placed bets)
 
@@ -97,6 +100,16 @@ public class Broker extends Thread
     public BrokerState getBrokerState ()
     {
       return this.state;
+    }
+
+    /**
+     *   Returns the current race
+     *
+     *   @return current race
+     */
+
+    public int getCurrentRace() {
+        return currentRace;
     }
 
     @Override

@@ -4,7 +4,6 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
-import genclass.GenericIO;
 import java.util.HashSet;
 
 import static main.SimulPar.N_numCompetitors;
@@ -13,9 +12,9 @@ import static main.SimulPar.M_numSpectators;
 public class BettingCenter {
 
     // saves HorseJockeyID and Value of bet for each Spectator
-    int[ ][ ] bets = new int [M_numSpectators ] [2];
+    private int[ ][ ] bets = new int [M_numSpectators] [2];
     // saves odds for each Horse/Jockey
-    double [ ] odds = new double [N_numCompetitors];
+    private double [ ] odds = new double [N_numCompetitors];
 
     private boolean nextSpectatorCanPlaceBet= false,
                                     lastSpectatorToPlaceBet = false,
@@ -27,16 +26,23 @@ public class BettingCenter {
     private int numBets = 0,
                           numBetsToBeSettled = 0;
 
+    private Logger logger;
+
+    public BettingCenter(Logger logger){
+        this.logger = logger;
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Broker
         public synchronized void acceptTheBets(double[ ] horseOdds)
     {
         // copy the odds
-        System.arraycopy(horseOdds, 0, odds, 0, N_numCompetitors) ;
+        System.arraycopy(horseOdds, 0, odds, 0, N_numCompetitors);
 
         // Change Broker state to WAITING_FOR_BETS
         ((Broker)Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm waiting for bets!");
+        logger.setBrokerState(BrokerState.WAITING_FOR_BETS);
 
         canPlaceBet = true;
         notifyAll();
@@ -59,8 +65,6 @@ public class BettingCenter {
 
                     nextSpectatorCanPlaceBet = false;
 
-                    GenericIO.writelnString(Thread.currentThread().getName() + " says: I accepted a bet!");
-
                     canPlaceBet = true;
                     notifyAll();
             }
@@ -70,7 +74,6 @@ public class BettingCenter {
             }
         }
         lastSpectatorToPlaceBet = false;
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I have accepted all the bets!");
     }
 
     public synchronized boolean areThereAnyWinners(HashSet horseJockeyWinners)
@@ -91,7 +94,7 @@ public class BettingCenter {
     {
         // Change Broker state to SETTLING_ACCOUNTS
         ((Broker)Thread.currentThread()).setBrokerState(BrokerState.SETTLING_ACCOUNTS);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm waiting to settle bets!");
+        logger.setBrokerState(BrokerState.SETTLING_ACCOUNTS);
 
         canReceiveMoney = true;
         notifyAll();
@@ -114,7 +117,6 @@ public class BettingCenter {
 
                 nextSpectatorCanReceiveMoney = false;
 
-                GenericIO.writelnString(Thread.currentThread().getName() + " says: I have settled a bet!");
 
                 canReceiveMoney = true;
                 notifyAll();
@@ -125,7 +127,6 @@ public class BettingCenter {
             }
         }
         lastSpectatorToReceiveMoney = false;
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I have honoured all the bets!");
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +135,9 @@ public class BettingCenter {
     {
         //  Change Spectator state to PLACING_A_BET
         ((Spectator)Thread.currentThread()).setSpectatorState(SpectatorState.PLACING_A_BET);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm filling in the bet information!");
+        logger.setSpectatorState(SpectatorState.PLACING_A_BET,
+                ((Spectator) Thread.currentThread()).getSpectatorID() );
+
 
         // fill out the bet information
         int specID = ((Spectator)Thread.currentThread()).getSpectatorID();
@@ -157,14 +160,12 @@ public class BettingCenter {
         canPlaceBet = false;
 
         ((Spectator)Thread.currentThread()).updateWalletValue(- bets[specID][1]);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: My bet has been acepted!!");
 
         numBets++;
 
         // is last spectator
         if(numBets == M_numSpectators)
         {
-           GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm the last spectator to bet!");
            numBets = 0;
 
            // release broker
@@ -180,7 +181,8 @@ public class BettingCenter {
     {
         //  Change Spectator state to COLLECTING_THE_GAINS
         ((Spectator)Thread.currentThread()).setSpectatorState(SpectatorState.COLLECTING_THE_GAINS);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm waiting to receive the money!");
+        logger.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS,
+                ((Spectator) Thread.currentThread()).getSpectatorID() );
 
         while (!canReceiveMoney)
         {
@@ -201,16 +203,12 @@ public class BettingCenter {
         int winnings =  (int) Math.round( bets[specID][1]  +  bets[specID][1] * (1 / odds[ horseBetOnID ]) );
 
         ((Spectator)Thread.currentThread()).updateWalletValue(winnings);
-        GenericIO.writelnString(Thread.currentThread().getName() + " My wallet: " + ((Spectator)Thread.currentThread()).getWalletValue() );
-
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: My bet has been settled!");
 
         numBetsToBeSettled--;
 
         // if is last winner to reclaim winnings
         if(numBetsToBeSettled == 0)
         {
-           GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm the last spectator to settle bet!");
 
            // release broker
             lastSpectatorToReceiveMoney = true;
@@ -219,5 +217,13 @@ public class BettingCenter {
             // wake up broker for next bet settle
             nextSpectatorCanReceiveMoney = true;
             notifyAll();
+    }
+
+    public int[][] getBets() {
+        return bets;
+    }
+
+    public double[] getOdds() {
+        return odds;
     }
 }

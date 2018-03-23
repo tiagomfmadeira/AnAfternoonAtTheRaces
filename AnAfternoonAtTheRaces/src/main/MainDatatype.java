@@ -5,6 +5,8 @@ import entities.HorseJockey;
 import entities.Spectator;
 import genclass.GenericIO;
 import sharedRegions.*;
+
+import java.util.Arrays;
 import java.util.Random;
 
 import static main.SimulPar.K_numRaces;
@@ -19,11 +21,13 @@ public class MainDatatype
         int distance = +15 + rand.nextInt(10);
 
         //A bird told me shared regions shouldn't be static
-        BettingCenter bettingCenter = new BettingCenter();
-        ControlCenter controlCenter = new ControlCenter();
-        Paddock  paddock = new Paddock();
-        RaceTrack raceTrack = new RaceTrack(distance);
-        Stable stable = new Stable();
+        Logger logger = new Logger();
+
+        BettingCenter bettingCenter = new BettingCenter(logger);
+        ControlCenter controlCenter = new ControlCenter(logger);
+        Paddock  paddock = new Paddock(logger);
+        RaceTrack raceTrack = new RaceTrack(distance, logger);
+        Stable stable = new Stable(logger);
 
         Spectator[ ] spectators = new Spectator[M_numSpectators];                                // array of producer threads
         HorseJockey[ ][ ]horseJockeyPairs = new HorseJockey[K_numRaces][N_numCompetitors];          // array of consumer threads

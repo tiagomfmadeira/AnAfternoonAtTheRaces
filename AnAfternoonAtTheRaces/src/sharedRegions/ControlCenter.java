@@ -4,7 +4,6 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
-import genclass.GenericIO;
 import java.util.HashSet;
 import static main.SimulPar.M_numSpectators;
 
@@ -22,13 +21,18 @@ public class ControlCenter
 
     HashSet horseJockeysWinners = new HashSet();
 
+    private Logger logger;
+
+    public ControlCenter(Logger logger){
+        this.logger = logger;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // HorseJockey
 
     // Last horse to leave the Stable wakes up the Spectators
     public synchronized void proceedToPaddock()
     {
-        GenericIO.writelnString(Thread.currentThread().getName() +  " says: The spectators can come see us!");
         nextRaceStarted = true;
         notifyAll();
     }
@@ -45,7 +49,6 @@ public class ControlCenter
 
     public synchronized boolean waitForNextRace()
     {
-         GenericIO.writelnString(Thread.currentThread().getName() +  " says: Waiting for next race!");
 
          // wake up if next race starts or if race does not exit, broker determines this
         while (!nextRaceStarted && nextRaceExists)
@@ -64,7 +67,6 @@ public class ControlCenter
 
     public synchronized void goCheckHorses()
     {
-        GenericIO.writelnString(Thread.currentThread().getName() +  " says: I'm headed to the Paddock!");
 
         spectatorsGoCheckHorsesCounter++;
 
@@ -78,7 +80,6 @@ public class ControlCenter
 
     public synchronized void lastToCheckHorses()
     {
-        GenericIO.writelnString(Thread.currentThread().getName() +  " says: The Broker can go accept the bets!");
         lastSpectatorGoCheckHorses = true;
         notifyAll();
     }
@@ -87,7 +88,8 @@ public class ControlCenter
     {
         //  Change Spectator state to WATCHING_A_RACE
         ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.WATCHING_A_RACE);
-         GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm at the Control Center to watch the race!");
+        logger.setSpectatorState(SpectatorState.WATCHING_A_RACE,
+                ((Spectator) Thread.currentThread()).getSpectatorID());
 
           while (!reportedResults)
         {
@@ -120,7 +122,7 @@ public class ControlCenter
     {
         //  Change Spectator state to CELEBRATING
         ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.CELEBRATING);
-         GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm celebrating!");
+        logger.setSpectatorState(SpectatorState.CELEBRATING, ((Spectator) Thread.currentThread()).getSpectatorID() );
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +132,7 @@ public class ControlCenter
     {
         // Change Broker state to ANNOUNCING_NEXT_RACE
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm sleeping at the Control Center!");
+        logger.setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
 
         while (!lastSpectatorGoCheckHorses)
         {
@@ -146,14 +148,13 @@ public class ControlCenter
         // reset for next run
         lastSpectatorGoCheckHorses = false;
 
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm off to the Betting Center!");
     }
 
     public synchronized void startTheRace()
     {
         // Change Broker state to SUPERVISING_THE_RACE
         ((Broker)Thread.currentThread()).setBrokerState(BrokerState.SUPERVISING_THE_RACE);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm supervising the race!");
+        logger.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
 
         while (!raceHasEnded)
         {
@@ -169,7 +170,6 @@ public class ControlCenter
         // reset the var for next run
         raceHasEnded = false;
 
-        GenericIO.writelnString(Thread.currentThread().getName() + " I have finished watching the race!");
     }
 
     public synchronized void reportResults( HashSet horseJockeysDeclaredWinners )
@@ -185,7 +185,7 @@ public class ControlCenter
     {
         // Change Broker state to PLAYING_HOST_AT_THE_BAR
         ((Broker)Thread.currentThread()).setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm playing host at the bar!");
+        logger.setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
 
         nextRaceExists = false;
         notifyAll();

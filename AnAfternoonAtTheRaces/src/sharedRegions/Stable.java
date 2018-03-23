@@ -2,7 +2,6 @@ package sharedRegions;
 
 import entities.HorseJockey;
 import entities.HorseJockeyState;
-import genclass.GenericIO;
 import static main.SimulPar.K_numRaces;
 import static main.SimulPar.N_numCompetitors;
 
@@ -15,13 +14,17 @@ public class Stable
     private int[ ] proceededHorsesCount = new int[K_numRaces];
     private boolean nextRaceExists = true;
 
+    private Logger logger;
+
+    public Stable(Logger logger){
+        this.logger = logger;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Broker
 
     public synchronized void summonHorsesToPaddock(int raceID)
     {
-        GenericIO.writelnString(Thread.currentThread().getName() +  " says: Bring the horses for race " + raceID +"!");
-
         proceedToPaddockFlag[raceID] = true;
         notifyAll();
     }
@@ -39,7 +42,8 @@ public class Stable
     {
         //  Change HorseJockey state to AT_THE_STABLE
         ((HorseJockey) Thread.currentThread()).setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
-        GenericIO.writelnString(Thread.currentThread().getName() + " says: I'm at the Stable!");
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE,
+                ((HorseJockey) Thread.currentThread()).getHorseJockeyID());
 
         // Get race ID
         int raceID = ((HorseJockey) Thread.currentThread()).getRaceId();
