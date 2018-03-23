@@ -4,7 +4,6 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
-import java.util.HashSet;
 
 import static main.SimulPar.N_numCompetitors;
 import static main.SimulPar.M_numSpectators;
@@ -79,13 +78,13 @@ public class BettingCenter {
         lastSpectatorToPlaceBet = false;
     }
 
-    public synchronized boolean areThereAnyWinners(HashSet horseJockeyWinners)
+    public synchronized boolean areThereAnyWinners(boolean [ ] horseJockeyWinners)
     {
         // iterate the array of bets
         for (int[ ] bet : bets)
         {
             // check if the horse is in the winner list
-            if (horseJockeyWinners.contains(bet[ 0 ]))
+            if (horseJockeyWinners[bet[ 0 ]] == true)
             {
                 numBetsToBeSettled++;
             }

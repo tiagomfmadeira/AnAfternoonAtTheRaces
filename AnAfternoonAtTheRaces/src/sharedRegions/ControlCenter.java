@@ -4,7 +4,7 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
-import java.util.HashSet;
+
 import static main.SimulPar.M_numSpectators;
 
 public class ControlCenter
@@ -19,7 +19,7 @@ public class ControlCenter
     private int spectatorsGoCheckHorsesCounter = 0,
                           spectatorsWatchedRaceCounter = 0;
 
-    HashSet horseJockeysWinners = new HashSet();
+    boolean [ ] horseJockeysWinners;
 
     private Logger logger;
 
@@ -120,7 +120,7 @@ public class ControlCenter
 
     public synchronized boolean haveIWon(int horseJockey)
     {
-            return horseJockeysWinners.contains(horseJockey);
+            return horseJockeysWinners[ horseJockey ];
     }
 
     public synchronized void relaxABit()
@@ -177,7 +177,7 @@ public class ControlCenter
 
     }
 
-    public synchronized void reportResults( HashSet horseJockeysDeclaredWinners )
+    public synchronized void reportResults(boolean [ ] horseJockeysDeclaredWinners )
     {
         horseJockeysWinners = horseJockeysDeclaredWinners;
 

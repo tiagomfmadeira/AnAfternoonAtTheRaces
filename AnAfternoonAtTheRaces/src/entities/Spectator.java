@@ -1,5 +1,4 @@
 package entities;
-import genclass.GenericIO;
 import sharedRegions.*;
 
 /**

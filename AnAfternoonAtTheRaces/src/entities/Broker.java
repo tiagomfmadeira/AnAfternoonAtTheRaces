@@ -1,7 +1,6 @@
 package entities;
 import main.SimulPar;
 import sharedRegions.*;
-import java.util.HashSet;
 
 /**
  *  General description:
@@ -69,7 +68,7 @@ public class Broker extends Thread
             raceTrack.startTheRace();                                          // call horse/jockey pairs
             controlCenter.startTheRace();                                 // sleep (woken up by last horse to cross finish line)
 
-            HashSet horseJockeyWinners = raceTrack.reportResults();                   // gather information about winners
+            boolean [ ] horseJockeyWinners = raceTrack.reportResults();                   // gather information about winners
             controlCenter.reportResults(horseJockeyWinners);                                // call the spectators
 
             if(bettingCenter.areThereAnyWinners(horseJockeyWinners))
@@ -78,7 +77,6 @@ public class Broker extends Thread
                                                                                                           // transition occurs when all winner have been paid)
             }
         }
-        stable.entertainTheGuests();
         controlCenter.entertainTheGuests();                         //sleep (final state)
     }
 

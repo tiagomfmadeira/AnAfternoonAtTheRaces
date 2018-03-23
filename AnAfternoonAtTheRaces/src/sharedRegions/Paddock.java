@@ -1,7 +1,7 @@
 package sharedRegions;
 
 import entities.*;
-import genclass.GenericIO;
+
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
 
