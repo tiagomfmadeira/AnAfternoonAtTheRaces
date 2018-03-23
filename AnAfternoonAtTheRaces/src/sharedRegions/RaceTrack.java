@@ -139,6 +139,16 @@ public class RaceTrack
         return raceEnded;
     }
 
+    public synchronized void proceedToEnd()
+    {
+        int horseId =  ((HorseJockey)Thread.currentThread()).getHorseJockeyID();
+        int raceId = ((HorseJockey)Thread.currentThread()).getRaceId();
+        // reset vars
+        crossedFinish[horseId] = false;
+        logger.setHorseAtEnd(false, horseId, raceId);
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Broker
 
@@ -183,16 +193,8 @@ public class RaceTrack
             }
         }
 
-        int raceId = ((Broker)(Thread.currentThread())).getCurrentRace();
-
-        // reset vars
         Arrays.fill(iterationCounter,0);
         Arrays.fill(racePosition, 0);
-        Arrays.fill(crossedFinish, false);
-
-        logger.setHorseIteration(iterationCounter, raceId);
-        logger.setHorsePosition(racePosition, raceId);
-        logger.setHorseAtEnd(crossedFinish, raceId);
 
         return winners ;
     }
