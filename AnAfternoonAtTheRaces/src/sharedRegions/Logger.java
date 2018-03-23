@@ -51,18 +51,6 @@ public class Logger {
         Arrays.fill(maxMovingLength,negIntArray);
 
 
-
-
-
-
-        //initialize default states
-//        brokerState=BrokerState.OPENING_THE_EVENT;
-//        Arrays.fill(spectatorStates,SpectatorState.WAITING_FOR_A_RACE_TO_START);
-//        for(HorseJockeyState[] hj: horseJockeyState)
-//            Arrays.fill(hj,HorseJockeyState.AT_THE_STABLE);
-
-
-
         String headerLine1 = "MAN/BRK           SPECTATOR/BETTER              HORSE/JOCKEY PAIR at Race RN";
 
         String headerLine2 = "  Stat ";

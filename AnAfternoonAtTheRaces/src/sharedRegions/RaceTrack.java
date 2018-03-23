@@ -1,5 +1,6 @@
 package sharedRegions;
 
+import entities.Broker;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
 import main.SimulPar;
@@ -152,7 +153,6 @@ public class RaceTrack
     public synchronized boolean [ ] reportResults()
     {
         boolean [ ] winners = new boolean [ N_numCompetitors ];
-        Arrays.fill(crossedFinish, false);
         int winningIteration = Integer.MAX_VALUE;
         int maxDistance = 0;
 
@@ -183,10 +183,16 @@ public class RaceTrack
             }
         }
 
+        int raceId = ((Broker)(Thread.currentThread())).getCurrentRace();
+
         // reset vars
         Arrays.fill(iterationCounter,0);
         Arrays.fill(racePosition, 0);
         Arrays.fill(crossedFinish, false);
+
+        logger.setHorseIteration(iterationCounter, raceId);
+        logger.setHorsePosition(racePosition, raceId);
+        logger.setHorseAtEnd(crossedFinish, raceId);
 
         return winners ;
     }
