@@ -205,7 +205,7 @@ public class Logger
         logState();
     }
 
-    public synchronized void logState()
+    private synchronized void logState()
     {
         // retrieve variables
         String line1 = "  " + String.format("%-4s", brokerState != null ? brokerState.getAcronym() : "####") + " ";

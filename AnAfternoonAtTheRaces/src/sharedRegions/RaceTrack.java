@@ -1,5 +1,7 @@
 package sharedRegions;
 
+import entities.Broker;
+import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
 import main.SimulPar;
@@ -145,6 +147,11 @@ public class RaceTrack
     //Broker
     public synchronized void startTheRace()
     {
+        // Change Broker state to SUPERVISING_THE_RACE
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.SUPERVISING_THE_RACE);
+        logger.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
+
+        Arrays.fill(crossedFinish, false);
         finishLineCount = 0;
         raceEnded = false;
         raceTurn[0] = true;

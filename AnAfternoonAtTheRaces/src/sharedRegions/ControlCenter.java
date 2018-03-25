@@ -170,9 +170,7 @@ public class ControlCenter
 
     public synchronized void startTheRace()
     {
-        // Change Broker state to SUPERVISING_THE_RACE
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.SUPERVISING_THE_RACE);
-        logger.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
+
 
         while (!raceHasEnded)
         {
