@@ -23,8 +23,12 @@ public class MainDatatype
      */
     public static void main(String[] args)
     {
+        int[] distance = new int[K_numRaces];
         Random rand = new Random();
-        int distance = 15 + rand.nextInt(10);
+        for (int i = 0; i < K_numRaces; i++)
+        {
+            distance[i] = 15 + rand.nextInt(10);
+        }
 
         Logger logger = new Logger();
 

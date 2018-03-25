@@ -8,9 +8,9 @@ import genclass.FileOp;
 import genclass.TextFile;
 
 /**
- * General description: General Repository of information. Keeps a copy of the
- * internal state of the problem and provides corresponding logging, essential
- * to the understanding of evolution of the system.
+ * General description: Definition of the General Repository of information.
+ * Keeps a copy of the internal state of the problem and provides corresponding
+ * logging, essential to the understanding of evolution of the system.
  */
 public class Logger
 {
@@ -21,7 +21,7 @@ public class Logger
     private int[][] spectatorBetSelection = new int[SimulPar.K_numRaces][SimulPar.M_numSpectators];
     private int[][] spectatorBetAmount = new int[SimulPar.K_numRaces][SimulPar.M_numSpectators];
     private int raceNumber = 0;
-    private int distanceInRace;
+    private int[] distanceInRace;
     private HorseJockeyState[][] horseJockeyState = new HorseJockeyState[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private double[][] horseOdds = new double[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] horseIteration = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
@@ -135,7 +135,7 @@ public class Logger
      *
      * @param distanceInRace the length of the track
      */
-    public synchronized void setDistanceInRace(int distanceInRace)
+    public synchronized void setDistanceInRace(int[] distanceInRace)
     {
         this.distanceInRace = distanceInRace;
         logState();
@@ -252,7 +252,7 @@ public class Logger
      *                  race indexed by their id in it
      * @param raceId    id of the race the horses are assigned to
      */
-    public synchronized void setHorseOdds(double[] horseOdds, int raceId)
+    public synchronized void setHorseJockeyOdds(double[] horseOdds, int raceId)
     {
         System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0, horseOdds.length);
         logState();
@@ -268,7 +268,7 @@ public class Logger
      * @param horseId        id of the horse/jockey pair
      * @param raceId         id of the race the horse/jockey pair is assigned to
      */
-    public synchronized void setHorseMove(int horseIteration, int horsePosition, int horseId, int raceId)
+    public synchronized void setHorseJockeyMove(int horseIteration, int horsePosition, int horseId, int raceId)
     {
         this.horseIteration[raceId][horseId] = horseIteration;
         this.horsePosition[raceId][horseId] = horsePosition;
@@ -287,7 +287,7 @@ public class Logger
      *                         to
      * @param horseJockeyState new state of the horse/jockey pair
      */
-    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId, int raceId, HorseJockeyState horseJockeyState)
+    public synchronized void setHorseJockeyAtEnd(boolean horseAtEnd, int horseId, int raceId, HorseJockeyState horseJockeyState)
     {
         this.horseAtEnd[raceId][horseId] = horseAtEnd;
         this.horseJockeyState[raceId][horseId] = horseJockeyState;
@@ -304,7 +304,7 @@ public class Logger
      * @param horseId    id of the horse/jockey pair
      * @param raceId     id of the race the horse/jockey pair is assigned to
      */
-    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId, int raceId)
+    public synchronized void setHorseJockeyAtEnd(boolean horseAtEnd, int horseId, int raceId)
     {
         this.horseAtEnd[raceId][horseId] = horseAtEnd;
         //logState();
@@ -343,7 +343,7 @@ public class Logger
         }
 
         //String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
-        String line2 = "  " + this.raceNumber + "  " + this.distanceInRace + " ";
+        String line2 = "  " + this.raceNumber + "  " + this.distanceInRace[raceNumber] + " ";
 
         for (int i = 0; i < SimulPar.M_numSpectators; i++)
         {
@@ -380,5 +380,4 @@ public class Logger
         GenericIO.writelnString(line2);
 
     }
-
 }

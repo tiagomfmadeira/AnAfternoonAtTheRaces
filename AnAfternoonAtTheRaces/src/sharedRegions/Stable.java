@@ -7,9 +7,15 @@ import entities.HorseJockeyState;
 import static main.SimulPar.K_numRaces;
 import static main.SimulPar.N_numCompetitors;
 
+/**
+ * General description: Definition of the Stable information sharing region.
+ */
 public class Stable
 {
 
+    /**
+     * Internal data
+     */
     // array of flags indexed per race
     private final boolean[] proceedToPaddockFlag = new boolean[K_numRaces];
     // counter of horses that left the paddock per race
@@ -27,7 +33,7 @@ public class Stable
         this.logger = logger;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     // Broker
     /**
      * Wake up the horse/jockey pairs assigned to a race from the AT_THE_STABLE
@@ -47,8 +53,8 @@ public class Stable
         logger.setRaceNumber(raceID);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Horse/Jockey
+    ////////////////////////////////////////////////////////////////////////////
+    // Horse/Jockey pair
     /**
      * Changes the horse/jockey pair state to AT_THE_STABLE and sleeps waiting
      * for a signal that the next race is starting.

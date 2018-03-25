@@ -23,11 +23,11 @@ public class HorseJockey extends Thread
     /**
      * Constructor
      *
-     * @param name          Horse/Jockey thread name
-     * @param horseJockeyID Horse/Jockey ID
-     * @param agility       Horse agility, representation of the maximum length
-     *                      of a step
-     * @param raceId        Id of the race the horse is competing on
+     * @param name          Horse/Jockey pair thread name
+     * @param horseJockeyID Horse/Jockey pair ID
+     * @param agility       Horse/Jockey pair agility, representation of the
+     *                      maximum length of a step
+     * @param raceId        Id of the race the Horse/Jockey pair is competing on
      * @param stable        Stable information sharing region
      * @param paddock       Paddock information sharing region
      * @param raceTrack     Race Track information sharing region
@@ -61,18 +61,18 @@ public class HorseJockey extends Thread
         stable.proceedToStable();
         boolean last = paddock.proceedToPaddock();
         if (last)
-        {                                                   // if is last horse to reach the paddock
+        {                                                   // if is last Horse/Jockey pair to reach the paddock
             controlCenter.proceedToPaddock();               // call spectators
         }
         paddock.sleepAtThePaddock();                        // sleep (woken up by last last spectator to reach the paddock)
 
-        paddock.proceedToStartLine();                       // if  is last horse to go to start line call spectators
+        paddock.proceedToStartLine();                       // if is last Horse/Jockey pair to go to start line call spectators
 
-        raceTrack.proceedToStartLine();                     // sleep (woken up by broker with startTheRace() or by another horse with makeAMove())
+        raceTrack.proceedToStartLine();                     // sleep (woken up by broker with startTheRace() or by another Horse/Jockey pair with makeAMove())
         boolean lastToCross = false;
         while (!raceTrack.hasRaceEnded())
         {
-            lastToCross = raceTrack.makeAMove();            // sleep (woken up by previous horse)
+            lastToCross = raceTrack.makeAMove();            // sleep (woken up by previous Horse/Jockey pair)
         }
 
         if (lastToCross)
@@ -80,12 +80,11 @@ public class HorseJockey extends Thread
             controlCenter.makeAMove();
         }
 
-        raceTrack.proceedToStableFinal();
         stable.proceedToStableFinal();                      // sleep (final state)
     }
 
     /**
-     * Returns the current state of the Horse/jockey pair.
+     * Returns the current state of the Horse/Jockey pair.
      *
      * @return current state of the Horse/Jockey pair
      */
@@ -95,7 +94,7 @@ public class HorseJockey extends Thread
     }
 
     /**
-     * Updates the state of the Horse/jockey pair.
+     * Updates the state of the Horse/Jockey pair.
      *
      * @param newState state to update Horse/Jockey pair to
      */
@@ -105,7 +104,7 @@ public class HorseJockey extends Thread
     }
 
     /**
-     * Returns the ID of the Horse/jockey pair.
+     * Returns the ID of the Horse/Jockey pair.
      *
      * @return ID of the Horse/Jockey pair
      */
@@ -116,7 +115,7 @@ public class HorseJockey extends Thread
 
     /**
      * Returns the agility, e.g. the maximum length of a step, of the
-     * Horse/jockey pair.
+     * Horse/Jockey pair.
      *
      * @return agility agility of the Horse/Jockey pair
      */
@@ -126,9 +125,9 @@ public class HorseJockey extends Thread
     }
 
     /**
-     * Returns the ID of the race the Horse/jockey pair participates in.
+     * Returns the ID of the race the Horse/Jockey pair participates in.
      *
-     * @return id of the race the horse/jockey is assigned to
+     * @return id of the race the Horse/Jockey pair is assigned to
      */
     public int getRaceId()
     {
@@ -138,7 +137,7 @@ public class HorseJockey extends Thread
     /**
      * Returns a string representation of the Horse/Jockey pair.
      *
-     * @return a string representation of the Horse/Jockey pair.
+     * @return a string representation of the Horse/Jockey pair
      */
     @Override
     public String toString()

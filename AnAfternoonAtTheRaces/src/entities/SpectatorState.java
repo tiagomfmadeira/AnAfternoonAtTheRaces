@@ -1,6 +1,10 @@
 package entities;
 
-public enum SpectatorState {
+/**
+ * General description: enum representing the Spectator's possible states.
+ */
+public enum SpectatorState
+{
     WAITING_FOR_A_RACE_TO_START("WFR"),
     APPRAISING_THE_HORSES("ATH"),
     PLACING_A_BET("PAB"),
@@ -10,12 +14,19 @@ public enum SpectatorState {
 
     private final String acronym;
 
-    SpectatorState(String acronym) {
+    SpectatorState(String acronym)
+    {
 
         this.acronym = acronym;
     }
 
-    public String getAcronym(){
+    /**
+     * Provides the acronym for the enum.
+     *
+     * @return the acronym representing a state
+     */
+    public String getAcronym()
+    {
         return this.acronym;
     }
 }

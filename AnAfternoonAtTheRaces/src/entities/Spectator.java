@@ -52,19 +52,19 @@ public class Spectator extends Thread
     public void run()
     {
         while (controlCenter.waitForNextRace())             // while there are races
-        {                                                   // sleep (woken up by last pair horse/jockey to reach paddock)
+        {                                                   // sleep (woken up by last pair Horse/Jockey pair to reach paddock)
             boolean last = paddock.goCheckHorses();
             if (last)
             {                                               // if is last spectator to go reach the paddock
                 controlCenter.lastToCheckHorses();
             }
-            int horse = paddock.appraisingHorses();         // sleep (woken up by last horse to leave paddock)
+            int horseJockeyId = paddock.appraisingHorses(); // sleep (woken up by last Horse/Jockey pair to leave paddock)
 
-            bettingCenter.placeABet(horse);                 // sleep (woken up by broker when bet's done)
+            bettingCenter.placeABet(horseJockeyId);         // sleep (woken up by broker when bet's done)
 
             controlCenter.goWatchTheRace();                 //sleep (woken up by  reportResults() of broker)
 
-            if (controlCenter.haveIWon(horse))
+            if (controlCenter.haveIWon(horseJockeyId))
             {
                 bettingCenter.goCollectTheGains();          // sleep (woken up by broker when transaction is done)
             }
@@ -127,7 +127,7 @@ public class Spectator extends Thread
     /**
      * Returns a string representation of the Spectator.
      *
-     * @return a string representation of the Spectator.
+     * @return a string representation of the Spectator
      */
     @Override
     public String toString()

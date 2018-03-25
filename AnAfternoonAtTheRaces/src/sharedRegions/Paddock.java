@@ -5,9 +5,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
 
+/**
+ * General description: Definition of the Paddock information sharing region.
+ */
 public class Paddock
 {
 
+    /**
+     * Internal data
+     */
     private final HorseJockey[] horses = new HorseJockey[N_numCompetitors];
     private boolean lastSpectatorGoCheckHorses = false,
             lastHorseProceedToStartLine = false;
@@ -27,7 +33,7 @@ public class Paddock
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    //HorseJockey
+    //HorseJockey pair
     /**
      * Changes the state of the horse/jockey pair to AT_THE_PADDOCK and checks
      * whether or not it's the last pair to reach the paddock.
@@ -100,7 +106,7 @@ public class Paddock
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     //Spectator
     /**
      * Changes the Spectator's state to APPRAISING_THE_HORSES. Checks if it's
@@ -131,15 +137,15 @@ public class Paddock
     }
 
     /**
-     * Sleep waiting of a signal that the last horse has left the paddock.
-     * Contains the logic for the betting choices of each spectator, depending
-     * on their id. Spectator 0 bets on the horse with the most agility;
-     * Spectator 1 bets on another horse, either with the same agility as the
-     * best, or if there isn't such a horse, on the second with most agility;
-     * Spectator 2 bets on the horse with least agility; all other spectators
-     * bet randomly.
+     * Sleep waiting of a signal that the last Horse/Jockey pair has left the
+     * paddock. Contains the logic for the betting choices of each spectator,
+     * depending on their id. Spectator 0 bets on the Horse/Jockey pair with the
+     * most agility; Spectator 1 bets on another Horse/Jockey pair, either with
+     * the same agility as the best, or if there isn't such a Horse/Jockey pair,
+     * on the second with most agility; Spectator 2 bets on the Horse/Jockey
+     * pair with least agility; all other spectators bet randomly.
      *
-     * @return id of the horse the Spectator will bet on
+     * @return id of the Horse/Jockey pair the Spectator will bet on
      */
     public synchronized int appraisingHorses()
     {
@@ -163,13 +169,13 @@ public class Paddock
             lastHorseProceedToStartLine = false;
         }
 
-        // decide which horse to bet on
+        // decide which Horse/Jockey pair to bet on
         int tmpHorseID = 0;
         int specId = ((Spectator) Thread.currentThread()).getSpectatorID();
 
         switch (specId)
         {
-            // bet on the best horse
+            // bet on the best Horse/Jockey pair
             case 0:
                 for (int i = 0; i < N_numCompetitors; i++)
                 {
@@ -179,7 +185,7 @@ public class Paddock
                     }
                 }
                 break;
-            // bet on the second best horse
+            // bet on the second best Horse/Jockey pair
             case 1:
                 int high1 = Integer.MIN_VALUE;
                 int high2 = Integer.MIN_VALUE;
@@ -203,7 +209,7 @@ public class Paddock
                     }
                 }
                 break;
-            // bet on the worst horse
+            // bet on the worst Horse/Jockey pair
             case 2:
                 for (int i = 0; i < N_numCompetitors; i++)
                 {
@@ -222,13 +228,14 @@ public class Paddock
         return tmpHorseID;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     // Broker
     /**
-     * Calculate the odds for each of the horses assigned to the current race.
+     * Calculate the odds for each of the Horse/Jockey pairs assigned to the
+     * current race.
      *
-     * @return an array containing the odds for each of the horses of a race
-     *         indexed by their id in it
+     * @return an array containing the odds for each of the Horse/Jockey pair of
+     *         a race indexed by their id in it
      */
     public synchronized double[] learnTheOdds()
     {

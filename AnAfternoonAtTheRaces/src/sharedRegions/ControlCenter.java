@@ -4,12 +4,18 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
-
 import static main.SimulPar.M_numSpectators;
 
+/**
+ * General description: Definition of the Control Center/Watching Stand
+ * information sharing region.
+ */
 public class ControlCenter
 {
 
+    /**
+     * Internal data
+     */
     private boolean nextRaceStarted = false,
             nextRaceExists = true,
             lastSpectatorGoCheckHorses = false,
@@ -32,7 +38,7 @@ public class ControlCenter
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // HorseJockey
+    // HorseJockey pair
     /**
      * Wake up the Spectators from the WAITING_FOR_A_RACE_TO_START blocking
      * state.
@@ -47,7 +53,7 @@ public class ControlCenter
     /**
      * Wake up the Broker from the SUPERVISING_THE_RACE blocking state.
      */
-    // called by the last horse to cross the finish line
+    // called by the last Horse/Jockey pair to cross the finish line
     public synchronized void makeAMove()
     {
         raceHasEnded = true;
@@ -140,7 +146,8 @@ public class ControlCenter
     }
 
     /**
-     * Called by a Spectator to check whether the horse they bet on won.
+     * Called by a Spectator to check whether the Horse/Jockey pair they bet on
+     * won.
      *
      * @param horseJockey id of the Horse/Jockey pair the Spectator bet on
      *
@@ -160,10 +167,11 @@ public class ControlCenter
     {
         //  Change Spectator state to CELEBRATING
         ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.CELEBRATING);
-        logger.setSpectatorState(SpectatorState.CELEBRATING, ((Spectator) Thread.currentThread()).getSpectatorID());
+        logger.setSpectatorState(SpectatorState.CELEBRATING,
+                ((Spectator) Thread.currentThread()).getSpectatorID());
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     //Broker
     /**
      * Sleeps waiting for a signal that all the Spectators have appraised the
@@ -187,8 +195,8 @@ public class ControlCenter
     }
 
     /**
-     * Sleep waiting for a signal that the last horse has crossed the finish
-     * line.
+     * Sleep waiting for a signal that the last Horse/Jockey pair has crossed
+     * the finish line.
      */
     public synchronized void startTheRace()
     {
@@ -211,7 +219,9 @@ public class ControlCenter
      * Place information on what Horse/Jockey pairs won the race in the shared
      * region. Wake up the spectators from WATCHING_A_RACE blocking state.
      *
-     * @param horseJockeysDeclaredWinners
+     * @param horseJockeysDeclaredWinners array indicating for each Horse/Jockey
+     *                                    pair if they have won the race,
+     *                                    indexed by their ID
      */
     public synchronized void reportResults(boolean[] horseJockeysDeclaredWinners)
     {

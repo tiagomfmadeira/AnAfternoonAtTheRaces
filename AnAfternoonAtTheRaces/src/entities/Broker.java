@@ -68,7 +68,7 @@ public class Broker extends Thread
             // transition occurs when all have placed bets)
 
             raceTrack.startTheRace();                                   // call horse/jockey pairs
-            controlCenter.startTheRace();                               // sleep (woken up by last horse to cross finish line)
+            controlCenter.startTheRace();                               // sleep (woken up by last horse/jockey pair to cross finish line)
 
             boolean[] horseJockeyWinners = raceTrack.reportResults();   // gather information about winners
             controlCenter.reportResults(horseJockeyWinners);            // call the spectators
@@ -115,7 +115,7 @@ public class Broker extends Thread
     /**
      * Returns a string representation of the Broker.
      *
-     * @return a string representation of the Broker.
+     * @return a string representation of the Broker
      */
     @Override
     public String toString()

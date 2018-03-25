@@ -1,6 +1,11 @@
 package entities;
 
-public enum HorseJockeyState {
+/**
+ * General description: enum representing the Horse/Jockey pair's possible
+ * states.
+ */
+public enum HorseJockeyState
+{
     AT_THE_STABLE("ATS"),
     AT_THE_PADDOCK("ATP"),
     AT_THE_START_LINE("ASL"),
@@ -9,12 +14,19 @@ public enum HorseJockeyState {
 
     private final String acronym;
 
-    HorseJockeyState(String acronym) {
+    HorseJockeyState(String acronym)
+    {
 
         this.acronym = acronym;
     }
 
-    public String getAcronym(){
-        return  this.acronym;
+    /**
+     * Provides the acronym for the enum.
+     *
+     * @return the acronym representing a state
+     */
+    public String getAcronym()
+    {
+        return this.acronym;
     }
 }
