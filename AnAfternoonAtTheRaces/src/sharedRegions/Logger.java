@@ -1,17 +1,10 @@
 package sharedRegions;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import entities.*;
 import main.SimulPar;
-
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
-import genclass.GenericIO;
-import genclass.FileOp;
-import genclass.TextFile;
 
 /**
  * General description: Definition of the General Repository of information.
@@ -233,7 +226,10 @@ public class Logger
     public synchronized void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId)
     {
         this.horseJockeyState[raceId][horseJockeyId] = horseJockeyState;
-        logState();
+        if (raceId == this.raceNumber)
+        {
+            logState();
+        }
     }
 
     /**
@@ -311,7 +307,7 @@ public class Logger
     }
 
     /**
-     * Set the flag that indicates the crossing of the finish line. Useful to
+     * Set the flag that indicates whether the Horse/Jockey pair is standing at the finish line. Useful to
      * reset the flag when the horse/jockey pair stops standing in the finish
      * line.
      *
