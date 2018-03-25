@@ -99,18 +99,18 @@ public class Logger
             headerLine4 += " Od" + i + " " + "N" + i + " " + "Ps" + i + " SD" + i;
         }
 
-
-        try {
-            FileWriter fw = new FileWriter(logFileName,false);
-            fw.write(headerLine1+"\n");
-            fw.write(headerLine2+"\n");
-            fw.write(headerLine3+"\n");
-            fw.write(headerLine4+"\n");
+        try
+        {
+            FileWriter fw = new FileWriter(logFileName, false);
+            fw.write(headerLine1 + "\n");
+            fw.write(headerLine2 + "\n");
+            fw.write(headerLine3 + "\n");
+            fw.write(headerLine4 + "\n");
             fw.close();
-        } catch(IOException e){
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
-
 
     }
 
@@ -307,9 +307,9 @@ public class Logger
     }
 
     /**
-     * Set the flag that indicates whether the Horse/Jockey pair is standing at the finish line. Useful to
-     * reset the flag when the horse/jockey pair stops standing in the finish
-     * line.
+     * Set the flag that indicates whether the Horse/Jockey pair is standing at
+     * the finish line. Useful to reset the flag when the horse/jockey pair
+     * stops standing in the finish line.
      *
      * @param horseAtEnd flag marking whether the horse/jockey pair is standing
      *                   at the finish line
@@ -387,15 +387,16 @@ public class Logger
 
             line2 += "  " + (horseAtEnd[this.raceNumber][i] ? "T" : "F");
         }
-        try {
+        try
+        {
             FileWriter fw = new FileWriter(logFileName, true);
-            fw.write(line1+"\n");
-            fw.write(line2+"\n");
+            fw.write(line1 + "\n");
+            fw.write(line2 + "\n");
             fw.close();
-        } catch(IOException e){
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
-
 
     }
 }
