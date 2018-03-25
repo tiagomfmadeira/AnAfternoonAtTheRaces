@@ -1,7 +1,13 @@
 package sharedRegions;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import entities.*;
 import main.SimulPar;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import genclass.GenericIO;
 import genclass.FileOp;
@@ -28,6 +34,8 @@ public class Logger
     private boolean[][] horseAtEnd = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] horsePosition = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] maxMovingLength = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+
+    private String logFileName = "log";
 
     /**
      * Constructor
@@ -98,10 +106,18 @@ public class Logger
             headerLine4 += " Od" + i + " " + "N" + i + " " + "Ps" + i + " SD" + i;
         }
 
-        GenericIO.writelnString(headerLine1);
-        GenericIO.writelnString(headerLine2);
-        GenericIO.writelnString(headerLine3);
-        GenericIO.writelnString(headerLine4);
+
+        try {
+            FileWriter fw = new FileWriter(logFileName,false);
+            fw.write(headerLine1+"\n");
+            fw.write(headerLine2+"\n");
+            fw.write(headerLine3+"\n");
+            fw.write(headerLine4+"\n");
+            fw.close();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -375,9 +391,15 @@ public class Logger
 
             line2 += "  " + (horseAtEnd[this.raceNumber][i] ? "T" : "F");
         }
+        try {
+            FileWriter fw = new FileWriter(logFileName, true);
+            fw.write(line1+"\n");
+            fw.write(line2+"\n");
+            fw.close();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
 
-        GenericIO.writelnString(line1);
-        GenericIO.writelnString(line2);
 
     }
 }
