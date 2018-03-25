@@ -11,11 +11,10 @@ public class Stable
 {
 
     // array of flags indexed per race
-    private boolean[] proceedToPaddockFlag = new boolean[K_numRaces];
+    private final boolean[] proceedToPaddockFlag = new boolean[K_numRaces];
     // counter of horses that left the paddock per race
-    private int[] proceededHorsesCount = new int[K_numRaces];
-    private boolean nextRaceExists = true;
-    private Logger logger;
+    private final int[] proceededHorsesCount = new int[K_numRaces];
+    private final Logger logger;
 
     /**
      * Constructor
@@ -32,7 +31,7 @@ public class Stable
     // Broker
     /**
      * Wake up the horse/jockey pairs assigned to a race from the AT_THE_STABLE
-     * blocking state. Called by the Broker.
+     * blocking state.
      *
      * @param raceID ID of the race that the horse/jockey pairs to be awaken are
      *               assigned to
@@ -43,7 +42,7 @@ public class Stable
         proceedToPaddockFlag[raceID] = true;
         notifyAll();
 
-        // Change Broker state to ANNOUNCING_NEXT_RACE
+        // change Broker state to ANNOUNCING_NEXT_RACE
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
         logger.setRaceNumber(raceID);
     }
@@ -60,7 +59,7 @@ public class Stable
 
         int raceId = hj.getRaceId();
 
-        // Check the flag for this race
+        // check the flag for this race
         while (!proceedToPaddockFlag[raceId])
         {
             try
@@ -74,7 +73,8 @@ public class Stable
 
         proceededHorsesCount[raceId]++;
 
-        if (proceededHorsesCount[raceId] == N_numCompetitors)        // last horse to leave stable
+        // if is last horse to leave stable
+        if (proceededHorsesCount[raceId] == N_numCompetitors)
         {
             // reset var, the horses for this race have left
             proceedToPaddockFlag[raceId] = false;
@@ -84,12 +84,12 @@ public class Stable
     /**
      * Changes the horse/jockey pair state to AT_THE_STABLE. Used as a symbolic
      * return to the stable, allowing the thread to finish its life cycle
-     * instead of blocking again, since the thread wouldn't ever be awoken
-     * again.
+     * instead of blocking again. This is used because the thread would never be
+     * awoken again.
      */
     public synchronized void proceedToStableFinal()
     {
-        //  Change HorseJockey state to AT_THE_STABLE
+        // change HorseJockey state to AT_THE_STABLE
         HorseJockey hj = ((HorseJockey) Thread.currentThread());
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
         int horseId = hj.getHorseJockeyID();

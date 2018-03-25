@@ -5,14 +5,22 @@ import entities.HorseJockey;
 import entities.Spectator;
 import sharedRegions.*;
 import java.util.Random;
-
 import static main.SimulPar.K_numRaces;
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
 
+/**
+ * General description: Main class.
+ */
 public class MainDatatype
 {
 
+    /**
+     * Creation and starting of the various entity's threads (Broker, Spectators
+     * and Horse/Jockey pairs). Instantiation of the shared memory regions.
+     *
+     * @param args command line arguments not used
+     */
     public static void main(String[] args)
     {
         Random rand = new Random();
@@ -29,8 +37,8 @@ public class MainDatatype
         for (int i = 0; i < M_numSpectators; i++)
         {
             int wallet = rand.nextInt(1000) + 4;
-            // log it here?
-            Spectator spectator = new Spectator("spectator_" + i, i, wallet, controlCenter, paddock, bettingCenter, logger);
+            Spectator spectator = new Spectator("spectator_" + i, i, wallet,
+                    controlCenter, paddock, bettingCenter, logger);
             spectator.start();
         }
 
@@ -38,13 +46,12 @@ public class MainDatatype
         {
             for (int j = 0; j < N_numCompetitors; j++)
             {
-
-                //HJID alone isn't enough to identify horse instance
                 int race = i;
                 int HJID = j;
                 int agility = 1 + rand.nextInt(4);
 
-                HorseJockey horseJockeyPair = new HorseJockey("horse_jockey_" + HJID + "_race_" + race, HJID, agility, race,
+                HorseJockey horseJockeyPair = new HorseJockey("horse_jockey_"
+                        + HJID + "_race_" + race, HJID, agility, race,
                         stable, paddock, raceTrack, controlCenter, logger);
                 horseJockeyPair.start();
             }

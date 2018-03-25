@@ -7,25 +7,19 @@ import entities.HorseJockeyState;
 import main.SimulPar;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static main.SimulPar.N_numCompetitors;
 
-// TODO: interface to exclude access from undesired entities
 public class RaceTrack
 {
 
     private final int distance;
-
-    private boolean[] raceTurn = new boolean[SimulPar.N_numCompetitors];
-    private boolean[] crossedFinish = new boolean[SimulPar.N_numCompetitors];
-    private int[] racePosition = new int[SimulPar.N_numCompetitors];
-    private int[] iterationCounter = new int[SimulPar.N_numCompetitors];
-
+    private final boolean[] raceTurn = new boolean[SimulPar.N_numCompetitors];
+    private final boolean[] crossedFinish = new boolean[SimulPar.N_numCompetitors];
+    private final int[] racePosition = new int[SimulPar.N_numCompetitors];
+    private final int[] iterationCounter = new int[SimulPar.N_numCompetitors];
     private boolean raceEnded = true;
-
     private int finishLineCount = 0;
-
-    private Logger logger;
+    private final Logger logger;
 
     public RaceTrack(int distance, Logger logger)
     {

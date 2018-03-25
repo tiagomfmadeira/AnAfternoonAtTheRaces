@@ -2,19 +2,18 @@ package sharedRegions;
 
 import entities.*;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
 
 public class Paddock
 {
 
-    private HorseJockey[] horses = new HorseJockey[N_numCompetitors];
+    private final HorseJockey[] horses = new HorseJockey[N_numCompetitors];
     private boolean lastSpectatorGoCheckHorses = false,
             lastHorseProceedToStartLine = false;
     private int horsesAtPaddockCount = 0,
             spectatorsAtPaddockCount = 0;
-    private Logger logger;
+    private final Logger logger;
 
     /**
      * Constructor
@@ -30,7 +29,7 @@ public class Paddock
     ////////////////////////////////////////////////////////////////////////////
     //HorseJockey
     /**
-     * Changes the state of the horse/jockey pair to AT_THE_PADDOCK and returns
+     * Changes the state of the horse/jockey pair to AT_THE_PADDOCK and checks
      * whether or not it's the last pair to reach the paddock.
      *
      * @return <code>true</code> if it's called by the last horse to reach the
@@ -40,16 +39,13 @@ public class Paddock
     {
         boolean isLastHorse = false;
 
-        // Get ID of the horse/Jockey
+        // get ID of the horse/Jockey
         int horseJockeyID = ((HorseJockey) Thread.currentThread()).getHorseJockeyID();
 
-        // Save reference of the Horse/Jockey to be used by spectator thread in appraising
+        // save reference of the Horse/Jockey to be used by spectator thread in appraising
         horses[horseJockeyID] = (HorseJockey) Thread.currentThread();
-        int raceId = ((HorseJockey) Thread.currentThread()).getRaceId();
-        int agility = ((HorseJockey) Thread.currentThread()).getAgility();
-        logger.setMaxMovingLength(agility, horseJockeyID, raceId);
 
-        //  Change HorseJockey state to AT_THE_PADDOCK
+        // change HorseJockey state to AT_THE_PADDOCK
         HorseJockey hj = (HorseJockey) Thread.currentThread();
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK,
@@ -57,6 +53,7 @@ public class Paddock
 
         horsesAtPaddockCount++;
 
+        // if is last horse to reach the paddock
         if (horsesAtPaddockCount == N_numCompetitors)
         {
             isLastHorse = true;
@@ -65,7 +62,7 @@ public class Paddock
     }
 
     /**
-     * Sleeps waiting for a signal that all the spectators have come to the
+     * Sleep waiting for a signal that all the spectators have come to the
      * paddock to appraise the horses.
      */
     public synchronized void sleepAtThePaddock()
@@ -105,6 +102,14 @@ public class Paddock
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Spectator
+    /**
+     * Changes the Spectator's state to APPRAISING_THE_HORSES. Checks if it's
+     * the last Spectator to reach the paddock to appraise the horses, in which
+     * case it wakes up the horses sleeping at the paddock.
+     *
+     * @return <code>true</code> if it's called by the last Spectator to reach
+     *         the paddock; <code>false</code> otherwise
+     */
     public synchronized boolean goCheckHorses()
     {
         boolean isLastSpectator = false;
@@ -118,13 +123,24 @@ public class Paddock
 
         if (spectatorsAtPaddockCount == M_numSpectators)
         {
-            // return var
             isLastSpectator = true;
+            lastSpectatorGoCheckHorses = true;
             notifyAll();
         }
         return isLastSpectator;
     }
 
+    /**
+     * Sleep waiting of a signal that the last horse has left the paddock.
+     * Contains the logic for the betting choices of each spectator, depending
+     * on their id. Spectator 0 bets on the horse with the most agility;
+     * Spectator 1 bets on another horse, either with the same agility as the
+     * best, or if there isn't such a horse, on the second with most agility;
+     * Spectator 2 bets on the horse with least agility; all other spectators
+     * bet randomly.
+     *
+     * @return id of the horse the Spectator will bet on
+     */
     public synchronized int appraisingHorses()
     {
         while (!lastHorseProceedToStartLine)
@@ -143,12 +159,11 @@ public class Paddock
         // if is last spectator to leave
         if (spectatorsAtPaddockCount == 0)
         {
-            // reset , so spectators will block next race
+            // reset, so spectators will block next race
             lastHorseProceedToStartLine = false;
         }
 
-        //TODO: further logic should be implemented
-        // Decide which horse to bet on
+        // decide which horse to bet on
         int tmpHorseID = 0;
         int specId = ((Spectator) Thread.currentThread()).getSpectatorID();
 
@@ -207,15 +222,15 @@ public class Paddock
         return tmpHorseID;
     }
 
-    public synchronized void lastToCheckHorses()
-    {
-        lastSpectatorGoCheckHorses = true;
-        notifyAll();
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Broker
-    public synchronized double[] acceptTheBets()
+    /**
+     * Calculate the odds for each of the horses assigned to the current race.
+     *
+     * @return an array containing the odds for each of the horses of a race
+     *         indexed by their id in it
+     */
+    public synchronized double[] learnTheOdds()
     {
         double[] odds = new double[N_numCompetitors];
         double totalAgility = 0;

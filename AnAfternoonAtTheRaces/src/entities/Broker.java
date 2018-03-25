@@ -20,7 +20,6 @@ public class Broker extends Thread
     private final BettingCenter bettingCenter;
     private final RaceTrack raceTrack;
     private int currentRace; // current race
-    private Logger logger;
 
     /**
      * Constructor
@@ -49,7 +48,6 @@ public class Broker extends Thread
         this.stable = stable;
         this.raceTrack = raceTrack;
         this.currentRace = 0;
-        this.logger = logger;
         logger.setBrokerState(BrokerState.OPENING_THE_EVENT);
     }
 
@@ -65,7 +63,7 @@ public class Broker extends Thread
             stable.summonHorsesToPaddock(currentRace);                  // call the horses for a race
             controlCenter.summonHorsesToPaddock();                      // sleep (woken up by last last spectator to go see horses)
 
-            double[] odds = paddock.acceptTheBets();
+            double[] odds = paddock.learnTheOdds();
             bettingCenter.acceptTheBets(odds);                          // sleep (woken up by each spectator to place  bet
             // transition occurs when all have placed bets)
 
@@ -87,7 +85,7 @@ public class Broker extends Thread
     /**
      * Updates the state of the Broker.
      *
-     * @param newState state to update Broker to
+     * @param newState state to update the Broker to
      */
     public void setBrokerState(BrokerState newState)
     {
@@ -105,15 +103,20 @@ public class Broker extends Thread
     }
 
     /**
-     * Returns the current race the Broker is hosting.
+     * Returns the race id the Broker is currently hosting.
      *
-     * @return ID of current race the Broker is hosting
+     * @return ID of the race the Broker is currently hosting
      */
     public int getCurrentRace()
     {
         return currentRace;
     }
 
+    /**
+     * Returns a string representation of the Broker.
+     *
+     * @return a string representation of the Broker.
+     */
     @Override
     public String toString()
     {

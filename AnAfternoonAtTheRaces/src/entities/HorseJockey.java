@@ -19,7 +19,6 @@ public class HorseJockey extends Thread
     private final Paddock paddock;
     private final RaceTrack raceTrack;
     private final ControlCenter controlCenter;
-    private Logger logger;
 
     /**
      * Constructor
@@ -37,8 +36,9 @@ public class HorseJockey extends Thread
      * @param logger        General Repository of information, keeping a copy of
      *                      the internal state of the problem
      */
-    public HorseJockey(String name, int horseJockeyID, int agility, int raceId, Stable stable, Paddock paddock,
-            RaceTrack raceTrack, ControlCenter controlCenter, Logger logger)
+    public HorseJockey(String name, int horseJockeyID, int agility, int raceId,
+            Stable stable, Paddock paddock, RaceTrack raceTrack,
+            ControlCenter controlCenter, Logger logger)
     {
         super(name);
         this.id = horseJockeyID;
@@ -49,7 +49,7 @@ public class HorseJockey extends Thread
         this.paddock = paddock;
         this.raceTrack = raceTrack;
         this.controlCenter = controlCenter;
-        this.logger = logger;
+        logger.setHorseJockeyInitialState(HorseJockeyState.AT_THE_STABLE, horseJockeyID, raceId, agility);
     }
 
     /**
@@ -85,7 +85,7 @@ public class HorseJockey extends Thread
     }
 
     /**
-     * Returns the state of the Horse/jockey pair.
+     * Returns the current state of the Horse/jockey pair.
      *
      * @return current state of the Horse/Jockey pair
      */
@@ -118,7 +118,7 @@ public class HorseJockey extends Thread
      * Returns the agility, e.g. the maximum length of a step, of the
      * Horse/jockey pair.
      *
-     * @return agility of the Horse/Jockey pair
+     * @return agility agility of the Horse/Jockey pair
      */
     public int getAgility()
     {
@@ -128,13 +128,18 @@ public class HorseJockey extends Thread
     /**
      * Returns the ID of the race the Horse/jockey pair participates in.
      *
-     * @return ID of the race the Horse/jockey pair participates in
+     * @return id of the race the horse/jockey is assigned to
      */
     public int getRaceId()
     {
         return this.raceId;
     }
 
+    /**
+     * Returns a string representation of the Horse/Jockey pair.
+     *
+     * @return a string representation of the Horse/Jockey pair.
+     */
     @Override
     public String toString()
     {

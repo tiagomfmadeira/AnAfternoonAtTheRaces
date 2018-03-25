@@ -17,7 +17,6 @@ public class Spectator extends Thread
     private final ControlCenter controlCenter;
     private final Paddock paddock;
     private final BettingCenter bettingCenter;
-    private Logger logger;
 
     /**
      * Constructor
@@ -43,8 +42,7 @@ public class Spectator extends Thread
         this.controlCenter = controlCenter;
         this.paddock = paddock;
         this.bettingCenter = bettingCenter;
-        this.logger = logger;
-        logger.setMoneyAmount(money, spectatorID);
+        logger.setSpectatorInitialState(SpectatorState.WAITING_FOR_A_RACE_TO_START, spectatorID, money);
     }
 
     /**
@@ -55,11 +53,9 @@ public class Spectator extends Thread
     {
         while (controlCenter.waitForNextRace())             // while there are races
         {                                                   // sleep (woken up by last pair horse/jockey to reach paddock)
-            controlCenter.goCheckHorses();
             boolean last = paddock.goCheckHorses();
             if (last)
             {                                               // if is last spectator to go reach the paddock
-                paddock.lastToCheckHorses();                // call the horse/jockey pairs
                 controlCenter.lastToCheckHorses();
             }
             int horse = paddock.appraisingHorses();         // sleep (woken up by last horse to leave paddock)
@@ -79,7 +75,7 @@ public class Spectator extends Thread
     /**
      * Updates the state of the Spectator.
      *
-     * @param newState state to update Spectator to
+     * @param newState state to update the Spectator to
      */
     public void setSpectatorState(SpectatorState newState)
     {
@@ -100,7 +96,7 @@ public class Spectator extends Thread
      * Updates the amount of money currently in the spectator's wallet by adding
      * a transaction value to the current balance.
      *
-     * @param transaction amount of money gained or lost, positive if gained,
+     * @param transaction amount of money gained or lost. positive if gained;
      *                    negative if lost
      */
     public void updateWalletValue(int transaction)
@@ -111,7 +107,7 @@ public class Spectator extends Thread
     /**
      * Returns the amount of money currently in the wallet.
      *
-     * @return current amount of money in the wallet
+     * @return amount of money currently in the wallet
      */
     public int getWalletValue()
     {
@@ -121,13 +117,18 @@ public class Spectator extends Thread
     /**
      * Returns the ID of the spectator.
      *
-     * @return ID of the spectator
+     * @return id of the spectator
      */
     public int getSpectatorID()
     {
         return this.id;
     }
 
+    /**
+     * Returns a string representation of the Spectator.
+     *
+     * @return a string representation of the Spectator.
+     */
     @Override
     public String toString()
     {

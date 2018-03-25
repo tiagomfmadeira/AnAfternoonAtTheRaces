@@ -5,8 +5,6 @@ import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static main.SimulPar.N_numCompetitors;
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
 
@@ -14,22 +12,25 @@ public class BettingCenter
 {
 
     // saves HorseJockeyID and Value of bet for each Spectator
-    private int[][] bets = new int[M_numSpectators][2];
+    private final int[][] bets = new int[M_numSpectators][2];
     // saves odds for each Horse/Jockey
-    private double[] odds = new double[N_numCompetitors];
-
+    private final double[] odds = new double[N_numCompetitors];
     private boolean nextSpectatorCanPlaceBet = false,
             lastSpectatorToPlaceBet = false,
             canPlaceBet = false,
             nextSpectatorCanReceiveMoney = false,
             lastSpectatorToReceiveMoney = false,
             canReceiveMoney = false;
-
     private int numBets = 0,
             numBetsToBeSettled = 0;
+    private final Logger logger;
 
-    private Logger logger;
-
+    /**
+     * Constructor
+     *
+     * @param logger General Repository of information, keeping a copy of the
+     *               internal state of the problem
+     */
     public BettingCenter(Logger logger)
     {
         this.logger = logger;
@@ -43,7 +44,7 @@ public class BettingCenter
      * to place a bet, wakes up the spectator after the bet has been done and
      * sleeps again, repeating until all the bets have been concluded.
      *
-     * @param horseOdds A vector containing the odds each horse/jockey pair has
+     * @param horseOdds a vector containing the odds each horse/jockey pair has
      *                  to win the current race
      */
     public synchronized void acceptTheBets(double[] horseOdds)
@@ -87,6 +88,14 @@ public class BettingCenter
         lastSpectatorToPlaceBet = false;
     }
 
+    /**
+     * Checks whether any Spectator bet on a winning Horse/Jockey pair.
+     *
+     * @param horseJockeyWinners the winning Horse/Jockey pairs
+     *
+     * @return <code>true</code> if there are any Spectators who won;
+     *         <code>false</code> otherwise
+     */
     public synchronized boolean areThereAnyWinners(boolean[] horseJockeyWinners)
     {
         // iterate the array of bets
@@ -144,6 +153,19 @@ public class BettingCenter
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Spectator
+    /**
+     * Change the state of the Spectator to PLACING_A_BET. Signal the Broker
+     * that there's a Spectator waiting to place a bet. Block waiting for the
+     * Broker to accept the placement of the bet. Contains the logic for the
+     * betting amounts. Spectator bets depending on their id. Spectator 0 bets
+     * 50% of their current money; Spectator 1 bets 25% of their current money;
+     * Spectator 2 bets 25% of their current money; all other spectators bet
+     * random values, within their respective wallet values. Checks if it's the
+     * last Spectator to place the bet, in which case wakes up the Broker,
+     * releasing him from the state of accepting bets.
+     *
+     * @param horseID id of the Horse/Jockey pair to place a bet on.
+     */
     public synchronized void placeABet(int horseID)
     {
         //  Change Spectator state to PLACING_A_BET
@@ -167,7 +189,7 @@ public class BettingCenter
         // fill out the bet information
         bets[specId][0] = horseID;
 
-        int betAmt = 0;
+        int betAmt;
 
         switch (specId)
         {
@@ -213,6 +235,13 @@ public class BettingCenter
         notifyAll();
     }
 
+    /**
+     * Change the state of the Spectator to COLLECTING_THE_GAINS. Signal the
+     * Broker that there's a Spectator settle a bet. Block waiting for the
+     * Broker to accept the settling of the bet. Checks if it's the last
+     * Spectator to settle their bet, in which case wakes up the Broker,
+     * releasing him from the state of settling accounts.
+     */
     public synchronized void goCollectTheGains()
     {
         //  Change Spectator state to COLLECTING_THE_GAINS
@@ -252,15 +281,5 @@ public class BettingCenter
         // wake up broker for next bet settle
         nextSpectatorCanReceiveMoney = true;
         notifyAll();
-    }
-
-    public int[][] getBets()
-    {
-        return bets;
-    }
-
-    public double[] getOdds()
-    {
-        return odds;
     }
 }

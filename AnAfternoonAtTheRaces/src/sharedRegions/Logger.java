@@ -1,28 +1,27 @@
 package sharedRegions;
 
 import entities.*;
-import genclass.FileOp;
-import genclass.GenericIO;
-import genclass.TextFile;
 import main.SimulPar;
-
 import java.util.Arrays;
+import genclass.GenericIO;
+import genclass.FileOp;
+import genclass.TextFile;
 
-import static main.SimulPar.N_numCompetitors;
-
+/**
+ * General description: General Repository of information. Keeps a copy of the
+ * internal state of the problem and provides corresponding logging, essential
+ * to the understanding of evolution of the system.
+ */
 public class Logger
 {
 
-    private BrokerState brokerState = BrokerState.OPENING_THE_EVENT;
+    private BrokerState brokerState;
     private SpectatorState[] spectatorStates = new SpectatorState[SimulPar.M_numSpectators];
     private int[] moneyAmount = new int[SimulPar.M_numSpectators];
     private int[][] spectatorBetSelection = new int[SimulPar.K_numRaces][SimulPar.M_numSpectators];
     private int[][] spectatorBetAmount = new int[SimulPar.K_numRaces][SimulPar.M_numSpectators];
-
-    private int raceNumber = 0;//broker
-    //private int[] distanceInRace = new int[SimulPar.K_numRaces];
+    private int raceNumber = 0;
     private int distanceInRace;
-
     private HorseJockeyState[][] horseJockeyState = new HorseJockeyState[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private double[][] horseOdds = new double[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] horseIteration = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
@@ -30,12 +29,13 @@ public class Logger
     private int[][] horsePosition = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] maxMovingLength = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
 
+    /**
+     * Constructor
+     */
     public Logger()
     {
 
         Arrays.fill(moneyAmount, -1);
-
-        Arrays.fill(spectatorStates, SpectatorState.WAITING_FOR_A_RACE_TO_START);
 
         for (int[] row : spectatorBetSelection)
         {
@@ -45,11 +45,6 @@ public class Logger
         for (int[] row : spectatorBetAmount)
         {
             Arrays.fill(row, -1);
-        }
-
-        for (HorseJockeyState[] row : horseJockeyState)
-        {
-            Arrays.fill(row, HorseJockeyState.AT_THE_STABLE);
         }
 
         for (double[] row : horseOdds)
@@ -110,64 +105,98 @@ public class Logger
 
     }
 
+    /**
+     * Update the state of the Broker in log. Prints the internal state..
+     *
+     * @param brokerState state to update the Broker to
+     */
     public synchronized void setBrokerState(BrokerState brokerState)
     {
         this.brokerState = brokerState;
         logState();
     }
 
+    /**
+     * Set the number of the race currently on the going to be logged and update
+     * the Broker's state to ANNOUNCING_NEXT_RACE. Prints the internal state.
+     *
+     * @param raceNumber number of the current race to be logged
+     */
+    public synchronized void setRaceNumber(int raceNumber)
+    {
+        this.raceNumber = raceNumber;
+        setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
+    }
+
+    /**
+     * Set the length of the track in log, in which the races will occur, and
+     * therefor the distance to be travelled each race. Prints the internal
+     * state.
+     *
+     * @param distanceInRace the length of the track
+     */
+    public synchronized void setDistanceInRace(int distanceInRace)
+    {
+        this.distanceInRace = distanceInRace;
+        logState();
+    }
+
+    /**
+     * Update the amount of money a spectator holds in log. Prints the internal
+     * state.
+     *
+     * @param spectatorMoneyAmount value of money to update the wallet to in log
+     * @param spectatorId          id of the spectator whose wallet is to be
+     *                             updated in log.
+     */
+    public synchronized void setMoneyAmount(int spectatorMoneyAmount, int spectatorId)
+    {
+        this.moneyAmount[spectatorId] = spectatorMoneyAmount;
+        logState();
+    }
+
+    /**
+     * Update the state of a spectator in log. Prints the internal state.
+     *
+     * @param spectatorState state to update the spectator in log to
+     * @param spectatorId    id of the spectator to be updated in log
+     */
     public synchronized void setSpectatorState(SpectatorState spectatorState, int spectatorId)
     {
-        if (this.spectatorStates[spectatorId] != spectatorState)
+        if (spectatorStates[spectatorId] != spectatorState)
         {
             this.spectatorStates[spectatorId] = spectatorState;
             logState();
         }
     }
 
-    public synchronized void setMoneyAmount(int spectatorMoneyAmount, int spectatorId)
+    /**
+     * Set the initial state of the Spectator in log. To be called upon creation
+     * of respective thread. Useful to log initial state and wallet value in a
+     * single operation. Prints the internal state.
+     *
+     * @param spectatorState initial state of the Spectator
+     * @param spectatorId    id of the Spectator whose initial state is to be
+     *                       logged
+     * @param money          amount of money the Spectator started with
+     */
+    public synchronized void setSpectatorInitialState(SpectatorState spectatorState, int spectatorId, int money)
     {
-        if (this.moneyAmount[spectatorId] != spectatorMoneyAmount)
-        {
-            this.moneyAmount[spectatorId] = spectatorMoneyAmount;
-            logState();
-        }
+        this.spectatorStates[spectatorId] = spectatorState;
+        this.moneyAmount[spectatorId] = money;
+        logState();
     }
 
-    public synchronized void setRaceNumber(int raceNumber)
-    {
-        this.raceNumber = raceNumber;
-        setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
-        //logState();
-    }
-
-    public synchronized void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId)
-    {
-        if (this.horseJockeyState[raceId][horseJockeyId] != horseJockeyState)
-        {
-            this.horseJockeyState[raceId][horseJockeyId] = horseJockeyState;
-            logState();
-        }
-    }
-
-    public synchronized void setMaxMovingLength(int maxMovingLength, int horseId, int raceId)
-    {
-        if (this.maxMovingLength[raceId][horseId] != maxMovingLength)
-        {
-            this.maxMovingLength[raceId][horseId] = maxMovingLength;
-            //logState();
-        }
-    }
-
-    public synchronized void setDistanceInRace(int distanceInRace)
-    {
-        if (this.distanceInRace != distanceInRace)
-        {
-            this.distanceInRace = distanceInRace;
-            //logState();
-        }
-    }
-
+    /**
+     * Set the information about a Spectator's bet in log. Prints the internal
+     * state.
+     *
+     * @param spectatorBetAmount    the value of the bet
+     * @param spectatorBetSelection the horse id in which the Spectator is
+     *                              betting their money
+     * @param spectatorMoneyAmount  new balance of the Spectator's wallet
+     * @param specId                id of the spectator
+     */
     public synchronized void setSpectatorBet(int spectatorBetAmount, int spectatorBetSelection, int spectatorMoneyAmount, int specId)
     {
         this.spectatorBetAmount[this.raceNumber][specId] = spectatorBetAmount;
@@ -176,15 +205,69 @@ public class Logger
         logState();
     }
 
-    public synchronized void setHorseOdds(double[] horseOdds, int raceId)
+    /**
+     * Update the state of a Horse/Jockey pair in log. Prints the internal
+     * state.
+     *
+     * @param horseJockeyState state to update the horse/jockey pair to in log
+     * @param horseJockeyId    id of the horse/jockey pair to be updated
+     * @param raceId           id of the race the horse/jockey thread is
+     *                         assigned to
+     */
+    public synchronized void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId)
     {
-        if (!Arrays.equals(this.horseOdds[raceId], horseOdds))
+        this.horseJockeyState[raceId][horseJockeyId] = horseJockeyState;
+        logState();
+    }
+
+    /**
+     * Set the initial state of a horse/jockey pair in log. To be called upon
+     * creation of respective thread. Useful to log initial state and agility
+     * value in a single operation. Only prints out the setting of horse/jockey
+     * pairs belonging to the current race, for logging specification reasons.
+     * Prints the internal state.
+     *
+     * @param horseJockeyState initial state of the horse/jockey pair
+     * @param horseJockeyId    id of the horse/jockey pair whose initial state
+     *                         is to be set
+     * @param raceId           id of the race the horse/jockey thread is
+     *                         assigned to
+     * @param agility          agility of of the horse/jockey
+     */
+    public synchronized void setHorseJockeyInitialState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId, int agility)
+    {
+        this.maxMovingLength[raceId][horseJockeyId] = agility;
+        this.horseJockeyState[raceId][horseJockeyId] = horseJockeyState;
+        if (raceId == this.raceNumber)
         {
-            System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0, horseOdds.length);
-            //logState();
+            logState();
         }
     }
 
+    /**
+     * Set the odds of all the horse/jockey pairs of a particular race in log.
+     * Prints the internal state.
+     *
+     * @param horseOdds an array containing the odds for each of the horses of a
+     *                  race indexed by their id in it
+     * @param raceId    id of the race the horses are assigned to
+     */
+    public synchronized void setHorseOdds(double[] horseOdds, int raceId)
+    {
+        System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0, horseOdds.length);
+        logState();
+    }
+
+    /**
+     * Update the movement of a horse/jockey pair during a race in log. Sets the
+     * iteration and the distance travelled. Prints the internal state.
+     *
+     * @param horseIteration iteration the horse/jockey pair is currently in
+     * @param horsePosition  distance the horse/jockey pair has travelled so far
+     *                       in the race
+     * @param horseId        id of the horse/jockey pair
+     * @param raceId         id of the race the horse/jockey pair is assigned to
+     */
     public synchronized void setHorseMove(int horseIteration, int horsePosition, int horseId, int raceId)
     {
         this.horseIteration[raceId][horseId] = horseIteration;
@@ -192,12 +275,18 @@ public class Logger
         logState();
     }
 
-    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId, int raceId)
-    {
-        this.horseAtEnd[raceId][horseId] = horseAtEnd;
-        //logState();
-    }
-
+    /**
+     * Register the finishing of the race by a particular horse/jockey pair in
+     * log. Changes their state and variable that indicates whether or not they
+     * are standing at the finish line. Prints the internal state.
+     *
+     * @param horseAtEnd       flag marking whether the horse/jockey pair is
+     *                         standing at the finish line
+     * @param horseId          id of the horse/jockey pair
+     * @param raceId           id of the race the horse/jockey pair is assigned
+     *                         to
+     * @param horseJockeyState new state of the horse/jockey pair
+     */
     public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId, int raceId, HorseJockeyState horseJockeyState)
     {
         this.horseAtEnd[raceId][horseId] = horseAtEnd;
@@ -205,6 +294,25 @@ public class Logger
         logState();
     }
 
+    /**
+     * Set the flag that indicates the crossing of the finish line. Useful to
+     * reset the flag when the horse/jockey pair stops standing in the finish
+     * line.
+     *
+     * @param horseAtEnd flag marking whether the horse/jockey pair is standing
+     *                   at the finish line
+     * @param horseId    id of the horse/jockey pair
+     * @param raceId     id of the race the horse/jockey pair is assigned to
+     */
+    public synchronized void setHorseAtEnd(boolean horseAtEnd, int horseId, int raceId)
+    {
+        this.horseAtEnd[raceId][horseId] = horseAtEnd;
+        //logState();
+    }
+
+    /**
+     * Prints out the internal state of the system in a formatted log.
+     */
     private synchronized void logState()
     {
         // retrieve variables
