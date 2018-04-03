@@ -264,7 +264,7 @@ public class Logger
     public synchronized void setHorseJockeyOdds(double[] horseOdds, int raceId)
     {
         System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0, horseOdds.length);
-        //logState();
+        logState();
     }
 
     /**
