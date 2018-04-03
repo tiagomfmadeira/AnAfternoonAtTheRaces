@@ -24,7 +24,7 @@ public class Logger
     private HorseJockeyState[][] horseJockeyState = new HorseJockeyState[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private double[][] horseOdds = new double[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] horseIteration = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
-    private boolean[][] horseAtEnd = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private int[][] horseAtEnd = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] horsePosition = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private int[][] maxMovingLength = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
 
@@ -58,9 +58,9 @@ public class Logger
             Arrays.fill(row, -1);
         }
 
-        for (boolean[] row : horseAtEnd)
+        for (int[] row : horseAtEnd)
         {
-            Arrays.fill(row, false);
+            Arrays.fill(row, -1);
         }
 
         for (int[] row : horsePosition)
@@ -151,8 +151,7 @@ public class Logger
     }
 
     /**
-     * Update the amount of money a spectator holds in log. Prints the internal
-     * state.
+     * Update the amount of money a spectator holds in log.
      *
      * @param spectatorMoneyAmount value of money to update the wallet to in log
      * @param spectatorId          id of the spectator whose wallet is to be
@@ -161,7 +160,7 @@ public class Logger
     public synchronized void setMoneyAmount(int spectatorMoneyAmount, int spectatorId)
     {
         this.moneyAmount[spectatorId] = spectatorMoneyAmount;
-        logState();
+        //logState();
     }
 
     /**
@@ -197,8 +196,7 @@ public class Logger
     }
 
     /**
-     * Set the information about a Spectator's bet in log. Prints the internal
-     * state.
+     * Set the information about a Spectator's bet in log.
      *
      * @param spectatorBetAmount    the value of the bet
      * @param spectatorBetSelection the horse id in which the Spectator is
@@ -211,7 +209,7 @@ public class Logger
         this.spectatorBetAmount[this.raceNumber][specId] = spectatorBetAmount;
         this.spectatorBetSelection[this.raceNumber][specId] = spectatorBetSelection;
         this.moneyAmount[specId] = spectatorMoneyAmount;
-        logState();
+        //logState();
     }
 
     /**
@@ -258,7 +256,6 @@ public class Logger
 
     /**
      * Set the odds of all the horse/jockey pairs of a particular race in log.
-     * Prints the internal state.
      *
      * @param horseOdds an array containing the odds for each of the horses of a
      *                  race indexed by their id in it
@@ -267,7 +264,7 @@ public class Logger
     public synchronized void setHorseJockeyOdds(double[] horseOdds, int raceId)
     {
         System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0, horseOdds.length);
-        logState();
+        //logState();
     }
 
     /**
@@ -288,38 +285,15 @@ public class Logger
     }
 
     /**
-     * Register the finishing of the race by a particular horse/jockey pair in
-     * log. Changes their state and variable that indicates whether or not they
-     * are standing at the finish line. Prints the internal state.
+     * Set the stands of the Horse/Jockey pairs at the end of the race in log.
      *
-     * @param horseAtEnd       flag marking whether the horse/jockey pair is
-     *                         standing at the finish line
-     * @param horseId          id of the horse/jockey pair
-     * @param raceId           id of the race the horse/jockey pair is assigned
-     *                         to
-     * @param horseJockeyState new state of the horse/jockey pair
+     * @param horsesAtEnd finishing places (stands) of the Horse/Jockey pairs
+     * @param raceId      id of the race the horse/jockey pair is assigned to
      */
-    public synchronized void setHorseJockeyAtEnd(boolean horseAtEnd, int horseId, int raceId, HorseJockeyState horseJockeyState)
+    public synchronized void setHorseJockeyStands(int[] horsesAtEnd, int raceId)
     {
-        this.horseAtEnd[raceId][horseId] = horseAtEnd;
-        this.horseJockeyState[raceId][horseId] = horseJockeyState;
+        this.horseAtEnd[raceId] = horsesAtEnd;
         logState();
-    }
-
-    /**
-     * Set the flag that indicates whether the Horse/Jockey pair is standing at
-     * the finish line. Useful to reset the flag when the horse/jockey pair
-     * stops standing in the finish line.
-     *
-     * @param horseAtEnd flag marking whether the horse/jockey pair is standing
-     *                   at the finish line
-     * @param horseId    id of the horse/jockey pair
-     * @param raceId     id of the race the horse/jockey pair is assigned to
-     */
-    public synchronized void setHorseJockeyAtEnd(boolean horseAtEnd, int horseId, int raceId)
-    {
-        this.horseAtEnd[raceId][horseId] = horseAtEnd;
-        //logState();
     }
 
     /**
@@ -385,7 +359,7 @@ public class Logger
             line2 += "  " + String.format("%-2" + (horsePos != -1 ? "d" : "s"),
                     horsePos != -1 ? horsePos : "##");
 
-            line2 += "  " + (horseAtEnd[this.raceNumber][i] ? "T" : "F");
+            line2 += "  " + (horseAtEnd[this.raceNumber][i] != -1 ? horseAtEnd[this.raceNumber][i] : "#");
         }
         try
         {

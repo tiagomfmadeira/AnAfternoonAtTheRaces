@@ -19,12 +19,12 @@ public class RaceTrack
      * Internal data
      */
     private final int[] distance;
-    private final boolean[] raceTurn = new boolean[SimulPar.N_numCompetitors];
-    private final boolean[] crossedFinish = new boolean[SimulPar.N_numCompetitors];
-    private final int[] racePosition = new int[SimulPar.N_numCompetitors];
-    private final int[] iterationCounter = new int[SimulPar.N_numCompetitors];
-    private boolean raceEnded = true;
-    private int finishLineCount = 0;
+    private final boolean[][] raceTurn = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private final boolean[][] crossedFinish = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private final int[][] racePosition = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private final int[][] iterationCounter = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
+    private final boolean[] raceEnded = new boolean[SimulPar.K_numRaces];
+    private final int[] finishLineCount = new int[SimulPar.K_numRaces];
     private final Logger logger;
 
     /**
@@ -41,6 +41,30 @@ public class RaceTrack
         this.distance = distance;
         this.logger = logger;
         this.logger.setDistanceInRace(distance);
+
+        for (boolean[] row : raceTurn)
+        {
+            Arrays.fill(row, false);
+        }
+
+        for (boolean[] row : crossedFinish)
+        {
+            Arrays.fill(row, false);
+        }
+
+        for (int[] row : racePosition)
+        {
+            Arrays.fill(row, 0);
+        }
+
+        for (int[] row : iterationCounter)
+        {
+            Arrays.fill(row, 0);
+        }
+
+        Arrays.fill(raceEnded, false);
+
+        Arrays.fill(finishLineCount, 0);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -62,7 +86,7 @@ public class RaceTrack
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE,
                 horseJockeyId, raceId);
 
-        while (!raceTurn[horseJockeyId])
+        while (!raceTurn[raceId][horseJockeyId])
         {
             try
             {
@@ -72,7 +96,7 @@ public class RaceTrack
 
             }
         }
-        raceTurn[horseJockeyId] = false;
+        raceTurn[raceId][horseJockeyId] = false;
 
         // Change Horse/Jockey state to RUNNING
         hj.setHorseJockeyState(HorseJockeyState.RUNNING);
@@ -98,56 +122,50 @@ public class RaceTrack
         int raceId = hj.getRaceId();
 
         // if the horse is not beyond the finish
-        if (racePosition[horseJockeyId] < distance[raceId])
+        if (racePosition[raceId][horseJockeyId] < distance[raceId])
         {
             int agility = ((HorseJockey) Thread.currentThread()).getAgility();
             int rand = ThreadLocalRandom.current().nextInt(1, agility + 1);
 
             // make a move
-            racePosition[horseJockeyId] += rand;
+            racePosition[raceId][horseJockeyId] += rand;
 
             // iteration number for each horse
-            iterationCounter[horseJockeyId]++;
+            iterationCounter[raceId][horseJockeyId]++;
 
-            logger.setHorseJockeyMove(iterationCounter[horseJockeyId], racePosition[horseJockeyId],
+            logger.setHorseJockeyMove(iterationCounter[raceId][horseJockeyId], racePosition[raceId][horseJockeyId],
                     horseJockeyId, raceId);
 
         }
 
         // if the horse is beyond the finish line and it hasn't been recorded yet
-        if (racePosition[horseJockeyId] >= distance[raceId] && crossedFinish[horseJockeyId] == false)
+        if (racePosition[raceId][horseJockeyId] >= distance[raceId] && crossedFinish[raceId][horseJockeyId] == false)
         {
             // mark that it has crossed the finish line
-            crossedFinish[horseJockeyId] = true;
+            crossedFinish[raceId][horseJockeyId] = true;
             //  Change HorseJockey state to AT_THE_FINNISH_LINE
             hj.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
-            logger.setHorseJockeyAtEnd(crossedFinish[horseJockeyId], horseJockeyId, raceId,
-                    HorseJockeyState.AT_THE_FINNISH_LINE);
+            logger.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE, horseJockeyId, raceId);
 
             // another Horse/Jockey pair has finished
-            finishLineCount++;
+            finishLineCount[raceId]++;
         }
 
         // if all Horse/Jockey pairs have finished the race
-        if (finishLineCount == N_numCompetitors)
+        if (finishLineCount[raceId] == N_numCompetitors)
         {
             // wake up the Horse/Jockey pairs at finish line
-            raceEnded = true;
+            raceEnded[raceId] = true;
             notifyAll();
-
-            // left finish line, reset flag
-            crossedFinish[horseJockeyId] = false;
-            logger.setHorseJockeyAtEnd(false, horseJockeyId, raceId);
 
             return true;
-        } else
-        {
-            // wake up the next horse
-            raceTurn[(horseJockeyId + 1) % SimulPar.N_numCompetitors] = true;
-            notifyAll();
         }
 
-        while (!raceTurn[horseJockeyId] && !raceEnded)
+        // wake up the next horse
+        raceTurn[raceId][(horseJockeyId + 1) % SimulPar.N_numCompetitors] = true;
+        notifyAll();
+
+        while (!raceTurn[raceId][horseJockeyId] && !raceEnded[raceId])
         {
             try
             {
@@ -157,14 +175,7 @@ public class RaceTrack
 
             }
         }
-        raceTurn[horseJockeyId] = false;
-
-        if (raceEnded)
-        {
-            // left finish line, reset flag
-            crossedFinish[horseJockeyId] = false;
-            logger.setHorseJockeyAtEnd(false, horseJockeyId, raceId);
-        }
+        raceTurn[raceId][horseJockeyId] = false;
 
         return false;
     }
@@ -177,7 +188,10 @@ public class RaceTrack
      */
     public synchronized boolean hasRaceEnded()
     {
-        return raceEnded;
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
+        int raceId = hj.getRaceId();
+
+        return raceEnded[raceId];
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,15 +203,13 @@ public class RaceTrack
     public synchronized void startTheRace()
     {
         // Change Broker state to SUPERVISING_THE_RACE
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.SUPERVISING_THE_RACE);
+        Broker broker = (Broker) Thread.currentThread();
+        broker.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
         logger.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
 
-        // reset vars
-        Arrays.fill(crossedFinish, false);
-        finishLineCount = 0;
-        raceEnded = false;
+        int raceId = broker.getCurrentRace();
 
-        raceTurn[0] = true;
+        raceTurn[raceId][0] = true;
         notifyAll();
     }
 
@@ -209,41 +221,66 @@ public class RaceTrack
      */
     public synchronized boolean[] reportResults()
     {
+        int raceId = ((Broker) Thread.currentThread()).getCurrentRace();
         boolean[] winners = new boolean[N_numCompetitors];
         int winningIteration = Integer.MAX_VALUE;
         int maxDistance = 0;
+        int order[] = new int[N_numCompetitors];
+
+        Arrays.fill(winners, false);
 
         // get the minimum iteration count
         for (int i = 0; i < N_numCompetitors; i++)
         {
-            if (iterationCounter[i] <= winningIteration)
+            if (iterationCounter[raceId][i] <= winningIteration)
             {
-                winningIteration = iterationCounter[i];
+                winningIteration = iterationCounter[raceId][i];
             }
         }
 
         // get the max value for the winning iteration
         for (int i = 0; i < N_numCompetitors; i++)
         {
-            if (iterationCounter[i] == winningIteration && racePosition[i] > maxDistance)
+            if (iterationCounter[raceId][i] == winningIteration && racePosition[raceId][i] > maxDistance)
             {
-                maxDistance = racePosition[i];
+                maxDistance = racePosition[raceId][i];
             }
         }
 
         // check for multiple winners
         for (int i = 0; i < N_numCompetitors; i++)
         {
-            if (iterationCounter[i] == winningIteration && racePosition[i] == maxDistance)
+            if (iterationCounter[raceId][i] == winningIteration && racePosition[raceId][i] == maxDistance)
             {
                 winners[i] = true;
+                order[i] = 1;
             }
         }
 
-        // reset vars
-        Arrays.fill(iterationCounter, 0);
-        Arrays.fill(racePosition, 0);
+        int[] iterC = iterationCounter[raceId].clone();
+        int place = 1;
+        Arrays.sort(iterC);
+
+        // calculate the standings
+        for (int i = 0; i < N_numCompetitors; i++)
+        {
+            for (int j = 0; j < N_numCompetitors; j++)
+            {
+
+                if (winners[i] != true)
+                {
+                    if (iterationCounter[raceId][i] == iterC[j])
+                    {
+                        order[i] = ++place;
+                        break;
+                    }
+                }
+
+            }
+        }
+        logger.setHorseJockeyStands(order, raceId);
 
         return winners;
     }
+
 }

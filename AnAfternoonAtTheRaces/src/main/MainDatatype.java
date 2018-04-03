@@ -23,6 +23,9 @@ public class MainDatatype
      */
     public static void main(String[] args)
     {
+        HorseJockey horseJockey[][] = new HorseJockey[K_numRaces][N_numCompetitors];
+        Spectator spectator[] = new Spectator[M_numSpectators];
+
         int[] distance = new int[K_numRaces];
         Random rand = new Random();
         for (int i = 0; i < K_numRaces; i++)
@@ -41,9 +44,9 @@ public class MainDatatype
         for (int i = 0; i < M_numSpectators; i++)
         {
             int wallet = rand.nextInt(1000) + 4;
-            Spectator spectator = new Spectator("spectator_" + i, i, wallet,
+            spectator[i] = new Spectator("spectator_" + i, i, wallet,
                     controlCenter, paddock, bettingCenter, logger);
-            spectator.start();
+            spectator[i].start();
         }
 
         for (int i = 0; i < K_numRaces; i++)
@@ -54,13 +57,46 @@ public class MainDatatype
                 int HJID = j;
                 int agility = 1 + rand.nextInt(4);
 
-                HorseJockey horseJockeyPair = new HorseJockey("horse_jockey_"
+                horseJockey[i][j] = new HorseJockey("horse_jockey_"
                         + HJID + "_race_" + race, HJID, agility, race,
                         stable, paddock, raceTrack, controlCenter, logger);
-                horseJockeyPair.start();
+                horseJockey[i][j].start();
             }
         }
         Broker broker = new Broker("Broker", 1, raceTrack, stable, bettingCenter, paddock, controlCenter, logger);
         broker.start();
+
+        for (int i = 0; i < M_numSpectators; i++)
+        {
+            try
+            {
+                spectator[i].join();
+            } catch (InterruptedException e)
+            {
+
+            }
+        }
+
+        for (int i = 0; i < K_numRaces; i++)
+        {
+            for (int j = 0; j < N_numCompetitors; j++)
+            {
+                try
+                {
+                    horseJockey[i][j].join();
+                } catch (InterruptedException e)
+                {
+
+                }
+            }
+        }
+
+        try
+        {
+            broker.join();
+        } catch (InterruptedException e)
+        {
+
+        }
     }
 }

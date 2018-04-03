@@ -65,6 +65,7 @@ public class BettingCenter
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
         logger.setBrokerState(BrokerState.WAITING_FOR_BETS);
 
+        //let the first one bet
         canPlaceBet = true;
         notifyAll();
 
@@ -77,7 +78,8 @@ public class BettingCenter
                     try
                     {
                         wait();
-                    } catch (InterruptedException e)
+                    }
+                    catch (InterruptedException e)
                     {
                         throw e;
                     }
@@ -87,11 +89,14 @@ public class BettingCenter
 
                 canPlaceBet = true;
                 notifyAll();
-            } catch (InterruptedException e)
+            }
+            catch (InterruptedException e)
             {
 
             }
         }
+        // everyone has bet
+        canPlaceBet = false;
         lastSpectatorToPlaceBet = false;
     }
 
@@ -140,7 +145,8 @@ public class BettingCenter
                     try
                     {
                         wait();
-                    } catch (InterruptedException e)
+                    }
+                    catch (InterruptedException e)
                     {
                         throw e;
                     }
@@ -150,11 +156,14 @@ public class BettingCenter
 
                 canReceiveMoney = true;
                 notifyAll();
-            } catch (InterruptedException e)
+            }
+            catch (InterruptedException e)
             {
 
             }
         }
+        // last spec has received money
+        canReceiveMoney = false;
         lastSpectatorToReceiveMoney = false;
     }
 
