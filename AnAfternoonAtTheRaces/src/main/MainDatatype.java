@@ -43,7 +43,7 @@ public class MainDatatype
 
         for (int i = 0; i < M_numSpectators; i++)
         {
-            int wallet = rand.nextInt(1000) + 4;
+            int wallet = 1000;
             spectator[i] = new Spectator("spectator_" + i, i, wallet,
                     controlCenter, paddock, bettingCenter, logger);
             spectator[i].start();
@@ -63,6 +63,7 @@ public class MainDatatype
                 horseJockey[i][j].start();
             }
         }
+
         Broker broker = new Broker("Broker", 1, raceTrack, stable, bettingCenter, paddock, controlCenter, logger);
         broker.start();
 

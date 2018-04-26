@@ -58,8 +58,6 @@ public class BettingCenter
     {
         // copy the odds
         System.arraycopy(horseJockeyOdds, 0, odds, 0, N_numCompetitors);
-        int currentRace = ((Broker) Thread.currentThread()).getCurrentRace();
-        logger.setHorseJockeyOdds(odds, currentRace);
 
         // Change Broker state to WAITING_FOR_BETS
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
@@ -78,8 +76,7 @@ public class BettingCenter
                     try
                     {
                         wait();
-                    }
-                    catch (InterruptedException e)
+                    } catch (InterruptedException e)
                     {
                         throw e;
                     }
@@ -89,8 +86,7 @@ public class BettingCenter
 
                 canPlaceBet = true;
                 notifyAll();
-            }
-            catch (InterruptedException e)
+            } catch (InterruptedException e)
             {
 
             }
@@ -145,8 +141,7 @@ public class BettingCenter
                     try
                     {
                         wait();
-                    }
-                    catch (InterruptedException e)
+                    } catch (InterruptedException e)
                     {
                         throw e;
                     }
@@ -156,8 +151,7 @@ public class BettingCenter
 
                 canReceiveMoney = true;
                 notifyAll();
-            }
-            catch (InterruptedException e)
+            } catch (InterruptedException e)
             {
 
             }
@@ -187,20 +181,6 @@ public class BettingCenter
         //  Change Spectator state to PLACING_A_BET
         Spectator spec = ((Spectator) Thread.currentThread());
         int specId = spec.getSpectatorID();
-        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
-        logger.setSpectatorState(SpectatorState.PLACING_A_BET, specId);
-
-        while (!canPlaceBet)
-        {
-            try
-            {
-                wait();
-            } catch (InterruptedException e)
-            {
-
-            }
-        }
-        canPlaceBet = false;
 
         // fill out the bet information
         bets[specId][0] = horseJockeyID;
@@ -234,6 +214,21 @@ public class BettingCenter
         int newWalletValue = ((Spectator) Thread.currentThread()).getWalletValue();
 
         logger.setSpectatorBet(betAmt, horseJockeyID, newWalletValue, specId);
+
+        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
+        logger.setSpectatorState(SpectatorState.PLACING_A_BET, specId);
+
+        while (!canPlaceBet)
+        {
+            try
+            {
+                wait();
+            } catch (InterruptedException e)
+            {
+
+            }
+        }
+        canPlaceBet = false;
 
         numBets++;
 

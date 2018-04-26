@@ -139,15 +139,13 @@ public class Logger
 
     /**
      * Set the length of the track in log, in which the races will occur, and
-     * therefor the distance to be travelled each race. Prints the internal
-     * state.
+     * therefor the distance to be travelled each race.
      *
      * @param distanceInRace the length of the track
      */
     public synchronized void setDistanceInRace(int[] distanceInRace)
     {
         this.distanceInRace = distanceInRace;
-        logState();
     }
 
     /**
@@ -160,7 +158,6 @@ public class Logger
     public synchronized void setMoneyAmount(int spectatorMoneyAmount, int spectatorId)
     {
         this.moneyAmount[spectatorId] = spectatorMoneyAmount;
-        //logState();
     }
 
     /**
@@ -181,7 +178,7 @@ public class Logger
     /**
      * Set the initial state of the Spectator in log. To be called upon creation
      * of respective thread. Useful to log initial state and wallet value in a
-     * single operation. Prints the internal state.
+     * single operation.
      *
      * @param spectatorState initial state of the Spectator
      * @param spectatorId    id of the Spectator whose initial state is to be
@@ -192,7 +189,6 @@ public class Logger
     {
         this.spectatorStates[spectatorId] = spectatorState;
         this.moneyAmount[spectatorId] = money;
-        logState();
     }
 
     /**
@@ -209,7 +205,6 @@ public class Logger
         this.spectatorBetAmount[this.raceNumber][specId] = spectatorBetAmount;
         this.spectatorBetSelection[this.raceNumber][specId] = spectatorBetSelection;
         this.moneyAmount[specId] = spectatorMoneyAmount;
-        //logState();
     }
 
     /**
@@ -235,7 +230,6 @@ public class Logger
      * creation of respective thread. Useful to log initial state and agility
      * value in a single operation. Only prints out the setting of horse/jockey
      * pairs belonging to the current race, for logging specification reasons.
-     * Prints the internal state.
      *
      * @param horseJockeyState initial state of the horse/jockey pair
      * @param horseJockeyId    id of the horse/jockey pair whose initial state
@@ -248,28 +242,30 @@ public class Logger
     {
         this.maxMovingLength[raceId][horseJockeyId] = agility;
         this.horseJockeyState[raceId][horseJockeyId] = horseJockeyState;
-        if (raceId == this.raceNumber)
+
+        boolean allAgilitySet = true;
+        double totalAgility = 0;
+        for (int i = 0; i < SimulPar.N_numCompetitors; i++)
         {
-            logState();
+            if (this.maxMovingLength[raceId][i] == -1)
+            {
+                allAgilitySet = false;
+                break;
+            }
+            totalAgility += this.maxMovingLength[raceId][i];
+        }
+        if (allAgilitySet == true)
+        {
+            for (int i = 0; i < SimulPar.N_numCompetitors; i++)
+            {
+                this.horseOdds[raceId][i] = this.maxMovingLength[raceId][i] / totalAgility;
+            }
         }
     }
 
     /**
-     * Set the odds of all the horse/jockey pairs of a particular race in log.
-     *
-     * @param horseOdds an array containing the odds for each of the horses of a
-     *                  race indexed by their id in it
-     * @param raceId    id of the race the horses are assigned to
-     */
-    public synchronized void setHorseJockeyOdds(double[] horseOdds, int raceId)
-    {
-        System.arraycopy(horseOdds, 0, this.horseOdds[raceId], 0, horseOdds.length);
-        logState();
-    }
-
-    /**
      * Update the movement of a horse/jockey pair during a race in log. Sets the
-     * iteration and the distance travelled. Prints the internal state.
+     * iteration and the distance travelled.
      *
      * @param horseIteration iteration the horse/jockey pair is currently in
      * @param horsePosition  distance the horse/jockey pair has travelled so far
@@ -281,7 +277,6 @@ public class Logger
     {
         this.horseIteration[raceId][horseId] = horseIteration;
         this.horsePosition[raceId][horseId] = horsePosition;
-        logState();
     }
 
     /**
@@ -314,53 +309,70 @@ public class Logger
 
         }
 
-        line1 += "  " + this.raceNumber;
+        line1 += "  " + String.format("%-1" + (brokerState == BrokerState.OPENING_THE_EVENT ? "s" : "d"),
+                brokerState == BrokerState.OPENING_THE_EVENT ? "#" : this.raceNumber);
 
-        for (int i = 0; i < SimulPar.N_numCompetitors; i++)
+        if (brokerState == BrokerState.OPENING_THE_EVENT)
         {
-            HorseJockeyState hj = horseJockeyState[this.raceNumber][i];
+            line1 += " ###  ##  ###  ##  ###  ##  ###  ## ";
+        } else
+        {
+            for (int i = 0; i < SimulPar.N_numCompetitors; i++)
+            {
+                HorseJockeyState hj = horseJockeyState[this.raceNumber][i];
 
-            int maxMovLen = maxMovingLength[this.raceNumber][i];
+                int maxMovLen = maxMovingLength[this.raceNumber][i];
 
-            line1 += " " + String.format("%-3s", hj != null ? hj.getAcronym() : "###");
+                line1 += " " + String.format("%-3s", hj != null ? hj.getAcronym() : "###");
 
-            line1 += "  " + String.format("%-2" + (maxMovLen != -1 ? "d" : "s"),
-                    maxMovLen != -1 ? maxMovLen : "##") + " ";
+                line1 += "  " + String.format("%-2" + (maxMovLen != -1 ? "d" : "s"),
+                        maxMovLen != -1 ? maxMovLen : "##") + " ";
+            }
         }
 
-        //String line2  = "  "+this.raceNumber+"  "+this.distanceInRace[this.raceNumber]+"  ";
-        String line2 = "  " + this.raceNumber + "  " + this.distanceInRace[raceNumber] + " ";
+        ////////////////////////////////////////////////////////////////////////
+        // Second Line
+        String line2;
 
-        for (int i = 0; i < SimulPar.M_numSpectators; i++)
+        if (brokerState == BrokerState.OPENING_THE_EVENT)
         {
+            line2 = "  #  ##   #  ####  #  ####  #  ####  #  #### #### ##  ##  # #### ##  ##  # #### ##  ##  # #### ##  ##  #";
+        } else
+        {
+            line2 = "  " + (this.raceNumber + 1) + "  " + this.distanceInRace[this.raceNumber] + " ";
 
-            line2 += "  " + (spectatorBetSelection[this.raceNumber][i] != -1 ? spectatorBetSelection[this.raceNumber][i] : "#");
+            for (int i = 0; i < SimulPar.M_numSpectators; i++)
+            {
 
-            int betAmt = spectatorBetAmount[this.raceNumber][i];
+                line2 += "  " + (spectatorBetSelection[this.raceNumber][i] != -1 ? spectatorBetSelection[this.raceNumber][i] : "#");
 
-            line2 += "  " + String.format("%-4" + (betAmt != -1 ? "d" : "s"),
-                    betAmt != -1 ? betAmt : "####");
+                int betAmt = spectatorBetAmount[this.raceNumber][i];
 
+                line2 += "  " + String.format("%-4" + (betAmt != -1 ? "d" : "s"),
+                        betAmt != -1 ? betAmt : "####");
+
+            }
+
+            for (int i = 0; i < SimulPar.N_numCompetitors; i++)
+            {
+
+                double odds = horseOdds[this.raceNumber][i];
+                line2 += " " + String.format("%-4" + (odds != -1 ? ".2f" : "s"),
+                        odds != -1 ? odds : "####");
+
+                int horseIter = horseIteration[this.raceNumber][i];
+
+                line2 += " " + String.format("%-2" + (horseIter != -1 ? "d" : "s"),
+                        horseIter != -1 ? horseIter : "##");
+
+                int horsePos = horsePosition[this.raceNumber][i];
+                line2 += "  " + String.format("%-2" + (horsePos != -1 ? "d" : "s"),
+                        horsePos != -1 ? horsePos : "##");
+
+                line2 += "  " + (horseAtEnd[this.raceNumber][i] != -1 ? horseAtEnd[this.raceNumber][i] : "#");
+            }
         }
 
-        for (int i = 0; i < SimulPar.N_numCompetitors; i++)
-        {
-
-            double odds = horseOdds[this.raceNumber][i];
-            line2 += " " + String.format("%-4" + (odds != -1 ? ".2f" : "s"),
-                    odds != -1 ? odds : "####");
-
-            int horseIter = horseIteration[this.raceNumber][i];
-
-            line2 += " " + String.format("%-2" + (horseIter != -1 ? "d" : "s"),
-                    horseIter != -1 ? horseIter : "##");
-
-            int horsePos = horsePosition[this.raceNumber][i];
-            line2 += "  " + String.format("%-2" + (horsePos != -1 ? "d" : "s"),
-                    horsePos != -1 ? horsePos : "##");
-
-            line2 += "  " + (horseAtEnd[this.raceNumber][i] != -1 ? horseAtEnd[this.raceNumber][i] : "#");
-        }
         try
         {
             FileWriter fw = new FileWriter(logFileName, true);

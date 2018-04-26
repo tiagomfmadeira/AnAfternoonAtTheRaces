@@ -97,10 +97,6 @@ public class RaceTrack
             }
         }
         raceTurn[raceId][horseJockeyId] = false;
-
-        // Change Horse/Jockey state to RUNNING
-        hj.setHorseJockeyState(HorseJockeyState.RUNNING);
-        logger.setHorseJockeyState(HorseJockeyState.RUNNING, horseJockeyId, raceId);
     }
 
     /**
@@ -135,6 +131,10 @@ public class RaceTrack
 
             logger.setHorseJockeyMove(iterationCounter[raceId][horseJockeyId], racePosition[raceId][horseJockeyId],
                     horseJockeyId, raceId);
+
+            // Change Horse/Jockey state to RUNNING
+            hj.setHorseJockeyState(HorseJockeyState.RUNNING);
+            logger.setHorseJockeyState(HorseJockeyState.RUNNING, horseJockeyId, raceId);
 
         }
 
