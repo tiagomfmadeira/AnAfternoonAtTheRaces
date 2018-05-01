@@ -10,7 +10,7 @@ import static main.SimulPar.M_numSpectators;
  * General description: Definition of the Control Center/Watching Stand
  * information sharing region.
  */
-public class ControlCenter
+public class ControlCenter implements SharedRegion
 {
 
     /**
@@ -24,7 +24,7 @@ public class ControlCenter
     private int spectatorsGoCheckHorsesCounter = 0,
             spectatorsWatchedRaceCounter = 0;
     private boolean[] horseJockeysWinners;
-    private final Logger logger;
+    private final GeneralRepository logger;
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ public class ControlCenter
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public ControlCenter(Logger logger)
+    public ControlCenter(GeneralRepository logger)
     {
         this.logger = logger;
     }

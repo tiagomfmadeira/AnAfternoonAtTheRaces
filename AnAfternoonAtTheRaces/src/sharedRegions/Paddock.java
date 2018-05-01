@@ -8,7 +8,7 @@ import static main.SimulPar.N_numCompetitors;
 /**
  * General description: Definition of the Paddock information sharing region.
  */
-public class Paddock
+public class Paddock implements SharedRegion
 {
 
     /**
@@ -19,7 +19,7 @@ public class Paddock
             lastHorseProceedToStartLine = false;
     private int horsesAtPaddockCount = 0,
             spectatorsAtPaddockCount = 0;
-    private final Logger logger;
+    private final GeneralRepository logger;
 
     /**
      * Constructor
@@ -27,7 +27,7 @@ public class Paddock
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public Paddock(Logger logger)
+    public Paddock(GeneralRepository logger)
     {
         this.logger = logger;
     }

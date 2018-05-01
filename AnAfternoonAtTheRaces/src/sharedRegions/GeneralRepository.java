@@ -2,6 +2,8 @@ package sharedRegions;
 
 import entities.*;
 import main.SimulPar;
+import settings.Settings;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,7 +13,7 @@ import java.util.Arrays;
  * Keeps a copy of the internal state of the problem and provides corresponding
  * logging, essential to the understanding of evolution of the system.
  */
-public class Logger
+public class GeneralRepository implements SharedRegion
 {
 
     private BrokerState brokerState;
@@ -33,7 +35,7 @@ public class Logger
     /**
      * Constructor
      */
-    public Logger()
+    public GeneralRepository()
     {
 
         Arrays.fill(moneyAmount, -1);
@@ -384,5 +386,10 @@ public class Logger
             e.printStackTrace();
         }
 
+    }
+
+
+    public synchronized Settings getSettings(String serverName){
+        return Settings.valueOf("serverName");
     }
 }

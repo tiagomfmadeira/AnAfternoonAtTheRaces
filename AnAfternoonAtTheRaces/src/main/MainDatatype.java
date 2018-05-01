@@ -4,7 +4,7 @@ import entities.Broker;
 import entities.HorseJockey;
 import entities.Spectator;
 import sharedRegions.*;
-import java.util.Random;
+
 import static main.SimulPar.K_numRaces;
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
@@ -23,22 +23,16 @@ public class MainDatatype
      */
     public static void main(String[] args)
     {
+        /*
         HorseJockey horseJockey[][] = new HorseJockey[K_numRaces][N_numCompetitors];
         Spectator spectator[] = new Spectator[M_numSpectators];
 
-        int[] distance = new int[K_numRaces];
-        Random rand = new Random();
-        for (int i = 0; i < K_numRaces; i++)
-        {
-            distance[i] = 15 + rand.nextInt(10);
-        }
 
-        Logger logger = new Logger();
-
+        GeneralRepository logger = new GeneralRepository();
         BettingCenter bettingCenter = new BettingCenter(logger);
         ControlCenter controlCenter = new ControlCenter(logger);
         Paddock paddock = new Paddock(logger);
-        RaceTrack raceTrack = new RaceTrack(distance, logger);
+        RaceTrack raceTrack = new RaceTrack(logger);
         Stable stable = new Stable(logger);
 
         for (int i = 0; i < M_numSpectators; i++)
@@ -64,8 +58,8 @@ public class MainDatatype
             }
         }
 
-        Broker broker = new Broker("Broker", 1, raceTrack, stable, bettingCenter, paddock, controlCenter, logger);
-        broker.start();
+        //Broker broker = new Broker("Broker", 1, raceTrack, stable, bettingCenter, paddock, controlCenter, logger);
+        //broker.start();
 
         for (int i = 0; i < M_numSpectators; i++)
         {
@@ -98,6 +92,6 @@ public class MainDatatype
         } catch (InterruptedException e)
         {
 
-        }
+        }*/
     }
 }

@@ -12,7 +12,7 @@ import static main.SimulPar.N_numCompetitors;
  * General description: Definition of the Betting Center information sharing
  * region.
  */
-public class BettingCenter
+public class BettingCenter implements SharedRegion
 {
 
     /**
@@ -30,7 +30,7 @@ public class BettingCenter
             canReceiveMoney = false;
     private int numBets = 0,
             numBetsToBeSettled = 0;
-    private final Logger logger;
+    private final GeneralRepository logger;
 
     /**
      * Constructor
@@ -38,7 +38,7 @@ public class BettingCenter
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public BettingCenter(Logger logger)
+    public BettingCenter(GeneralRepository logger)
     {
         this.logger = logger;
     }

@@ -1,7 +1,7 @@
 package entities;
 
 import main.SimulPar;
-import sharedRegions.*;
+import stub.*;
 
 /**
  * General description: definition of the broker.
@@ -14,11 +14,11 @@ public class Broker extends Thread
      */
     private final int id, numRaces;
     private BrokerState state;
-    private final Stable stable;
-    private final ControlCenter controlCenter;
-    private final Paddock paddock;
-    private final BettingCenter bettingCenter;
-    private final RaceTrack raceTrack;
+    private final StableStub stable;
+    private final ControlCenterStub controlCenter;
+    private final PaddockStub paddock;
+    private final BettingCenterStub bettingCenter;
+    private final RaceTrackStub raceTrack;
     private int currentRace; // current race
 
     /**
@@ -35,8 +35,8 @@ public class Broker extends Thread
      * @param logger        General Repository of information, keeping a copy of
      *                      the internal state of the problem
      */
-    public Broker(String name, int brokerID, RaceTrack raceTrack, Stable stable,
-            BettingCenter bettingCenter, Paddock paddock, ControlCenter controlCenter, Logger logger)
+    public Broker(String name, int brokerID, RaceTrackStub raceTrack, StableStub stable,
+            BettingCenterStub bettingCenter, PaddockStub paddock, ControlCenterStub controlCenter, GeneralRepositoryStub logger)
     {
         super(name);
         this.id = brokerID;
@@ -59,7 +59,6 @@ public class Broker extends Thread
     {
         for (currentRace = 0; currentRace < numRaces; currentRace++)     // for each race
         {
-
             stable.summonHorsesToPaddock(currentRace);                  // call the horses for a race
             controlCenter.summonHorsesToPaddock();                      // sleep (woken up by last last spectator to go see horses)
 

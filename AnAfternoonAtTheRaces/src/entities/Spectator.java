@@ -33,7 +33,7 @@ public class Spectator extends Thread
      */
     public Spectator(String name, int spectatorID, int money,
             ControlCenter controlCenter, Paddock paddock,
-            BettingCenter bettingCenter, Logger logger)
+            BettingCenter bettingCenter, GeneralRepository logger)
     {
         super(name);
         this.id = spectatorID;

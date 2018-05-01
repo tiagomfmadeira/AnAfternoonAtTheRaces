@@ -10,7 +10,7 @@ import static main.SimulPar.N_numCompetitors;
 /**
  * General description: Definition of the Stable information sharing region.
  */
-public class Stable
+public class Stable implements SharedRegion
 {
 
     /**
@@ -20,7 +20,7 @@ public class Stable
     private final boolean[] proceedToPaddockFlag = new boolean[K_numRaces];
     // counter of horses that left the paddock per race
     private final int[] proceededHorsesCount = new int[K_numRaces];
-    private final Logger logger;
+    private final GeneralRepository logger;
 
     /**
      * Constructor
@@ -28,7 +28,7 @@ public class Stable
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public Stable(Logger logger)
+    public Stable(GeneralRepository logger)
     {
         this.logger = logger;
     }

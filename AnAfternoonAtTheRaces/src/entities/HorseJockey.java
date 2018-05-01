@@ -38,7 +38,7 @@ public class HorseJockey extends Thread
      */
     public HorseJockey(String name, int horseJockeyID, int agility, int raceId,
             Stable stable, Paddock paddock, RaceTrack raceTrack,
-            ControlCenter controlCenter, Logger logger)
+            ControlCenter controlCenter, GeneralRepository logger)
     {
         super(name);
         this.id = horseJockeyID;
