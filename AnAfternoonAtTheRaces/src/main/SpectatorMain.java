@@ -1,22 +1,15 @@
 package main;
 
-
-import entities.Broker;
+import entities.Spectator;
 import settings.Settings;
 import stub.*;
-import static main.SimulPar.K_numRaces;
-import static main.SimulPar.M_numSpectators;
-import static main.SimulPar.N_numCompetitors;
 
-
-public class BrokerMain {
-
+public class SpectatorMain {
     public static void main(String[] args)
     {
-
         GeneralRepositoryStub gr = new GeneralRepositoryStub(
-            Settings.GENERAL_REPOSITORY_HOST_NAME,
-            Settings.GENERAL_REPOSITORY_PORT_NUM
+                Settings.GENERAL_REPOSITORY_HOST_NAME,
+                Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
         Settings settings = gr.getSettings();
@@ -46,14 +39,25 @@ public class BrokerMain {
                 settings.STABLE_PORT_NUM
         );
 
+        Spectator spectator[] = new Spectator[settings.M_numSpectators];
 
-        Broker broker = new Broker("Broker", 1, raceTrack, stable, bettingCenter, paddock, controlCenter, gr);
-        broker.start();
-
-        try
+        for (int i = 0; i < settings.M_numSpectators; i++)
         {
-            broker.join();
-        } catch (InterruptedException e)
-        {}
+            int wallet = 1000;
+            spectator[i] = new Spectator("spectator_" + i, i, wallet,
+                    controlCenter, paddock, bettingCenter, gr);
+            spectator[i].start();
+        }
+
+        for (int i = 0; i < settings.M_numSpectators; i++)
+        {
+            try
+            {
+                spectator[i].join();
+            } catch (InterruptedException e)
+            {}
+        }
+
+
     }
 }

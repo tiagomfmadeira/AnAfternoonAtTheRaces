@@ -57,19 +57,15 @@ public class ServerThread extends Thread{
         //Called method of sharedRegion class
         Method method = null;
 
-
         try {
             System.out.println(msg.getFunc());
             if(msg.getArgs() == null)
                 method = region.getClass().getMethod(msg.getFunc());
             else{
-                System.out.println(Arrays.toString(Arrays.stream(msg.getArgs())
-                        .map(Object::getClass)
-                        .map(cl -> cl == Integer.class ? int.class : cl).toArray(Class[]::new)));
                 method = region.getClass().getMethod(msg.getFunc(),
-                        Arrays.stream(msg.getArgs())
-                                .map(Object::getClass)
-                                .map(cl -> cl == Integer.class ? int.class : cl).toArray(Class[]::new));
+                            Arrays.stream(msg.getArgs())
+                                    .map(Object::getClass)
+                                    .map(cl -> cl == Integer.class ? int.class : cl).toArray(Class[]::new));
             }
         }
         catch(NoSuchMethodException e){
@@ -83,10 +79,14 @@ public class ServerThread extends Thread{
 
         //function parameters
         Object[] params = msg.getArgs() != null ?
-                Arrays.stream(msg.getArgs()).map(obj -> obj.getClass().cast(obj)).toArray() : null;
+                Arrays.stream(msg.getArgs())
+                        .map(obj ->  (obj == Integer.class ? int.class : obj).getClass().cast(obj))
+                        .toArray() :
+                null;
+
         try {
             if(method.getReturnType().equals(Void.TYPE))
-                method.invoke(region,params);
+                method.invoke(region, params);
             else
                 result = method.invoke(region,params);
         }

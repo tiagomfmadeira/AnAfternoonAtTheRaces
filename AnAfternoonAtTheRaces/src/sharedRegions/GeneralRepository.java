@@ -136,7 +136,7 @@ public class GeneralRepository implements SharedRegion
     public synchronized void setRaceNumber(int raceNumber)
     {
         this.raceNumber = raceNumber;
-        setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
+        this.setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
     }
 
     /**

@@ -45,7 +45,7 @@ public class ControlCenterStub {
         com.exchange(msg);
     }
 
-    public void sleepAtThePaddock()
+    public void makeAMove()
     {
 
         //conversão do metodo a invocar numa mensagem
@@ -55,11 +55,11 @@ public class ControlCenterStub {
         );
 
         com.exchange(msg);
-
     }
 
-    public boolean goCheckHorses()
+    public boolean waitForNextRace()
     {
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
@@ -68,8 +68,9 @@ public class ControlCenterStub {
 
         Message result = com.exchange(msg);
 
-        return (boolean)result.getReturnValue();
+        return (boolean) result.getReturnValue();
     }
+
 
     public void lastToCheckHorses()
     {

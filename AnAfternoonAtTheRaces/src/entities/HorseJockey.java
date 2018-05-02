@@ -1,6 +1,7 @@
 package entities;
 
 import sharedRegions.*;
+import stub.*;
 
 /**
  * General description: definition of the horse/jockey.
@@ -15,10 +16,10 @@ public class HorseJockey extends Thread
             agility,
             raceId;                         // size of pace during race
     private HorseJockeyState state;         // Horse/Jockey state of the life cycle
-    private final Stable stable;
-    private final Paddock paddock;
-    private final RaceTrack raceTrack;
-    private final ControlCenter controlCenter;
+    private final StableStub stable;
+    private final PaddockStub paddock;
+    private final RaceTrackStub raceTrack;
+    private final ControlCenterStub controlCenter;
 
     /**
      * Constructor
@@ -29,7 +30,7 @@ public class HorseJockey extends Thread
      *                      maximum length of a step
      * @param raceId        Id of the race the Horse/Jockey pair is competing on
      * @param stable        Stable information sharing region
-     * @param paddock       Paddock information sharing region
+     * @param paddock       PaddockStub information sharing region
      * @param raceTrack     Race Track information sharing region
      * @param controlCenter Control Center/Watching Stand information sharing
      *                      region
@@ -37,8 +38,8 @@ public class HorseJockey extends Thread
      *                      the internal state of the problem
      */
     public HorseJockey(String name, int horseJockeyID, int agility, int raceId,
-            Stable stable, Paddock paddock, RaceTrack raceTrack,
-            ControlCenter controlCenter, GeneralRepository logger)
+            StableStub stable, PaddockStub paddock, RaceTrackStub raceTrack,
+            ControlCenterStub controlCenter, GeneralRepositoryStub logger)
     {
         super(name);
         this.id = horseJockeyID;

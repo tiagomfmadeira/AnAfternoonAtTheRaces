@@ -86,7 +86,7 @@ public class PaddockStub {
     }
 
 
-    public void appraisingHorses()
+    public int appraisingHorses()
     {
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
@@ -94,7 +94,9 @@ public class PaddockStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        Message result = com.exchange(msg);
+
+        return (int) result.getReturnValue();
     }
 
     public double[] learnTheOdds()

@@ -3,6 +3,8 @@ package stub;
 import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
+import entities.Broker;
+import entities.BrokerState;
 
 public class StableStub {
     /**
@@ -44,10 +46,11 @@ public class StableStub {
         );
 
         com.exchange(msg);
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
 
     }
 
-    public void proceedToStartStable()
+    public void proceedToStable()
     {
 
         //conversão do metodo a invocar numa mensagem
@@ -73,31 +76,4 @@ public class StableStub {
 
     }
 
-
-
-    public void startTheRace()
-    {
-        //conversão do metodo a invocar numa mensagem
-        Message msg = new Message(
-                MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
-        );
-
-        com.exchange(msg);
-
-    }
-
-
-    public boolean[] reportResults()
-    {
-        //conversão do metodo a invocar numa mensagem
-        Message msg = new Message(
-                MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
-        );
-
-        Message result = com.exchange(msg);
-
-        return (boolean[]) result.getReturnValue();
-    }
 }

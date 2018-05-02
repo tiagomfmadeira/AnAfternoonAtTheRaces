@@ -51,7 +51,7 @@ public class Stable
         notifyAll();
 
         // change Broker state to ANNOUNCING_NEXT_RACE
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
+        //((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
         logger.setRaceNumber(raceID);
     }
 

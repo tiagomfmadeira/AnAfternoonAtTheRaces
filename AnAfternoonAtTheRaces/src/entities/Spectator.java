@@ -1,6 +1,10 @@
 package entities;
 
 import sharedRegions.*;
+import stub.BettingCenterStub;
+import stub.ControlCenterStub;
+import stub.GeneralRepositoryStub;
+import stub.PaddockStub;
 
 /**
  * General description: definition of the spectator.
@@ -14,9 +18,9 @@ public class Spectator extends Thread
     private final int id;                       // Spectator thread ID
     private int wallet;                         // Amount of money Spectator owns
     private SpectatorState state;               // Spectatorstate of the life cycle
-    private final ControlCenter controlCenter;
-    private final Paddock paddock;
-    private final BettingCenter bettingCenter;
+    private final ControlCenterStub controlCenter;
+    private final PaddockStub paddock;
+    private final BettingCenterStub bettingCenter;
 
     /**
      * Constructor
@@ -32,8 +36,8 @@ public class Spectator extends Thread
      *                      the internal state of the problem
      */
     public Spectator(String name, int spectatorID, int money,
-            ControlCenter controlCenter, Paddock paddock,
-            BettingCenter bettingCenter, GeneralRepository logger)
+            ControlCenterStub controlCenter, PaddockStub paddock,
+            BettingCenterStub bettingCenter, GeneralRepositoryStub logger)
     {
         super(name);
         this.id = spectatorID;
