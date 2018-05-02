@@ -389,7 +389,7 @@ public class GeneralRepository implements SharedRegion
     }
 
 
-    public synchronized Settings getSettings(String serverName){
-        return Settings.valueOf("serverName");
+    public synchronized Settings getSettings(){
+        return Settings.getInstance();
     }
 }

@@ -28,9 +28,9 @@ public class ControlCenterStub {
      */
 
     public ControlCenterStub(String hostName, int port) {
-        serverHostName = hostName;
-        serverPortNumb = port;
-        ClientCom com = new ClientCom(serverHostName, serverPortNumb);
+        this.serverHostName = hostName;
+        this.serverPortNumb = port;
+        this.com = new ClientCom(serverHostName, serverPortNumb);
     }
 
     public void proceedToPaddock()

@@ -4,13 +4,15 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
+import stub.GeneralRepositoryStub;
+
 import static main.SimulPar.M_numSpectators;
 
 /**
  * General description: Definition of the Control Center/Watching Stand
  * information sharing region.
  */
-public class ControlCenter implements SharedRegion
+public class ControlCenter
 {
 
     /**
@@ -24,7 +26,7 @@ public class ControlCenter implements SharedRegion
     private int spectatorsGoCheckHorsesCounter = 0,
             spectatorsWatchedRaceCounter = 0;
     private boolean[] horseJockeysWinners;
-    private final GeneralRepository logger;
+    private final GeneralRepositoryStub logger;
 
     /**
      * Constructor
@@ -32,7 +34,7 @@ public class ControlCenter implements SharedRegion
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public ControlCenter(GeneralRepository logger)
+    public ControlCenter(GeneralRepositoryStub logger)
     {
         this.logger = logger;
     }

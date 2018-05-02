@@ -47,6 +47,8 @@ public class ServerThread extends Thread{
         // seu envio ao cliente
         com.writeObject(new Message(invokeMethod(msg)));
 
+        // not sure of this
+        com.close();
     }
 
     // lida com invocar o metodo correto de acordo com a mensagem
@@ -54,26 +56,45 @@ public class ServerThread extends Thread{
 
         //Called method of sharedRegion class
         Method method = null;
+
+
         try {
-            method = region.getClass().getMethod(msg.getFunc(), Arrays.stream(msg.getArgs()).map(Object::getClass).toArray(Class[]::new));
+            System.out.println(msg.getFunc());
+            if(msg.getArgs() == null)
+                method = region.getClass().getMethod(msg.getFunc());
+            else{
+                System.out.println(Arrays.toString(Arrays.stream(msg.getArgs())
+                        .map(Object::getClass)
+                        .map(cl -> cl == Integer.class ? int.class : cl).toArray(Class[]::new)));
+                method = region.getClass().getMethod(msg.getFunc(),
+                        Arrays.stream(msg.getArgs())
+                                .map(Object::getClass)
+                                .map(cl -> cl == Integer.class ? int.class : cl).toArray(Class[]::new));
+            }
         }
         catch(NoSuchMethodException e){
             System.out.println("Method doesn't exist in shared region");
+            e.printStackTrace();
             System.exit(1);
         }
 
         // return value
         Object result = null;
 
+        //function parameters
+        Object[] params = msg.getArgs() != null ?
+                Arrays.stream(msg.getArgs()).map(obj -> obj.getClass().cast(obj)).toArray() : null;
         try {
             if(method.getReturnType().equals(Void.TYPE))
-                method.invoke(region,Arrays.stream(msg.getArgs()).map(obj -> obj.getClass().cast(obj)).toArray());
+                method.invoke(region,params);
             else
-                result = method.invoke(region,Arrays.stream(msg.getArgs()).map(obj -> obj.getClass().cast(obj)).toArray());
+                result = method.invoke(region,params);
         }
-        catch(IllegalAccessException | InvocationTargetException e){
+        catch(IllegalAccessException | InvocationTargetException | NullPointerException e){
             System.out.println("Error in target invocation");
+            e.printStackTrace();
             System.exit(1);
+
         }
         return result;
     }

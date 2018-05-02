@@ -5,6 +5,8 @@ import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
 import main.SimulPar;
+import stub.GeneralRepositoryStub;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,7 +17,7 @@ import static main.SimulPar.N_numCompetitors;
 /**
  * General description: Definition of the Race Track information sharing region.
  */
-public class RaceTrack implements SharedRegion
+public class RaceTrack
 {
 
     /**
@@ -28,7 +30,7 @@ public class RaceTrack implements SharedRegion
     private final int[][] iterationCounter = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
     private final boolean[] raceEnded = new boolean[SimulPar.K_numRaces];
     private final int[] finishLineCount = new int[SimulPar.K_numRaces];
-    private final GeneralRepository logger;
+    private final GeneralRepositoryStub logger;
 
     /**
      * Constructor
@@ -36,7 +38,7 @@ public class RaceTrack implements SharedRegion
      * @param logger   General Repository of information, keeping a copy of the
      *                 internal state of the problem
      */
-    public RaceTrack(GeneralRepository logger)
+    public RaceTrack(GeneralRepositoryStub logger)
     {
         //Distance now initialized here
         int[] distance = new int[K_numRaces];

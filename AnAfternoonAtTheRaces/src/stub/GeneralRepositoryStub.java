@@ -32,9 +32,9 @@ public class GeneralRepositoryStub {
      */
 
     public GeneralRepositoryStub(String hostName, int port) {
-        serverHostName = hostName;
-        serverPortNumb = port;
-        ClientCom com = new ClientCom(serverHostName, serverPortNumb);
+        this.serverHostName = hostName;
+        this.serverPortNumb = port;
+        this.com = new ClientCom(serverHostName, serverPortNumb);
     }
 
 
@@ -93,6 +93,18 @@ public class GeneralRepositoryStub {
 
         com.exchange(msg);
 
+    }
+    public void setSpectatorState(SpectatorState spectatorState, int spectatorId)
+    {
+        //conversão do metodo a invocar numa mensagem
+        Message msg = new Message(
+                MessageType.FUNCTION,
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                spectatorState,
+                spectatorId
+        );
+
+        com.exchange(msg);
     }
 
 
@@ -182,13 +194,12 @@ public class GeneralRepositoryStub {
         com.exchange(msg);
     }
 
-    public Settings getSettings(String serverName)
+    public Settings getSettings()
     {
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.SETTINGS,
-                new Object(){}.getClass().getEnclosingMethod().getName(),
-                serverName
+                new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
         Message result = com.exchange(msg);

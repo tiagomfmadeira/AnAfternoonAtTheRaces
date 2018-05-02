@@ -4,13 +4,15 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
+import stub.GeneralRepositoryStub;
+
 import static main.SimulPar.K_numRaces;
 import static main.SimulPar.N_numCompetitors;
 
 /**
  * General description: Definition of the Stable information sharing region.
  */
-public class Stable implements SharedRegion
+public class Stable
 {
 
     /**
@@ -20,7 +22,7 @@ public class Stable implements SharedRegion
     private final boolean[] proceedToPaddockFlag = new boolean[K_numRaces];
     // counter of horses that left the paddock per race
     private final int[] proceededHorsesCount = new int[K_numRaces];
-    private final GeneralRepository logger;
+    private final GeneralRepositoryStub logger;
 
     /**
      * Constructor
@@ -28,7 +30,7 @@ public class Stable implements SharedRegion
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public Stable(GeneralRepository logger)
+    public Stable(GeneralRepositoryStub logger)
     {
         this.logger = logger;
     }

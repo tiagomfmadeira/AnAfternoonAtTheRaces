@@ -82,7 +82,7 @@ public class ServerCom
         {
             listeningSocket = new ServerSocket (serverPortNumb);
             // 1 second timeout
-            listeningSocket.setSoTimeout(1000);
+            //listeningSocket.setSoTimeout(1000);
         }
         catch (BindException e)                         // erro fatal --- port já em uso
         { System.out.println (Thread.currentThread ().getName () +

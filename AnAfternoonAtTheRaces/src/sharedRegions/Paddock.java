@@ -1,6 +1,8 @@
 package sharedRegions;
 
 import entities.*;
+import stub.GeneralRepositoryStub;
+
 import java.util.concurrent.ThreadLocalRandom;
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
@@ -8,7 +10,7 @@ import static main.SimulPar.N_numCompetitors;
 /**
  * General description: Definition of the Paddock information sharing region.
  */
-public class Paddock implements SharedRegion
+public class Paddock
 {
 
     /**
@@ -19,7 +21,7 @@ public class Paddock implements SharedRegion
             lastHorseProceedToStartLine = false;
     private int horsesAtPaddockCount = 0,
             spectatorsAtPaddockCount = 0;
-    private final GeneralRepository logger;
+    private final GeneralRepositoryStub logger;
 
     /**
      * Constructor
@@ -27,7 +29,7 @@ public class Paddock implements SharedRegion
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public Paddock(GeneralRepository logger)
+    public Paddock(GeneralRepositoryStub logger)
     {
         this.logger = logger;
     }

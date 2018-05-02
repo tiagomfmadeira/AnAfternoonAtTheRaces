@@ -4,6 +4,8 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
+import stub.GeneralRepositoryStub;
+
 import java.util.concurrent.ThreadLocalRandom;
 import static main.SimulPar.M_numSpectators;
 import static main.SimulPar.N_numCompetitors;
@@ -12,7 +14,7 @@ import static main.SimulPar.N_numCompetitors;
  * General description: Definition of the Betting Center information sharing
  * region.
  */
-public class BettingCenter implements SharedRegion
+public class BettingCenter
 {
 
     /**
@@ -30,7 +32,7 @@ public class BettingCenter implements SharedRegion
             canReceiveMoney = false;
     private int numBets = 0,
             numBetsToBeSettled = 0;
-    private final GeneralRepository logger;
+    private final GeneralRepositoryStub logger;
 
     /**
      * Constructor
@@ -38,7 +40,7 @@ public class BettingCenter implements SharedRegion
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
      */
-    public BettingCenter(GeneralRepository logger)
+    public BettingCenter(GeneralRepositoryStub logger)
     {
         this.logger = logger;
     }

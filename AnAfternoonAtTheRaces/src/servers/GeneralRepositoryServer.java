@@ -4,14 +4,21 @@ import communication.ServerCom;
 import settings.Settings;
 import sharedRegions.ControlCenter;
 import sharedRegions.GeneralRepository;
+import stub.GeneralRepositoryStub;
 
 public class GeneralRepositoryServer {
 
     public static void main (String[] args)
     {
+        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+                Settings.GENERAL_REPOSITORY_HOST_NAME,
+                Settings.GENERAL_REPOSITORY_PORT_NUM
+        );
+
+
         ServerCom scon, sconi;
 
-        scon = new ServerCom(Settings.GENERAL_REPOSITORY.getPortNumber());
+        scon = new ServerCom(Settings.GENERAL_REPOSITORY_PORT_NUM);
         scon.start ();
 
         ServerThread aps;
