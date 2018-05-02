@@ -72,12 +72,9 @@ public class ControlCenter
      * @return <code>true</code> if there is a next race; <code>false</code>
      *         otherwise
      */
-    public synchronized boolean waitForNextRace()
+    public synchronized boolean waitForNextRace(int specId)
     {
-        // change Spectator state to WAITING_FOR_A_RACE_TO_START
-        Spectator spec = ((Spectator) Thread.currentThread());
-        int specId = spec.getSpectatorID();
-        spec.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START);
+
         logger.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START, specId);
 
         // wake up if next race starts or if race does not exit
@@ -118,12 +115,10 @@ public class ControlCenter
      * Change Spectator state to WATCHING_A_RACE and sleep waiting for a signal
      * that the race has ended.
      */
-    public synchronized void goWatchTheRace()
+    public synchronized void goWatchTheRace(int specId)
     {
         //  Change Spectator state to WATCHING_A_RACE
-        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.WATCHING_A_RACE);
-        logger.setSpectatorState(SpectatorState.WATCHING_A_RACE,
-                ((Spectator) Thread.currentThread()).getSpectatorID());
+        logger.setSpectatorState(SpectatorState.WATCHING_A_RACE, specId);
 
         while (!reportedResults)
         {
@@ -165,12 +160,10 @@ public class ControlCenter
      * Change the Spectator state to CELEBRATING. Final state of their life
      * cycle.
      */
-    public synchronized void relaxABit()
+    public synchronized void relaxABit(int specId)
     {
-        //  Change Spectator state to CELEBRATING
-        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.CELEBRATING);
-        logger.setSpectatorState(SpectatorState.CELEBRATING,
-                ((Spectator) Thread.currentThread()).getSpectatorID());
+
+        logger.setSpectatorState(SpectatorState.CELEBRATING, specId);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -241,7 +234,6 @@ public class ControlCenter
     public synchronized void entertainTheGuests()
     {
         // Change Broker state to PLAYING_HOST_AT_THE_BAR
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
         logger.setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
 
         nextRaceExists = false;

@@ -16,7 +16,7 @@ public class Paddock
     /**
      * Internal data
      */
-    private final HorseJockey[] horses = new HorseJockey[N_numCompetitors];
+    private final int[] horseAgility = new int[N_numCompetitors];
     private boolean lastSpectatorGoCheckHorses = false,
             lastHorseProceedToStartLine = false;
     private int horsesAtPaddockCount = 0,
@@ -43,21 +43,16 @@ public class Paddock
      * @return <code>true</code> if it's called by the last horse to reach the
      *         paddock; <code>false</code> otherwise
      */
-    public synchronized boolean proceedToPaddock()
+    public synchronized boolean proceedToPaddock(int horseJockeyID, int raceID, int agility)
     {
         boolean isLastHorse = false;
 
         // get ID of the horse/Jockey
-        int horseJockeyID = ((HorseJockey) Thread.currentThread()).getHorseJockeyID();
 
         // save reference of the Horse/Jockey to be used by spectator thread in appraising
-        horses[horseJockeyID] = (HorseJockey) Thread.currentThread();
+        horseAgility[horseJockeyID] = agility;
 
-        // change HorseJockey state to AT_THE_PADDOCK
-        HorseJockey hj = (HorseJockey) Thread.currentThread();
-        hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
-        logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK,
-                hj.getHorseJockeyID(), hj.getRaceId());
+        logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK, horseJockeyID, raceID);
 
         horsesAtPaddockCount++;
 
@@ -118,14 +113,11 @@ public class Paddock
      * @return <code>true</code> if it's called by the last Spectator to reach
      *         the paddock; <code>false</code> otherwise
      */
-    public synchronized boolean goCheckHorses()
+    public synchronized boolean goCheckHorses(int specID)
     {
         boolean isLastSpectator = false;
 
-        //  Change Spectator state to APPRAISING_THE_HORSES
-        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
-        logger.setSpectatorState(SpectatorState.APPRAISING_THE_HORSES,
-                ((Spectator) Thread.currentThread()).getSpectatorID());
+        logger.setSpectatorState(SpectatorState.APPRAISING_THE_HORSES, specID);
 
         spectatorsAtPaddockCount++;
 
@@ -149,7 +141,7 @@ public class Paddock
      *
      * @return id of the Horse/Jockey pair the Spectator will bet on
      */
-    public synchronized int appraisingHorses()
+    public synchronized int appraisingHorses(int specId)
     {
         while (!lastHorseProceedToStartLine)
         {
@@ -173,7 +165,6 @@ public class Paddock
 
         // decide which Horse/Jockey pair to bet on
         int tmpHorseID = 0;
-        int specId = ((Spectator) Thread.currentThread()).getSpectatorID();
 
         switch (specId)
         {
@@ -181,7 +172,7 @@ public class Paddock
             case 0:
                 for (int i = 0; i < N_numCompetitors; i++)
                 {
-                    if (horses[i].getAgility() > horses[tmpHorseID].getAgility())
+                    if (horseAgility[i] > horseAgility[tmpHorseID])
                     {
                         tmpHorseID = i;
                     }
@@ -193,7 +184,7 @@ public class Paddock
                 int high2 = Integer.MIN_VALUE;
                 for (int i = 0; i < N_numCompetitors; i++)
                 {
-                    int tmpAg = horses[i].getAgility();
+                    int tmpAg = horseAgility[i];
                     if (tmpAg > high1)
                     {
                         high2 = high1;
@@ -205,7 +196,7 @@ public class Paddock
                 }
                 for (int i = 0; i < N_numCompetitors; i++)
                 {
-                    if (horses[i].getAgility() == high2)
+                    if (horseAgility[i] == high2)
                     {
                         tmpHorseID = i;
                     }
@@ -215,7 +206,7 @@ public class Paddock
             case 2:
                 for (int i = 0; i < N_numCompetitors; i++)
                 {
-                    if (horses[i].getAgility() < horses[tmpHorseID].getAgility())
+                    if (horseAgility[i] < horseAgility[tmpHorseID])
                     {
                         tmpHorseID = i;
                     }
@@ -247,13 +238,13 @@ public class Paddock
         // get the total agility
         for (int i = 0; i < N_numCompetitors; i++)
         {
-            totalAgility += horses[i].getAgility();
+            totalAgility += horseAgility[i];
         }
 
         // calculate the odds of each horse
         for (int i = 0; i < N_numCompetitors; i++)
         {
-            odds[i] = horses[i].getAgility() / totalAgility;
+            odds[i] = horseAgility[i] / totalAgility;
         }
 
         return odds;

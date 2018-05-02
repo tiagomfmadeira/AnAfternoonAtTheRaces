@@ -3,6 +3,10 @@ package stub;
 import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
+import entities.Broker;
+import entities.BrokerState;
+import entities.Spectator;
+import entities.SpectatorState;
 
 public class ControlCenterStub {
     /**
@@ -60,13 +64,21 @@ public class ControlCenterStub {
     public boolean waitForNextRace()
     {
 
+
+        Spectator spec = ((Spectator) Thread.currentThread());
+        int specId = spec.getSpectatorID();
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                specId
         );
 
         Message result = com.exchange(msg);
+
+        // change state
+        spec.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START);
 
         return (boolean) result.getReturnValue();
     }
@@ -88,12 +100,21 @@ public class ControlCenterStub {
     public void goWatchTheRace()
     {
         //conversão do metodo a invocar numa mensagem
+        Spectator spec = ((Spectator) Thread.currentThread());
+        int specId = spec.getSpectatorID();
+
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                specId
+
         );
 
         com.exchange(msg);
+
+        // change state
+        spec.setSpectatorState(SpectatorState.WATCHING_A_RACE);
+
     }
 
     public boolean haveIWon(int horseJockey)
@@ -112,13 +133,23 @@ public class ControlCenterStub {
 
     public void relaxABit()
     {
+        //  Change Spectator state to CELEBRATING
+        //conversão do metodo a invocar numa mensagem
+        Spectator spec = ((Spectator) Thread.currentThread());
+        int specId = spec.getSpectatorID();
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                specId
         );
 
         com.exchange(msg);
+
+        //change state
+        spec.setSpectatorState(SpectatorState.CELEBRATING);
+
     }
 
     public void summonHorsesToPaddock()
@@ -164,6 +195,9 @@ public class ControlCenterStub {
         );
 
         com.exchange(msg);
+
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
+
     }
 
 

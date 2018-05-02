@@ -3,6 +3,10 @@ package stub;
 import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
+import entities.HorseJockey;
+import entities.HorseJockeyState;
+import entities.Spectator;
+import entities.SpectatorState;
 
 public class PaddockStub {
     /**
@@ -35,11 +39,18 @@ public class PaddockStub {
 
     public boolean proceedToPaddock()
     {
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
+
+        // change HorseJockey state to AT_THE_PADDOCK
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
 
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                hj.getHorseJockeyID(),
+                hj.getRaceId(),
+                hj.getAgility()
         );
 
         Message result = com.exchange(msg);
@@ -74,10 +85,18 @@ public class PaddockStub {
 
     public boolean goCheckHorses()
     {
+
+        //  Change Spectator state to APPRAISING_THE_HORSES
+
+        Spectator spec = ((Spectator) Thread.currentThread());
+        spec.setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                spec.getSpectatorID()
+
         );
 
         Message result = com.exchange(msg);
@@ -88,10 +107,13 @@ public class PaddockStub {
 
     public int appraisingHorses()
     {
+        int specId = ((Spectator) Thread.currentThread()).getSpectatorID();
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                specId
         );
 
         Message result = com.exchange(msg);

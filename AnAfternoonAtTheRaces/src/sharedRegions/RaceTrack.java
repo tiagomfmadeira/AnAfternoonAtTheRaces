@@ -86,13 +86,8 @@ public class RaceTrack
      * signal from a move of another Horse/Jockey pair. When woken up changes
      * the state of the Horse/Jockey pair to RUNNING.
      */
-    public synchronized void proceedToStartLine()
+    public synchronized void proceedToStartLine(int horseJockeyId, int raceId)
     {
-        //  Change HorseJockey state to AT_THE_START_LINE
-        HorseJockey hj = (HorseJockey) Thread.currentThread();
-        hj.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE);
-        int horseJockeyId = hj.getHorseJockeyID();
-        int raceId = hj.getRaceId();
 
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE,
                 horseJockeyId, raceId);
@@ -122,16 +117,13 @@ public class RaceTrack
      * @return <code>true</code> if it's the last Horse/Jockey pair to cross the
      *         finish line; <code>false</code> otherwise
      */
-    public synchronized boolean makeAMove()
+    public synchronized boolean makeAMove(int horseJockeyId, int raceId, int agility)
     {
-        HorseJockey hj = ((HorseJockey) Thread.currentThread());
-        int horseJockeyId = hj.getHorseJockeyID();
-        int raceId = hj.getRaceId();
+
 
         // if the horse is not beyond the finish
         if (racePosition[raceId][horseJockeyId] < distance[raceId])
         {
-            int agility = ((HorseJockey) Thread.currentThread()).getAgility();
             int rand = ThreadLocalRandom.current().nextInt(1, agility + 1);
 
             // make a move
@@ -144,7 +136,8 @@ public class RaceTrack
                     horseJockeyId, raceId);
 
             // Change Horse/Jockey state to RUNNING
-            hj.setHorseJockeyState(HorseJockeyState.RUNNING);
+            //TODO: change this
+            //hj.setHorseJockeyState(HorseJockeyState.RUNNING);
             logger.setHorseJockeyState(HorseJockeyState.RUNNING, horseJockeyId, raceId);
 
         }
@@ -155,7 +148,8 @@ public class RaceTrack
             // mark that it has crossed the finish line
             crossedFinish[raceId][horseJockeyId] = true;
             //  Change HorseJockey state to AT_THE_FINNISH_LINE
-            hj.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
+            //TODO: change this
+            //hj.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE);
             logger.setHorseJockeyState(HorseJockeyState.AT_THE_FINNISH_LINE, horseJockeyId, raceId);
 
             // another Horse/Jockey pair has finished
@@ -197,11 +191,8 @@ public class RaceTrack
      * @return <code>true</code> if the race has ended; <code>false</code>
      *         otherwise
      */
-    public synchronized boolean hasRaceEnded()
+    public synchronized boolean hasRaceEnded(int raceId)
     {
-        HorseJockey hj = ((HorseJockey) Thread.currentThread());
-        int raceId = hj.getRaceId();
-
         return raceEnded[raceId];
     }
 
@@ -211,14 +202,11 @@ public class RaceTrack
      * Change the Broker state to SUPERVISING_THE_RACE. Wake up one of the
      * Horse/Jockey pairs from AT_THE_START_LINE.
      */
-    public synchronized void startTheRace()
+    public synchronized void startTheRace(int raceId)
     {
         // Change Broker state to SUPERVISING_THE_RACE
-        Broker broker = (Broker) Thread.currentThread();
-        broker.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
         logger.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
 
-        int raceId = broker.getCurrentRace();
 
         raceTurn[raceId][0] = true;
         notifyAll();
@@ -230,9 +218,9 @@ public class RaceTrack
      * @return array indicating for each Horse/Jockey pair if they have won the
      *         race, indexed by their ID
      */
-    public synchronized boolean[] reportResults()
+    public synchronized boolean[] reportResults(int raceId)
     {
-        int raceId = ((Broker) Thread.currentThread()).getCurrentRace();
+
         boolean[] winners = new boolean[N_numCompetitors];
         int winningIteration = Integer.MAX_VALUE;
         int maxDistance = 0;

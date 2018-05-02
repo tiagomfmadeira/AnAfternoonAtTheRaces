@@ -50,8 +50,7 @@ public class Stable
         proceedToPaddockFlag[raceID] = true;
         notifyAll();
 
-        // change Broker state to ANNOUNCING_NEXT_RACE
-        //((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
+        // a change state log here may be nec
         logger.setRaceNumber(raceID);
     }
 
@@ -61,11 +60,8 @@ public class Stable
      * Changes the horse/jockey pair state to AT_THE_STABLE and sleeps waiting
      * for a signal that the next race is starting.
      */
-    public synchronized void proceedToStable()
+    public synchronized void proceedToStable(int raceId)
     {
-        HorseJockey hj = ((HorseJockey) Thread.currentThread());
-
-        int raceId = hj.getRaceId();
 
         // check the flag for this race
         while (!proceedToPaddockFlag[raceId])
@@ -95,13 +91,9 @@ public class Stable
      * instead of blocking again. This is used because the thread would never be
      * awoken again.
      */
-    public synchronized void proceedToStableFinal()
+    public synchronized void proceedToStableFinal(int horseId, int raceId)
     {
         // change HorseJockey state to AT_THE_STABLE
-        HorseJockey hj = ((HorseJockey) Thread.currentThread());
-        hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
-        int horseId = hj.getHorseJockeyID();
-        int raceId = hj.getRaceId();
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, horseId, raceId);
     }
 }

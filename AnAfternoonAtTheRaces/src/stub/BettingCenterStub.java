@@ -3,6 +3,10 @@ package stub;
 import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
+import entities.Broker;
+import entities.BrokerState;
+import entities.Spectator;
+import entities.SpectatorState;
 
 public class BettingCenterStub {
 
@@ -46,6 +50,8 @@ public class BettingCenterStub {
 
         Message result = com.exchange(msg);
 
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
+
     }
 
     public boolean areThereAnyWinners(boolean[] horseJockeyWinners)
@@ -73,31 +79,49 @@ public class BettingCenterStub {
 
         com.exchange(msg);
 
+        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.SETTLING_ACCOUNTS);
+
+
     }
 
     public void placeABet(int horseJockeyID)
     {
+        //  Change Spectator state to PLACING_A_BET
+        Spectator spec = ((Spectator) Thread.currentThread());
+        int specId = spec.getSpectatorID();
+
+        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
                 new Object(){}.getClass().getEnclosingMethod().getName(),
-                (Object)horseJockeyID
+                horseJockeyID,
+                specId,
+                spec.getWalletValue()
         );
 
         Message result = com.exchange(msg);
 
+        spec.updateWalletValue((int)result.getReturnValue());
     }
 
 
     public void goCollectTheGains()
     {
+        Spectator spec = ((Spectator) Thread.currentThread());
+        spec.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS);
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                spec.getSpectatorID()
         );
 
-        com.exchange(msg);
+        Message result = com.exchange(msg);
+
+        spec.updateWalletValue((int)result.getReturnValue());
     }
 
 

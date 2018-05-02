@@ -3,6 +3,10 @@ package stub;
 import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
+import entities.Broker;
+import entities.BrokerState;
+import entities.HorseJockey;
+import entities.HorseJockeyState;
 
 public class RaceTrackStub {
     /**
@@ -35,24 +39,36 @@ public class RaceTrackStub {
 
     public void proceedToStartLine()
     {
+        //  Change HorseJockey state to AT_THE_START_LINE
+        HorseJockey hj = (HorseJockey) Thread.currentThread();
 
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                hj.getHorseJockeyID(),
+                hj.getRaceId()
         );
 
         com.exchange(msg);
+
+        // change state
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE);
+
 
     }
 
     public boolean makeAMove()
     {
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
 
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                hj.getHorseJockeyID(),
+                hj.getRaceId(),
+                hj.getAgility()
         );
 
         Message result = com.exchange(msg);
@@ -63,10 +79,13 @@ public class RaceTrackStub {
 
     public boolean hasRaceEnded()
     {
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                hj.getRaceId()
         );
 
         Message result = com.exchange(msg);
@@ -77,23 +96,33 @@ public class RaceTrackStub {
 
     public void startTheRace()
     {
+        Broker broker = (Broker) Thread.currentThread();
+
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                broker.getCurrentRace()
         );
 
         com.exchange(msg);
+
+        // change state
+        broker.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
 
     }
 
 
     public boolean[] reportResults()
     {
+        int raceId = ((Broker) Thread.currentThread()).getCurrentRace();
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                raceId
         );
 
 

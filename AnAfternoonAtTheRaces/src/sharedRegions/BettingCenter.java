@@ -34,6 +34,8 @@ public class BettingCenter
             numBetsToBeSettled = 0;
     private final GeneralRepositoryStub logger;
 
+    private int[] wallet;
+
     /**
      * Constructor
      *
@@ -62,7 +64,6 @@ public class BettingCenter
         System.arraycopy(horseJockeyOdds, 0, odds, 0, N_numCompetitors);
 
         // Change Broker state to WAITING_FOR_BETS
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
         logger.setBrokerState(BrokerState.WAITING_FOR_BETS);
 
         //let the first one bet
@@ -128,7 +129,6 @@ public class BettingCenter
     public synchronized void honourTheBets()
     {
         // Change Broker state to SETTLING_ACCOUNTS
-        ((Broker) Thread.currentThread()).setBrokerState(BrokerState.SETTLING_ACCOUNTS);
         logger.setBrokerState(BrokerState.SETTLING_ACCOUNTS);
 
         canReceiveMoney = true;
@@ -178,11 +178,9 @@ public class BettingCenter
      *
      * @param horseJockeyID id of the Horse/Jockey pair to place a bet on
      */
-    public synchronized void placeABet(int horseJockeyID)
+    public synchronized int placeABet(int horseJockeyID, int specId, int walletValue)
     {
-        //  Change Spectator state to PLACING_A_BET
-        Spectator spec = ((Spectator) Thread.currentThread());
-        int specId = spec.getSpectatorID();
+
 
         // fill out the bet information
         bets[specId][0] = horseJockeyID;
@@ -193,31 +191,32 @@ public class BettingCenter
         {
             // bet 50%
             case 0:
-                betAmt = (int) Math.floor(((Spectator) Thread.currentThread()).getWalletValue() * 0.5);
+                betAmt = (int) Math.floor(walletValue* 0.5);
                 break;
             // bet 25%
             case 1:
-                betAmt = (int) Math.floor(((Spectator) Thread.currentThread()).getWalletValue() * 0.25);
+                betAmt = (int) Math.floor(walletValue * 0.25);
                 break;
             // bet 25%
             case 2:
-                betAmt = (int) Math.floor(((Spectator) Thread.currentThread()).getWalletValue() * 0.25);
+                betAmt = (int) Math.floor(walletValue * 0.25);
                 break;
             // bet random
             default:
-                int wallet = ((Spectator) Thread.currentThread()).getWalletValue();
+                int wallet = walletValue;
                 betAmt = ThreadLocalRandom.current().nextInt(0, wallet + 1);
                 break;
         }
 
         bets[specId][1] = betAmt;
 
-        ((Spectator) Thread.currentThread()).updateWalletValue(-bets[specId][1]);
-        int newWalletValue = ((Spectator) Thread.currentThread()).getWalletValue();
+        //update wallet value is now in local array
+        //returned
+        int newWalletValue = -bets[specId][1];
+
 
         logger.setSpectatorBet(betAmt, horseJockeyID, newWalletValue, specId);
 
-        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
         logger.setSpectatorState(SpectatorState.PLACING_A_BET, specId);
 
         while (!canPlaceBet)
@@ -246,6 +245,8 @@ public class BettingCenter
         // wake up broker to accept next bet
         nextSpectatorCanPlaceBet = true;
         notifyAll();
+
+        return newWalletValue;
     }
 
     /**
@@ -255,12 +256,10 @@ public class BettingCenter
      * Spectator to settle their bet, in which case wakes up the Broker,
      * releasing him from the state of settling accounts.
      */
-    public synchronized void goCollectTheGains()
+    public synchronized int goCollectTheGains(int specID)
     {
         //  Change Spectator state to COLLECTING_THE_GAINS
-        ((Spectator) Thread.currentThread()).setSpectatorState(SpectatorState.COLLECTING_THE_GAINS);
-        logger.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS,
-                ((Spectator) Thread.currentThread()).getSpectatorID());
+        logger.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS, specID);
 
         while (!canReceiveMoney)
         {
@@ -275,13 +274,10 @@ public class BettingCenter
         canReceiveMoney = false;
 
         // settlement accepted, update wallet with winnings
-        int specID = ((Spectator) Thread.currentThread()).getSpectatorID();
         int horseJockeyBetOnID = bets[specID][0];
         int winnings = (int) Math.round(bets[specID][1] + bets[specID][1] * (1 / odds[horseJockeyBetOnID]));
 
-        ((Spectator) Thread.currentThread()).updateWalletValue(winnings);
-        logger.setMoneyAmount(((Spectator) Thread.currentThread()).getWalletValue(),
-                ((Spectator) Thread.currentThread()).getSpectatorID());
+        logger.setMoneyAmount(winnings,specID);
 
         numBetsToBeSettled--;
 
@@ -295,5 +291,7 @@ public class BettingCenter
         // wake up broker for next bet settle
         nextSpectatorCanReceiveMoney = true;
         notifyAll();
+
+        return winnings;
     }
 }

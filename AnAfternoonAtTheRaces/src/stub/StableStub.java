@@ -5,6 +5,8 @@ import communication.Message;
 import communication.MessageType;
 import entities.Broker;
 import entities.BrokerState;
+import entities.HorseJockey;
+import entities.HorseJockeyState;
 
 public class StableStub {
     /**
@@ -46,6 +48,8 @@ public class StableStub {
         );
 
         com.exchange(msg);
+
+        // change Broker state to ANNOUNCING_NEXT_RACE
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
 
     }
@@ -53,10 +57,13 @@ public class StableStub {
     public void proceedToStable()
     {
 
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
+
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                hj.getRaceId()
         );
 
         com.exchange(msg);
@@ -65,14 +72,18 @@ public class StableStub {
 
     public void proceedToStableFinal()
     {
-
+        HorseJockey hj = ((HorseJockey) Thread.currentThread());
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object(){}.getClass().getEnclosingMethod().getName(),
+                hj.getHorseJockeyID(),
+                hj.getRaceId()
         );
 
         com.exchange(msg);
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
+
 
     }
 
