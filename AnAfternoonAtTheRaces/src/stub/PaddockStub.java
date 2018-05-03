@@ -8,6 +8,8 @@ import entities.HorseJockeyState;
 import entities.Spectator;
 import entities.SpectatorState;
 
+import static stub.Exchange.exchange;
+
 public class PaddockStub {
     /**
      * Nome do sistema computacional onde está localizado o servidor.
@@ -34,7 +36,6 @@ public class PaddockStub {
     public PaddockStub(String hostName, int port) {
         this.serverHostName = hostName;
         this.serverPortNumb = port;
-        this.com = new ClientCom(serverHostName, serverPortNumb);
     }
 
     public boolean proceedToPaddock()
@@ -53,7 +54,7 @@ public class PaddockStub {
                 hj.getAgility()
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         return (boolean) result.getReturnValue();
     }
@@ -67,7 +68,7 @@ public class PaddockStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -79,7 +80,7 @@ public class PaddockStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -99,7 +100,7 @@ public class PaddockStub {
 
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         return (boolean) result.getReturnValue();
     }
@@ -116,7 +117,7 @@ public class PaddockStub {
                 specId
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         return (int) result.getReturnValue();
     }
@@ -129,9 +130,11 @@ public class PaddockStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
+
 
         return (double[]) result.getReturnValue();
     }
+
 
 }

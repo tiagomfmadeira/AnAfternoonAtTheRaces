@@ -7,6 +7,7 @@ import entities.Broker;
 import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
+import static stub.Exchange.exchange;
 
 public class StableStub {
     /**
@@ -21,9 +22,6 @@ public class StableStub {
 
     private int serverPortNumb;
 
-
-    private ClientCom com;
-
     /**
      * Instanciação do stub.
      *
@@ -32,9 +30,8 @@ public class StableStub {
      */
 
     public StableStub(String hostName, int port) {
-        this.serverHostName = hostName;
-        this.serverPortNumb = port;
-        this.com = new ClientCom(serverHostName, serverPortNumb);
+        serverHostName = hostName;
+        serverPortNumb = port;
     }
 
 
@@ -47,11 +44,10 @@ public class StableStub {
                 raceID
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         // change Broker state to ANNOUNCING_NEXT_RACE
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.ANNOUNCING_NEXT_RACE);
-
     }
 
     public void proceedToStable()
@@ -66,7 +62,7 @@ public class StableStub {
                 hj.getRaceId()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -81,10 +77,9 @@ public class StableStub {
                 hj.getRaceId()
         );
 
-        com.exchange(msg);
+        exchange(msg,serverHostName, serverPortNumb);
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
 
 
     }
-
 }

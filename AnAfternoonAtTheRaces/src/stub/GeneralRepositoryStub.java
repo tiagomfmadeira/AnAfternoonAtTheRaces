@@ -8,22 +8,20 @@ import entities.HorseJockeyState;
 import entities.SpectatorState;
 import settings.Settings;
 
+import static stub.Exchange.exchange;
+
 public class GeneralRepositoryStub {
     /**
      * Nome do sistema computacional onde está localizado o servidor.
      */
 
-    private String serverHostName;
+    private static String serverHostName;
 
     /**
      * Número do port de escuta do servidor.
      */
 
-    private int serverPortNumb;
-
-
-    private ClientCom com;
-
+    private static int serverPortNumb;
     /**
      * Instanciação do stub.
      *
@@ -32,9 +30,8 @@ public class GeneralRepositoryStub {
      */
 
     public GeneralRepositoryStub(String hostName, int port) {
-        this.serverHostName = hostName;
-        this.serverPortNumb = port;
-        this.com = new ClientCom(serverHostName, serverPortNumb);
+        serverHostName = hostName;
+        serverPortNumb = port;
     }
 
 
@@ -47,7 +44,7 @@ public class GeneralRepositoryStub {
                 brokerState
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -61,7 +58,7 @@ public class GeneralRepositoryStub {
                 raceNumber
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -75,7 +72,7 @@ public class GeneralRepositoryStub {
                 (Object)distanceInRace
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -91,7 +88,7 @@ public class GeneralRepositoryStub {
                 spectatorId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
     public void setSpectatorState(SpectatorState spectatorState, int spectatorId)
@@ -104,7 +101,7 @@ public class GeneralRepositoryStub {
                 spectatorId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
 
@@ -119,7 +116,7 @@ public class GeneralRepositoryStub {
                 money
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void setSpectatorBet(int spectatorBetAmount, int spectatorBetSelection, int spectatorMoneyAmount, int specId)
@@ -134,7 +131,7 @@ public class GeneralRepositoryStub {
                 specId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void setHorseJockeyState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId)
@@ -148,7 +145,7 @@ public class GeneralRepositoryStub {
                 raceId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void setHorseJockeyInitialState(HorseJockeyState horseJockeyState, int horseJockeyId, int raceId, int agility)
@@ -163,7 +160,7 @@ public class GeneralRepositoryStub {
                 agility
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void setHorseJockeyMove(int horseIteration, int horsePosition, int horseId, int raceId)
@@ -178,7 +175,7 @@ public class GeneralRepositoryStub {
                 raceId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void setHorseJockeyStands(int[] horsesAtEnd, int raceId)
@@ -191,7 +188,7 @@ public class GeneralRepositoryStub {
                 raceId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public Settings getSettings()
@@ -202,7 +199,7 @@ public class GeneralRepositoryStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
         return (Settings) result.getReturnValue();
     }
 

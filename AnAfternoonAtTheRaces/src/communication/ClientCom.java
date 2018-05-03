@@ -52,6 +52,14 @@ public class ClientCom {
     public ClientCom(String hostName, int portNumb) {
         serverHostName = hostName;
         serverPortNumb = portNumb;
+
+        while(!this.open()){
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
     }
 
     /**
@@ -220,26 +228,5 @@ public class ClientCom {
             e.printStackTrace();
             System.exit(1);
         }
-    }
-
-
-    public Message exchange(Message msg)
-    {
-        this.open();
-
-        // send msg to server
-        this.writeObject(msg);
-
-        Message result = (Message) this.readObject();
-
-        if (result.getType() != MessageType.ACK) {
-            System.out.println("invalid type" + result.toString());
-            System.exit(1);
-        }
-
-        // fecho da ligação
-        this.close();
-
-        return result;
     }
 }

@@ -40,5 +40,6 @@ public class PaddockServer {
             aps = new ServerThread(sconi, p);  // lançar agente prestador de serviço
             aps.start();
         }
+        //scon.close();
     }
 }

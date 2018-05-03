@@ -8,22 +8,22 @@ import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
 
+import static stub.Exchange.exchange;
+
 public class BettingCenterStub {
 
     /**
      * Nome do sistema computacional onde está localizado o servidor.
      */
 
-    private String serverHostName;
+    private static String serverHostName;
 
     /**
      * Número do port de escuta do servidor.
      */
 
-    private int serverPortNumb;
+    private static int serverPortNumb;
 
-
-    private ClientCom com;
 
     /**
      * Instanciação do stub.
@@ -33,9 +33,8 @@ public class BettingCenterStub {
      */
 
     public BettingCenterStub(String hostName, int port) {
-        this.serverHostName = hostName;
-        this.serverPortNumb = port;
-        this.com = new ClientCom(serverHostName, serverPortNumb);
+        serverHostName = hostName;
+        serverPortNumb = port;
     }
 
     public void acceptTheBets(double[] horseJockeyOdds)
@@ -48,7 +47,7 @@ public class BettingCenterStub {
                     (Object)horseJockeyOdds
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.WAITING_FOR_BETS);
 
@@ -64,7 +63,7 @@ public class BettingCenterStub {
                 (Object)horseJockeyWinners
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         return (boolean)result.getReturnValue();
     }
@@ -77,7 +76,7 @@ public class BettingCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.SETTLING_ACCOUNTS);
 
@@ -101,7 +100,7 @@ public class BettingCenterStub {
                 spec.getWalletValue()
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         spec.updateWalletValue((int)result.getReturnValue());
     }
@@ -119,7 +118,7 @@ public class BettingCenterStub {
                 spec.getSpectatorID()
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         spec.updateWalletValue((int)result.getReturnValue());
     }

@@ -45,17 +45,20 @@ public class Paddock
      */
     public synchronized boolean proceedToPaddock(int horseJockeyID, int raceID, int agility)
     {
+
+        System.out.println("in proceed");
         boolean isLastHorse = false;
 
         // get ID of the horse/Jockey
 
         // save reference of the Horse/Jockey to be used by spectator thread in appraising
         horseAgility[horseJockeyID] = agility;
+        System.out.println("gonna do log");
 
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK, horseJockeyID, raceID);
 
         horsesAtPaddockCount++;
-
+        System.out.println("comp");
         // if is last horse to reach the paddock
         if (horsesAtPaddockCount == N_numCompetitors)
         {

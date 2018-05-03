@@ -8,6 +8,8 @@ import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
 
+import static stub.Exchange.exchange;
+
 public class RaceTrackStub {
     /**
      * Nome do sistema computacional onde está localizado o servidor.
@@ -21,9 +23,6 @@ public class RaceTrackStub {
 
     private int serverPortNumb;
 
-
-    private ClientCom com;
-
     /**
      * Instanciação do stub.
      *
@@ -32,9 +31,8 @@ public class RaceTrackStub {
      */
 
     public RaceTrackStub(String hostName, int port) {
-        this.serverHostName = hostName;
-        this.serverPortNumb = port;
-        this.com = new ClientCom(serverHostName, serverPortNumb);
+        serverHostName = hostName;
+        serverPortNumb = port;
     }
 
     public void proceedToStartLine()
@@ -50,7 +48,7 @@ public class RaceTrackStub {
                 hj.getRaceId()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         // change state
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_START_LINE);
@@ -71,7 +69,8 @@ public class RaceTrackStub {
                 hj.getAgility()
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
+
 
         return (boolean) result.getReturnValue();
 
@@ -88,7 +87,8 @@ public class RaceTrackStub {
                 hj.getRaceId()
         );
 
-        Message result = com.exchange(msg);
+        Message result =  exchange(msg, serverHostName, serverPortNumb);
+
 
         return (boolean) result.getReturnValue();
 
@@ -106,7 +106,7 @@ public class RaceTrackStub {
                 broker.getCurrentRace()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         // change state
         broker.setBrokerState(BrokerState.SUPERVISING_THE_RACE);
@@ -126,7 +126,8 @@ public class RaceTrackStub {
         );
 
 
-        Message result = com.exchange(msg);
+        Message result =  exchange(msg, serverHostName, serverPortNumb);
+
 
         return (boolean[]) result.getReturnValue();
     }

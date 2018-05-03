@@ -60,6 +60,7 @@ public class HorseJockey extends Thread
     public void run()
     {
         stable.proceedToStable();
+
         boolean last = paddock.proceedToPaddock();
         if (last)
         {                                                   // if is last Horse/Jockey pair to reach the paddock

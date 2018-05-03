@@ -40,7 +40,6 @@ public class ServerThread extends Thread{
     @Override
     public void run ()
     {
-
         /* prestação propriamente dita do serviço */
         Message msg  = (Message)com.readObject();
 

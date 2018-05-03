@@ -8,6 +8,8 @@ import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
 
+import static stub.Exchange.exchange;
+
 public class ControlCenterStub {
     /**
      * Nome do sistema computacional onde está localizado o servidor.
@@ -32,9 +34,8 @@ public class ControlCenterStub {
      */
 
     public ControlCenterStub(String hostName, int port) {
-        this.serverHostName = hostName;
-        this.serverPortNumb = port;
-        this.com = new ClientCom(serverHostName, serverPortNumb);
+        serverHostName = hostName;
+        serverPortNumb = port;
     }
 
     public void proceedToPaddock()
@@ -46,7 +47,7 @@ public class ControlCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void makeAMove()
@@ -58,7 +59,7 @@ public class ControlCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public boolean waitForNextRace()
@@ -75,7 +76,7 @@ public class ControlCenterStub {
                 specId
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         // change state
         spec.setSpectatorState(SpectatorState.WAITING_FOR_A_RACE_TO_START);
@@ -92,7 +93,7 @@ public class ControlCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
     }
 
@@ -110,7 +111,7 @@ public class ControlCenterStub {
 
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         // change state
         spec.setSpectatorState(SpectatorState.WATCHING_A_RACE);
@@ -126,7 +127,7 @@ public class ControlCenterStub {
                 horseJockey
         );
 
-        Message result = com.exchange(msg);
+        Message result = exchange(msg, serverHostName, serverPortNumb);
 
         return (boolean) result.getReturnValue();
     }
@@ -145,7 +146,7 @@ public class ControlCenterStub {
                 specId
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         //change state
         spec.setSpectatorState(SpectatorState.CELEBRATING);
@@ -160,7 +161,7 @@ public class ControlCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void startTheRace()
@@ -171,7 +172,7 @@ public class ControlCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void reportResults(boolean[] horseJockeysDeclaredWinners)
@@ -183,7 +184,7 @@ public class ControlCenterStub {
                 (Object)horseJockeysDeclaredWinners
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
     public void entertainTheGuests()
@@ -194,14 +195,10 @@ public class ControlCenterStub {
                 new Object(){}.getClass().getEnclosingMethod().getName()
         );
 
-        com.exchange(msg);
+        exchange(msg, serverHostName, serverPortNumb);
 
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
 
     }
-
-
-
-
 
 }

@@ -43,7 +43,6 @@ public class HorseJockeyMain {
                 settings.STABLE_PORT_NUM
         );
 
-
         HorseJockey horseJockey[][] = new HorseJockey[settings.K_numRaces][settings.N_numCompetitors];
         Random rand = new Random();
 
