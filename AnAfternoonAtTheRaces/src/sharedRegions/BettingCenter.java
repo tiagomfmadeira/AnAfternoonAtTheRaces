@@ -181,7 +181,6 @@ public class BettingCenter
     public synchronized int placeABet(int horseJockeyID, int specId, int walletValue)
     {
 
-
         // fill out the bet information
         bets[specId][0] = horseJockeyID;
 
@@ -191,7 +190,7 @@ public class BettingCenter
         {
             // bet 50%
             case 0:
-                betAmt = (int) Math.floor(walletValue* 0.5);
+                betAmt = (int) Math.floor(walletValue * 0.5);
                 break;
             // bet 25%
             case 1:
@@ -203,21 +202,13 @@ public class BettingCenter
                 break;
             // bet random
             default:
-                int wallet = walletValue;
-                betAmt = ThreadLocalRandom.current().nextInt(0, wallet + 1);
+                betAmt = ThreadLocalRandom.current().nextInt(0, walletValue + 1);
                 break;
         }
 
         bets[specId][1] = betAmt;
 
-        //update wallet value is now in local array
-        //returned
-        int newWalletValue = -bets[specId][1];
-
-
-        logger.setSpectatorBet(betAmt, horseJockeyID, newWalletValue, specId);
-
-        logger.setSpectatorState(SpectatorState.PLACING_A_BET, specId);
+        logger.setSpectatorBet(betAmt, horseJockeyID, walletValue - betAmt, specId);
 
         while (!canPlaceBet)
         {
@@ -246,7 +237,7 @@ public class BettingCenter
         nextSpectatorCanPlaceBet = true;
         notifyAll();
 
-        return newWalletValue;
+        return -betAmt;
     }
 
     /**
@@ -256,7 +247,7 @@ public class BettingCenter
      * Spectator to settle their bet, in which case wakes up the Broker,
      * releasing him from the state of settling accounts.
      */
-    public synchronized int goCollectTheGains(int specID)
+    public synchronized int goCollectTheGains(int specID, int walletValue)
     {
         //  Change Spectator state to COLLECTING_THE_GAINS
         logger.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS, specID);
@@ -277,7 +268,7 @@ public class BettingCenter
         int horseJockeyBetOnID = bets[specID][0];
         int winnings = (int) Math.round(bets[specID][1] + bets[specID][1] * (1 / odds[horseJockeyBetOnID]));
 
-        logger.setMoneyAmount(winnings,specID);
+        logger.setMoneyAmount(walletValue + winnings, specID);
 
         numBetsToBeSettled--;
 

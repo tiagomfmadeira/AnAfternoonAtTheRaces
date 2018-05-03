@@ -2,10 +2,14 @@ package settings;
 
 import java.io.Serializable;
 
-public class Settings implements Serializable{
+public class Settings implements Serializable
+{
 
     private static Settings instance = null;
-    private Settings() {}
+
+    private Settings()
+    {
+    }
 
     // settings accessed by all
     public static final String GENERAL_REPOSITORY_HOST_NAME = "localhost";
@@ -42,17 +46,18 @@ public class Settings implements Serializable{
      */
     public final int M_numSpectators = 4;
 
-
-    private static int portNumb(int workstation){
-        return 2650+workstation;
+    private static int portNumb(int port)
+    {
+        return 22450 + port;
     }
 
-    public static Settings getInstance() {
-        if(instance == null) {
+    public static Settings getInstance()
+    {
+        if (instance == null)
+        {
             instance = new Settings();
         }
         return instance;
     }
-
 
 }
