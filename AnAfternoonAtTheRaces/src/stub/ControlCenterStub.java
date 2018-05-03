@@ -8,7 +8,7 @@ import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
 
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class ControlCenterStub {
     /**
@@ -199,6 +199,17 @@ public class ControlCenterStub {
 
         ((Broker) Thread.currentThread()).setBrokerState(BrokerState.PLAYING_HOST_AT_THE_BAR);
 
+    }
+
+    public void shutdown()
+    {
+        //conversão do metodo a invocar numa mensagem
+        Message msg = new Message(
+                MessageType.TERMINATE,
+                new Object(){}.getClass().getEnclosingMethod().getName()
+        );
+
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
 }

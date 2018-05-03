@@ -6,6 +6,8 @@ import sharedRegions.BettingCenter;
 import sharedRegions.ControlCenter;
 import stub.GeneralRepositoryStub;
 
+import java.net.SocketTimeoutException;
+
 public class ControlCenterServer {
     public static void main (String[] args)
     {
@@ -34,11 +36,14 @@ public class ControlCenterServer {
         // temporary
         boolean hasServiceFinished = false;
 
-        while (!hasServiceFinished)
+        while (!cc.hasServiceFinished())
         {
-            sconi = scon.accept();              // entrar em processo de escuta
+            sconi = scon.accept();
+            if(sconi == null){ continue; }           // entrar em processo de escuta
             aps = new ServerThread(sconi, cc);  // lançar agente prestador de serviço
             aps.start();
         }
+
+        scon.close();
     }
 }

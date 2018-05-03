@@ -1,6 +1,5 @@
 package stub;
 
-import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
 import entities.Broker;
@@ -8,7 +7,7 @@ import entities.BrokerState;
 import entities.Spectator;
 import entities.SpectatorState;
 
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class BettingCenterStub {
 
@@ -16,13 +15,13 @@ public class BettingCenterStub {
      * Nome do sistema computacional onde está localizado o servidor.
      */
 
-    private static String serverHostName;
+    private String serverHostName;
 
     /**
      * Número do port de escuta do servidor.
      */
 
-    private static int serverPortNumb;
+    private int serverPortNumb;
 
 
     /**
@@ -123,5 +122,12 @@ public class BettingCenterStub {
         spec.updateWalletValue((int)result.getReturnValue());
     }
 
+    public void shutdown(){
+        Message msg = new Message(
+                MessageType.TERMINATE,
+                new Object(){}.getClass().getEnclosingMethod().getName()
+        );
+        exchange(msg, serverHostName, serverPortNumb);
+    }
 
 }

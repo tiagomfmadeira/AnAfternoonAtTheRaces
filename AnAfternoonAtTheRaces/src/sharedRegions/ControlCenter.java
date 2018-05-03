@@ -28,6 +28,8 @@ public class ControlCenter
     private boolean[] horseJockeysWinners;
     private final GeneralRepositoryStub logger;
 
+    private boolean shutdownServer = false;
+
     /**
      * Constructor
      *
@@ -238,5 +240,13 @@ public class ControlCenter
 
         nextRaceExists = false;
         notifyAll();
+    }
+
+    public synchronized void shutdown(){
+        shutdownServer = true;
+    }
+
+    public synchronized boolean hasServiceFinished(){
+        return shutdownServer;
     }
 }

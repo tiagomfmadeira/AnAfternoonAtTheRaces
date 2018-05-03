@@ -32,6 +32,8 @@ public class RaceTrack
     private final int[] finishLineCount = new int[SimulPar.K_numRaces];
     private final GeneralRepositoryStub logger;
 
+    private boolean shutdownServer = false;
+
     /**
      * Constructor
      *
@@ -280,6 +282,14 @@ public class RaceTrack
         logger.setHorseJockeyStands(order, raceId);
 
         return winners;
+    }
+
+    public synchronized void shutdown(){
+        shutdownServer = true;
+    }
+
+    public synchronized boolean hasServiceFinished(){
+        return shutdownServer;
     }
 
 }

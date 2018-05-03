@@ -8,7 +8,7 @@ import entities.HorseJockeyState;
 import entities.Spectator;
 import entities.SpectatorState;
 
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class PaddockStub {
     /**
@@ -134,6 +134,14 @@ public class PaddockStub {
 
 
         return (double[]) result.getReturnValue();
+    }
+
+    public void shutdown(){
+        Message msg = new Message(
+                MessageType.TERMINATE,
+                new Object(){}.getClass().getEnclosingMethod().getName()
+        );
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
 

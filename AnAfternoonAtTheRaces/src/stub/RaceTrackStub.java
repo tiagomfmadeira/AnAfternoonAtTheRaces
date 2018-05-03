@@ -1,6 +1,5 @@
 package stub;
 
-import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
 import entities.Broker;
@@ -8,7 +7,7 @@ import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
 
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class RaceTrackStub {
     /**
@@ -130,6 +129,14 @@ public class RaceTrackStub {
 
 
         return (boolean[]) result.getReturnValue();
+    }
+
+    public void shutdown(){
+        Message msg = new Message(
+                MessageType.TERMINATE,
+                new Object(){}.getClass().getEnclosingMethod().getName()
+        );
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
 }

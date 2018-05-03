@@ -46,7 +46,6 @@ public class ServerThread extends Thread{
         // seu envio ao cliente
         com.writeObject(new Message(invokeMethod(msg)));
 
-        // not sure of this
         com.close();
     }
 

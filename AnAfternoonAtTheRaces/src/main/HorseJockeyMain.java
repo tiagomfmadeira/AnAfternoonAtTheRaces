@@ -23,11 +23,6 @@ public class HorseJockeyMain {
                 settings.CONTROL_CENTER_PORT_NUM
         );
 
-        BettingCenterStub bettingCenter = new BettingCenterStub(
-                settings.BETTING_CENTER_HOST_NAME,
-                settings.BETTING_CENTER_PORT_NUM
-        );
-
         PaddockStub paddock = new PaddockStub(
                 settings.PADDOCK_HOST_NAME,
                 settings.PADDOCK_PORT_NUM
@@ -74,5 +69,6 @@ public class HorseJockeyMain {
                 }
             }
         }
+        gr.shutdown();
     }
 }

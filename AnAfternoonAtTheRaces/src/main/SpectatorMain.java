@@ -29,16 +29,6 @@ public class SpectatorMain {
                 settings.PADDOCK_PORT_NUM
         );
 
-        RaceTrackStub raceTrack = new RaceTrackStub(
-                settings.RACE_TRACK_HOST_NAME,
-                settings.RACE_TRACK_PORT_NUM
-        );
-
-        StableStub stable = new StableStub(
-                settings.STABLE_HOST_NAME,
-                settings.STABLE_PORT_NUM
-        );
-
         Spectator spectator[] = new Spectator[settings.M_numSpectators];
 
         for (int i = 0; i < settings.M_numSpectators; i++)
@@ -58,6 +48,7 @@ public class SpectatorMain {
             {}
         }
 
+        gr.shutdown();
 
     }
 }

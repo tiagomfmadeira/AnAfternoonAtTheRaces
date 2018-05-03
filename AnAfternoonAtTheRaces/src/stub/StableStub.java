@@ -1,13 +1,12 @@
 package stub;
 
-import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
 import entities.Broker;
 import entities.BrokerState;
 import entities.HorseJockey;
 import entities.HorseJockeyState;
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class StableStub {
     /**
@@ -80,6 +79,13 @@ public class StableStub {
         exchange(msg,serverHostName, serverPortNumb);
         hj.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE);
 
+    }
 
+    public void shutdown(){
+        Message msg = new Message(
+                MessageType.TERMINATE,
+                new Object(){}.getClass().getEnclosingMethod().getName()
+        );
+        exchange(msg, serverHostName, serverPortNumb);
     }
 }

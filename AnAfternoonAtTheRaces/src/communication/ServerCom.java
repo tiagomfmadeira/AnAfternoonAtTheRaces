@@ -82,7 +82,8 @@ public class ServerCom
         {
             listeningSocket = new ServerSocket (serverPortNumb);
             // 1 second timeout
-            //listeningSocket.setSoTimeout(1000);
+            listeningSocket.setSoTimeout(1000);
+
         }
         catch (BindException e)                         // erro fatal --- port já em uso
         { System.out.println (Thread.currentThread ().getName () +
@@ -98,6 +99,8 @@ public class ServerCom
             e.printStackTrace ();
             System.exit (1);
         }
+
+
     }
 
     /**
@@ -135,6 +138,9 @@ public class ServerCom
         try
         { scon.commSocket = listeningSocket.accept();
         }
+        catch(SocketTimeoutException e){
+            return null;
+        }
         catch (SocketException e)
         { System.out.println (Thread.currentThread ().getName () +
                 " - foi fechado o socket de escuta durante o processo de escuta!");
@@ -147,6 +153,15 @@ public class ServerCom
             e.printStackTrace ();
             System.exit (1);
         }
+
+
+        // avoid race condition
+        try {
+            listeningSocket.setSoTimeout(1000);
+        }
+        catch(SocketException e)
+        {}
+
 
         try
         { scon.in = new ObjectInputStream (scon.commSocket.getInputStream ());
@@ -180,7 +195,7 @@ public class ServerCom
     public void close ()
     {
         try
-        { in.close();
+        { if(in != null) in.close();
         }
         catch (IOException e)
         { System.out.println (Thread.currentThread ().getName () +
@@ -190,7 +205,7 @@ public class ServerCom
         }
 
         try
-        { out.close();
+        { if(out != null) out.close();
         }
         catch (IOException e)
         { System.out.println (Thread.currentThread ().getName () +
@@ -200,7 +215,7 @@ public class ServerCom
         }
 
         try
-        { commSocket.close();
+        { if(commSocket != null) commSocket.close();
         }
         catch (IOException e)
         { System.out.println (Thread.currentThread ().getName () +

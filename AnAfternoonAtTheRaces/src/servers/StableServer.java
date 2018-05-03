@@ -6,6 +6,8 @@ import sharedRegions.BettingCenter;
 import sharedRegions.Stable;
 import stub.GeneralRepositoryStub;
 
+import java.net.SocketTimeoutException;
+
 public class StableServer {
     public static void main (String[] args)
     {
@@ -34,11 +36,17 @@ public class StableServer {
         // temporary
         boolean hasServiceFinished = false;
 
-        while (!hasServiceFinished)
+        while (!s.hasServiceFinished())
         {
-            sconi = scon.accept();              // entrar em processo de escuta
-            aps = new ServerThread(sconi, s);  // lançar agente prestador de serviço
-            aps.start();
+            // entrar em processo de escuta
+            sconi = scon.accept();
+
+            if(sconi != null) {
+                aps = new ServerThread(sconi, s);  // lançar agente prestador de serviço
+                aps.start();
+            }
         }
+
+        scon.close();
     }
 }

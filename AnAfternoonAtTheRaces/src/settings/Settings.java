@@ -44,7 +44,7 @@ public class Settings implements Serializable{
 
 
     private static int portNumb(int workstation){
-        return 2650+workstation;
+        return 22450+workstation;
     }
 
     public static Settings getInstance() {

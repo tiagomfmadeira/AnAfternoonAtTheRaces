@@ -1,6 +1,5 @@
 package stub;
 
-import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
 import entities.BrokerState;
@@ -8,7 +7,7 @@ import entities.HorseJockeyState;
 import entities.SpectatorState;
 import settings.Settings;
 
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class GeneralRepositoryStub {
     /**
@@ -201,6 +200,14 @@ public class GeneralRepositoryStub {
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
         return (Settings) result.getReturnValue();
+    }
+
+    public void shutdown(){
+        Message msg = new Message(
+                MessageType.TERMINATE,
+                new Object(){}.getClass().getEnclosingMethod().getName()
+        );
+        exchange(msg, serverHostName, serverPortNumb);
     }
 
 

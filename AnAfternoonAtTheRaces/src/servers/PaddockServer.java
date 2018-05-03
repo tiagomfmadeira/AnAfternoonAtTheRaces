@@ -6,6 +6,8 @@ import sharedRegions.BettingCenter;
 import sharedRegions.Paddock;
 import stub.GeneralRepositoryStub;
 
+import java.net.SocketTimeoutException;
+
 public class PaddockServer {
     public static void main (String[] args)
     {
@@ -34,12 +36,13 @@ public class PaddockServer {
         // temporary
         boolean hasServiceFinished = false;
 
-        while (!hasServiceFinished)
+        while (!p.hasServiceFinished())
         {
-            sconi = scon.accept();              // entrar em processo de escuta
+            sconi = scon.accept();
+            if(sconi == null){ continue; }
             aps = new ServerThread(sconi, p);  // lançar agente prestador de serviço
             aps.start();
         }
-        //scon.close();
+        scon.close();
     }
 }

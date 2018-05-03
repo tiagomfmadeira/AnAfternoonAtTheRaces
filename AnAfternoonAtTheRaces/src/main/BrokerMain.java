@@ -4,9 +4,6 @@ package main;
 import entities.Broker;
 import settings.Settings;
 import stub.*;
-import static main.SimulPar.K_numRaces;
-import static main.SimulPar.M_numSpectators;
-import static main.SimulPar.N_numCompetitors;
 
 
 public class BrokerMain {
@@ -55,5 +52,7 @@ public class BrokerMain {
             broker.join();
         } catch (InterruptedException e)
         {}
+
+        gr.shutdown();
     }
 }

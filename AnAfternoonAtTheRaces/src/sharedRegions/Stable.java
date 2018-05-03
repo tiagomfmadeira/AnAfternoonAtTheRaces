@@ -24,6 +24,8 @@ public class Stable
     private final int[] proceededHorsesCount = new int[K_numRaces];
     private final GeneralRepositoryStub logger;
 
+    private boolean shutdownServer = false;
+
     /**
      * Constructor
      *
@@ -95,5 +97,13 @@ public class Stable
     {
         // change HorseJockey state to AT_THE_STABLE
         logger.setHorseJockeyState(HorseJockeyState.AT_THE_STABLE, horseId, raceId);
+    }
+
+    public synchronized void shutdown(){
+        shutdownServer = true;
+    }
+
+    public synchronized boolean hasServiceFinished(){
+        return shutdownServer;
     }
 }

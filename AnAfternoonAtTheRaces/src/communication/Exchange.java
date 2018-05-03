@@ -1,11 +1,11 @@
-package stub;
+package communication;
 
 import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
 
 public class Exchange {
-     static Message exchange(Message msg, String serverHostName, int serverPortNumb)
+    public static Message exchange(Message msg, String serverHostName, int serverPortNumb)
     {
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);
 

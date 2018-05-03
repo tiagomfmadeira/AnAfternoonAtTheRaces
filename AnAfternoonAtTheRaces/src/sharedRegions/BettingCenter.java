@@ -36,6 +36,8 @@ public class BettingCenter
 
     private int[] wallet;
 
+    private boolean shutdownServer = false;
+
     /**
      * Constructor
      *
@@ -293,5 +295,12 @@ public class BettingCenter
         notifyAll();
 
         return winnings;
+    }
+    public synchronized void shutdown(){
+        shutdownServer = true;
+    }
+
+    public synchronized boolean hasServiceFinished(){
+        return shutdownServer;
     }
 }

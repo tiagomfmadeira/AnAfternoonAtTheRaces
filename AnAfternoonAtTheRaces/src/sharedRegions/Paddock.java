@@ -23,6 +23,8 @@ public class Paddock
             spectatorsAtPaddockCount = 0;
     private final GeneralRepositoryStub logger;
 
+    private boolean shutdownServer = false;
+
     /**
      * Constructor
      *
@@ -251,5 +253,13 @@ public class Paddock
         }
 
         return odds;
+    }
+
+    public synchronized void shutdown(){
+        shutdownServer = true;
+    }
+
+    public synchronized boolean hasServiceFinished(){
+        return shutdownServer;
     }
 }
