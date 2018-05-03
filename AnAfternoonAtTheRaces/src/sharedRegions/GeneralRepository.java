@@ -210,6 +210,7 @@ public class GeneralRepository
         this.spectatorBetAmount[this.raceNumber][specId] = spectatorBetAmount;
         this.spectatorBetSelection[this.raceNumber][specId] = spectatorBetSelection;
         this.moneyAmount[specId] = spectatorMoneyAmount;
+        setSpectatorState(SpectatorState.PLACING_A_BET, specId);
     }
 
     /**
@@ -391,8 +392,8 @@ public class GeneralRepository
 
     }
 
-
-    public synchronized Settings getSettings(){
+    public synchronized Settings getSettings()
+    {
         return Settings.getInstance();
     }
 

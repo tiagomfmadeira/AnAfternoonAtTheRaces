@@ -27,11 +27,12 @@ public class BettingCenterStub {
     /**
      * Instanciação do stub.
      *
-     * @param hostName nome do sistema computacional onde está localizado o servidor
+     * @param hostName nome do sistema computacional onde está localizado o
+     *                 servidor
      * @param port     número do port de escuta do servidor
      */
-
-    public BettingCenterStub(String hostName, int port) {
+    public BettingCenterStub(String hostName, int port)
+    {
         serverHostName = hostName;
         serverPortNumb = port;
     }
@@ -41,9 +42,11 @@ public class BettingCenterStub {
 
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
-                    MessageType.FUNCTION,
-                    new Object(){}.getClass().getEnclosingMethod().getName(),
-                    (Object)horseJockeyOdds
+                MessageType.FUNCTION,
+                new Object()
+                {
+                }.getClass().getEnclosingMethod().getName(),
+                (Object) horseJockeyOdds
         );
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
@@ -58,8 +61,10 @@ public class BettingCenterStub {
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName(),
-                (Object)horseJockeyWinners
+                new Object()
+                {
+                }.getClass().getEnclosingMethod().getName(),
+                (Object) horseJockeyWinners
         );
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
@@ -72,7 +77,9 @@ public class BettingCenterStub {
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName()
+                new Object()
+                {
+                }.getClass().getEnclosingMethod().getName()
         );
 
         exchange(msg, serverHostName, serverPortNumb);
@@ -88,12 +95,12 @@ public class BettingCenterStub {
         Spectator spec = ((Spectator) Thread.currentThread());
         int specId = spec.getSpectatorID();
 
-        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
-
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName(),
+                new Object()
+                {
+                }.getClass().getEnclosingMethod().getName(),
                 horseJockeyID,
                 specId,
                 spec.getWalletValue()
@@ -101,25 +108,30 @@ public class BettingCenterStub {
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
 
-        spec.updateWalletValue((int)result.getReturnValue());
-    }
+        spec.setSpectatorState(SpectatorState.PLACING_A_BET);
 
+        spec.updateWalletValue((int) result.getReturnValue());
+    }
 
     public void goCollectTheGains()
     {
         Spectator spec = ((Spectator) Thread.currentThread());
-        spec.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS);
 
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
-                new Object(){}.getClass().getEnclosingMethod().getName(),
-                spec.getSpectatorID()
+                new Object()
+                {
+                }.getClass().getEnclosingMethod().getName(),
+                spec.getSpectatorID(),
+                spec.getWalletValue()
         );
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
 
-        spec.updateWalletValue((int)result.getReturnValue());
+        spec.setSpectatorState(SpectatorState.COLLECTING_THE_GAINS);
+
+        spec.updateWalletValue((int) result.getReturnValue());
     }
 
     public void shutdown(){
