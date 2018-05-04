@@ -5,7 +5,7 @@ import communication.MessageType;
 import entities.HorseJockeyState;
 import settings.Settings;
 
-import static stub.Exchange.exchange;
+import static communication.Exchange.exchange;
 
 public class GeneralRepositoryStub
 {
