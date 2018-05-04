@@ -39,7 +39,7 @@ public class ClientCom
     private ObjectOutputStream out = null;
 
     /**
-     * Instantiation of a communication channel.
+     * Constructor
      *
      * @param hostName the name of the computational system where the server is
      *                 located

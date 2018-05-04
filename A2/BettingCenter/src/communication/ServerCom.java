@@ -57,7 +57,7 @@ public class ServerCom
     }
 
     /**
-     * Instantiation of a communication channel.
+     * Constructor
      *
      * @param portNumb the number of the server's listening port
      * @param lSocket  the listener socket

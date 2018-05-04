@@ -6,20 +6,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * General description: Definition of a service providing agent.
+ */
 public class ServerThread extends Thread
 {
 
     /**
-     * Variáveis internas
+     * Internal data
      */
-    private ServerCom com;                                  // socket de comunicação com o cliente
-    private Object region;                         // serviço a ser fornecido
+    private ServerCom com;      // socket de comunicação com o cliente
+    private Object region;      // serviço a ser fornecido
 
     /**
-     * Construtor de variáveis.
+     * Constructor
      *
-     * @param com    canal de comunicação
-     * @param region serviço
+     * @param com    communication channel
+     * @param region shared memory region to provide the service from
      */
     public ServerThread(ServerCom com, Object region)
     {
@@ -28,7 +31,7 @@ public class ServerThread extends Thread
     }
 
     /**
-     * Operacionalidade
+     * Life cycle
      */
     @Override
     public void run()

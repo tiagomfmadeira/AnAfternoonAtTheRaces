@@ -4,9 +4,18 @@ import settings.Settings;
 import stub.*;
 import java.util.Random;
 
+/**
+ * General description: Main class.
+ */
 public class HorseJockeyMain
 {
 
+    /**
+     * Creation and starting of the Horse/Jockey entity. Instantiation of the
+     * required stubs.
+     *
+     * @param args command line arguments not used
+     */
     public static void main(String[] args)
     {
         GeneralRepositoryStub gr = new GeneralRepositoryStub(

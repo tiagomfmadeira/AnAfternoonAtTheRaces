@@ -4,9 +4,18 @@ import entities.Spectator;
 import settings.Settings;
 import stub.*;
 
+/**
+ * General description: Main class.
+ */
 public class SpectatorMain
 {
 
+    /**
+     * Creation and starting of the Spectator entity. Instantiation of the
+     * required stubs.
+     *
+     * @param args command line arguments not used
+     */
     public static void main(String[] args)
     {
         GeneralRepositoryStub gr = new GeneralRepositoryStub(

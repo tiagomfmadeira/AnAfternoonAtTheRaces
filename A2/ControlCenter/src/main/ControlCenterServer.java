@@ -5,9 +5,19 @@ import settings.Settings;
 import sharedRegions.ControlCenter;
 import stub.GeneralRepositoryStub;
 
+/**
+ * General description: Main class.
+ */
 public class ControlCenterServer
 {
 
+    /**
+     * Instantiation of the Control Center shared memory region. Setting up of
+     * the server awaiting requests inbound. Instantiation of service providing
+     * agents, which will execute functions of the shared memory region.
+     *
+     * @param args command line arguments not used
+     */
     public static void main(String[] args)
     {
         // get settings from general repository

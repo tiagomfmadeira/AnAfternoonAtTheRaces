@@ -1,7 +1,7 @@
 package main;
 
 /**
- * General description: Initialization of certain key parameters used to run the
+ * General description: Initialisation of certain key parameters used to run the
  * program.
  */
 public class SimulPar

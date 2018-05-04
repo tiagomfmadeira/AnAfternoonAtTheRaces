@@ -4,9 +4,18 @@ import entities.Broker;
 import settings.Settings;
 import stub.*;
 
+/**
+ * General description: Main class.
+ */
 public class BrokerMain
 {
 
+    /**
+     * Creation and starting of the Broker entity. Instantiation of the required
+     * stubs.
+     *
+     * @param args command line arguments not used
+     */
     public static void main(String[] args)
     {
 
