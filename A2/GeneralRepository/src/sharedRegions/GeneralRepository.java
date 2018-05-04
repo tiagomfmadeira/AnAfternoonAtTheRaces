@@ -3,7 +3,9 @@ package sharedRegions;
 import entities.*;
 import settings.Settings;
 import stub.*;
-
+import static main.SimulPar.M_numSpectators;
+import static main.SimulPar.N_numCompetitors;
+import static main.SimulPar.K_numRaces;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,23 +17,24 @@ import java.util.Arrays;
  */
 public class GeneralRepository
 {
+
     private Settings settings = Settings.getInstance();
     private int shutdownSignals = 0;
     private boolean shutdownAllServers = false;
 
     private BrokerState brokerState;
-    private SpectatorState[] spectatorStates = new SpectatorState[settings.M_numSpectators];
-    private int[] moneyAmount = new int[settings.M_numSpectators];
-    private int[][] spectatorBetSelection = new int[settings.K_numRaces][settings.M_numSpectators];
-    private int[][] spectatorBetAmount = new int[settings.K_numRaces][settings.M_numSpectators];
+    private SpectatorState[] spectatorStates = new SpectatorState[M_numSpectators];
+    private int[] moneyAmount = new int[M_numSpectators];
+    private int[][] spectatorBetSelection = new int[K_numRaces][M_numSpectators];
+    private int[][] spectatorBetAmount = new int[K_numRaces][M_numSpectators];
     private int raceNumber = 0;
     private int[] distanceInRace;
-    private HorseJockeyState[][] horseJockeyState = new HorseJockeyState[settings.K_numRaces][settings.N_numCompetitors];
-    private double[][] horseOdds = new double[settings.K_numRaces][settings.N_numCompetitors];
-    private int[][] horseIteration = new int[settings.K_numRaces][settings.N_numCompetitors];
-    private int[][] horseAtEnd = new int[settings.K_numRaces][settings.N_numCompetitors];
-    private int[][] horsePosition = new int[settings.K_numRaces][settings.N_numCompetitors];
-    private int[][] maxMovingLength = new int[settings.K_numRaces][settings.N_numCompetitors];
+    private HorseJockeyState[][] horseJockeyState = new HorseJockeyState[K_numRaces][N_numCompetitors];
+    private double[][] horseOdds = new double[K_numRaces][N_numCompetitors];
+    private int[][] horseIteration = new int[K_numRaces][N_numCompetitors];
+    private int[][] horseAtEnd = new int[K_numRaces][N_numCompetitors];
+    private int[][] horsePosition = new int[K_numRaces][N_numCompetitors];
+    private int[][] maxMovingLength = new int[K_numRaces][N_numCompetitors];
 
     private String logFileName = "log";
 
@@ -81,12 +84,12 @@ public class GeneralRepository
         String headerLine1 = "MAN/BRK           SPECTATOR/BETTER              HORSE/JOCKEY PAIR at Race RN";
 
         String headerLine2 = "  Stat ";
-        for (int i = 0; i < settings.M_numSpectators; i++)
+        for (int i = 0; i < M_numSpectators; i++)
         {
             headerLine2 += " St" + i + "  " + "Am" + i;
         }
         headerLine2 += " RN";
-        for (int i = 0; i < settings.N_numCompetitors; i++)
+        for (int i = 0; i < N_numCompetitors; i++)
         {
             headerLine2 += " St" + i + " " + "Len" + i;
         }
@@ -94,12 +97,12 @@ public class GeneralRepository
         String headerLine3 = String.format("%1$" + 45 + "s", "Race RN Status");
 
         String headerLine4 = " RN Dist";
-        for (int i = 0; i < settings.M_numSpectators; i++)
+        for (int i = 0; i < M_numSpectators; i++)
         {
             headerLine4 += " BS" + i + "  " + "BA" + i;
         }
         headerLine4 += " ";
-        for (int i = 0; i < settings.N_numCompetitors; i++)
+        for (int i = 0; i < N_numCompetitors; i++)
         {
             headerLine4 += " Od" + i + " " + "N" + i + " " + "Ps" + i + " SD" + i;
         }
@@ -250,7 +253,7 @@ public class GeneralRepository
 
         boolean allAgilitySet = true;
         double totalAgility = 0;
-        for (int i = 0; i < settings.N_numCompetitors; i++)
+        for (int i = 0; i < N_numCompetitors; i++)
         {
             if (this.maxMovingLength[raceId][i] == -1)
             {
@@ -261,7 +264,7 @@ public class GeneralRepository
         }
         if (allAgilitySet == true)
         {
-            for (int i = 0; i < settings.N_numCompetitors; i++)
+            for (int i = 0; i < N_numCompetitors; i++)
             {
                 this.horseOdds[raceId][i] = this.maxMovingLength[raceId][i] / totalAgility;
             }
@@ -304,7 +307,7 @@ public class GeneralRepository
         // retrieve variables
         String line1 = "  " + String.format("%-4s", brokerState != null ? brokerState.getAcronym() : "####") + " ";
 
-        for (int i = 0; i < settings.M_numSpectators; i++)
+        for (int i = 0; i < M_numSpectators; i++)
         {
             SpectatorState s = spectatorStates[i];
             line1 += " " + String.format("%-3s", s != null ? s.getAcronym() : "###");
@@ -322,7 +325,7 @@ public class GeneralRepository
             line1 += " ###  ##  ###  ##  ###  ##  ###  ## ";
         } else
         {
-            for (int i = 0; i < settings.N_numCompetitors; i++)
+            for (int i = 0; i < N_numCompetitors; i++)
             {
                 HorseJockeyState hj = horseJockeyState[this.raceNumber][i];
 
@@ -346,7 +349,7 @@ public class GeneralRepository
         {
             line2 = "  " + (this.raceNumber + 1) + "  " + this.distanceInRace[this.raceNumber] + " ";
 
-            for (int i = 0; i < settings.M_numSpectators; i++)
+            for (int i = 0; i < M_numSpectators; i++)
             {
 
                 line2 += "  " + (spectatorBetSelection[this.raceNumber][i] != -1 ? spectatorBetSelection[this.raceNumber][i] : "#");
@@ -358,7 +361,7 @@ public class GeneralRepository
 
             }
 
-            for (int i = 0; i < settings.N_numCompetitors; i++)
+            for (int i = 0; i < N_numCompetitors; i++)
             {
 
                 double odds = horseOdds[this.raceNumber][i];
@@ -391,17 +394,16 @@ public class GeneralRepository
 
     }
 
-
     public synchronized Settings getSettings()
     {
         return Settings.getInstance();
     }
 
-
     public synchronized void shutdown()
     {
         shutdownSignals++;
-        if(shutdownSignals == 3){
+        if (shutdownSignals == 3)
+        {
 
             (new BettingCenterStub(settings.BETTING_CENTER_HOST_NAME, settings.BETTING_CENTER_PORT_NUM)).shutdown();
             (new ControlCenterStub(settings.CONTROL_CENTER_HOST_NAME, settings.CONTROL_CENTER_PORT_NUM)).shutdown();

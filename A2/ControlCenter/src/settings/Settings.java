@@ -11,46 +11,80 @@ public class Settings implements Serializable
     {
     }
 
-    // settings accessed by all
+    /*
+     * General repository server host name
+     */
     public static final String GENERAL_REPOSITORY_HOST_NAME = "localhost";
+
+    /*
+     * General repository server port number
+     */
     public static final int GENERAL_REPOSITORY_PORT_NUM = portNumb(1);
 
-    // these fields should only be accessed by the generalRepositoryServer
+    /*
+     * Betting Center server host name
+     */
     public final String BETTING_CENTER_HOST_NAME = "localhost";
+
+    /*
+     * Betting Center server port number
+     */
     public final int BETTING_CENTER_PORT_NUM = portNumb(2);
 
+    /*
+     * Control Center server host name
+     */
     public final String CONTROL_CENTER_HOST_NAME = "localhost";
+    /*
+     * Control Center server port number
+     */
     public final int CONTROL_CENTER_PORT_NUM = portNumb(3);
 
+    /*
+     * Paddock server host name
+     */
     public final String PADDOCK_HOST_NAME = "localhost";
+    /*
+     * Paddock server server port number
+     */
     public final int PADDOCK_PORT_NUM = portNumb(4);
 
+    /*
+     * Race Track server host name
+     */
     public final String RACE_TRACK_HOST_NAME = "localhost";
+    /*
+     * Race Track server port number
+     */
     public final int RACE_TRACK_PORT_NUM = portNumb(5);
 
+    /*
+     * Stable server host name
+     */
     public final String STABLE_HOST_NAME = "localhost";
+    /*
+     * Stable server port number
+     */
     public final int STABLE_PORT_NUM = portNumb(6);
 
     /**
-     * Number of races to occur
+     * Provides the port number calculated based on the provided relative port
+     * number and certain restrictions.
+     *
+     * @param port the relative port number
+     *
+     * @return the port number calculated
      */
-    public final int K_numRaces = 5;
-
-    /**
-     * Number of Horse/Jockey pairs to compete in the races
-     */
-    public final int N_numCompetitors = 4;
-
-    /**
-     * Number of Spectators
-     */
-    public final int M_numSpectators = 4;
-
     private static int portNumb(int port)
     {
         return 22450 + port;
     }
 
+    /**
+     * Provides an instance of the settings
+     *
+     * @return an instance of the settings
+     */
     public static Settings getInstance()
     {
         if (instance == null)
@@ -59,5 +93,4 @@ public class Settings implements Serializable
         }
         return instance;
     }
-
 }

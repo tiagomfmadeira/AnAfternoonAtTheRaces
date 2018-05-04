@@ -3,6 +3,8 @@ import entities.HorseJockey;
 import settings.Settings;
 import stub.*;
 import java.util.Random;
+import static main.SimulPar.K_numRaces;
+import static main.SimulPar.N_numCompetitors;
 
 /**
  * General description: Main class.
@@ -45,12 +47,12 @@ public class HorseJockeyMain
                 settings.STABLE_PORT_NUM
         );
 
-        HorseJockey horseJockey[][] = new HorseJockey[settings.K_numRaces][settings.N_numCompetitors];
+        HorseJockey horseJockey[][] = new HorseJockey[K_numRaces][N_numCompetitors];
         Random rand = new Random();
 
-        for (int i = 0; i < settings.K_numRaces; i++)
+        for (int i = 0; i < K_numRaces; i++)
         {
-            for (int j = 0; j < settings.N_numCompetitors; j++)
+            for (int j = 0; j < N_numCompetitors; j++)
             {
                 int race = i;
                 int HJID = j;
@@ -63,9 +65,9 @@ public class HorseJockeyMain
             }
         }
 
-        for (int i = 0; i < settings.K_numRaces; i++)
+        for (int i = 0; i < K_numRaces; i++)
         {
-            for (int j = 0; j < settings.N_numCompetitors; j++)
+            for (int j = 0; j < N_numCompetitors; j++)
             {
                 try
                 {

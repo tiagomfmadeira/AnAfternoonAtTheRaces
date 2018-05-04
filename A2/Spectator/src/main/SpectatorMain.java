@@ -3,6 +3,7 @@ package main;
 import entities.Spectator;
 import settings.Settings;
 import stub.*;
+import static main.SimulPar.M_numSpectators;
 
 /**
  * General description: Main class.
@@ -40,9 +41,9 @@ public class SpectatorMain
                 settings.PADDOCK_PORT_NUM
         );
 
-        Spectator spectator[] = new Spectator[settings.M_numSpectators];
+        Spectator spectator[] = new Spectator[M_numSpectators];
 
-        for (int i = 0; i < settings.M_numSpectators; i++)
+        for (int i = 0; i < M_numSpectators; i++)
         {
             int wallet = 1000;
             spectator[i] = new Spectator("spectator_" + i, i, wallet,
@@ -50,7 +51,7 @@ public class SpectatorMain
             spectator[i].start();
         }
 
-        for (int i = 0; i < settings.M_numSpectators; i++)
+        for (int i = 0; i < M_numSpectators; i++)
         {
             try
             {

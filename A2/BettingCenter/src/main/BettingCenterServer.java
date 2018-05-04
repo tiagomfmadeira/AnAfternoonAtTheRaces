@@ -26,7 +26,7 @@ public class BettingCenterServer
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings set = gr.getSettings();
 
         //Shared region
         BettingCenter bc = new BettingCenter(gr);
@@ -34,7 +34,7 @@ public class BettingCenterServer
         // connection
         ServerCom scon, sconi;
         ServerThread aps;
-        scon = new ServerCom(settings.BETTING_CENTER_PORT_NUM);
+        scon = new ServerCom(set.BETTING_CENTER_PORT_NUM);
         scon.start();
 
         System.out.println("BettingCenter server is up!");

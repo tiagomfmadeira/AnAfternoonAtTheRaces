@@ -19,7 +19,6 @@ public class BettingCenter
      */
     // saves HorseJockeyID and Value of bet for each Spectator
     private final int[][] bets = new int[M_numSpectators][2];
-    // saves odds for each Horse/Jockey
     private final double[] odds = new double[N_numCompetitors];
     private boolean nextSpectatorCanPlaceBet = false,
             lastSpectatorToPlaceBet = false,
@@ -30,8 +29,6 @@ public class BettingCenter
     private int numBets = 0,
             numBetsToBeSettled = 0;
     private final GeneralRepositoryStub logger;
-
-    private int[] wallet;
 
     private boolean shutdownServer = false;
 
@@ -284,12 +281,22 @@ public class BettingCenter
 
         return winnings;
     }
-    
+
+    /**
+     * Changes a boolean variable state to true, symbolising the conclusion of
+     * the service.
+     */
     public synchronized void shutdown()
     {
         shutdownServer = true;
     }
 
+    /**
+     * Checks whether the service has been completed.
+     *
+     * @return <code>true</code> if the service has been completed
+     *         <code>false</code> otherwise
+     */
     public synchronized boolean hasServiceFinished()
     {
         return shutdownServer;
