@@ -37,8 +37,8 @@ public class BettingCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>placeABet<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply message.
+     * execute the <code>placeABet</code> function in the remote location. Sends
+     * the message using the exchange method. Processes the reply message.
      * Updates the Spectator local thread state and wallet value.
      *
      * @param horseJockeyID the argument required for the function. To be
@@ -70,9 +70,9 @@ public class BettingCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>goCollectTheGains<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply message.
-     * Updates the Spectator local thread state and wallet value.
+     * execute the <code>goCollectTheGains</code> function in the remote
+     * location. Sends the message using the exchange method. Processes the
+     * reply message. Updates the Spectator local thread state and wallet value.
      */
     public void goCollectTheGains()
     {

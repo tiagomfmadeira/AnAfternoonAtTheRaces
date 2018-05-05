@@ -38,8 +38,8 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setSpectatorState<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>setSpectatorState</code> function in the remote
+     * location. Sends the message using the exchange method.
      *
      * @param spectatorState one of the arguments required for the function. To
      *                       be inserted into the message.
@@ -63,8 +63,8 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setSpectatorState<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>setSpectatorState</code> function in the remote
+     * location. Sends the message using the exchange method.
      *
      * @param horseJockeyState one of the arguments required for the function.
      *                         To be inserted into the message.

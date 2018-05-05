@@ -37,7 +37,7 @@ public class PaddockStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>goCheckHorses<code> function in the remote location.
+     * execute the <code>goCheckHorses</code> function in the remote location.
      * Sends the message using the exchange method. Processes the reply message.
      *
      * @return the boolean value produced by the remote function
@@ -65,8 +65,9 @@ public class PaddockStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>appraisingHorses<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply message.
+     * execute the <code>appraisingHorses</code> function in the remote
+     * location. Sends the message using the exchange method. Processes the
+     * reply message.
      *
      * @return the integer value produced by the remote function
      */

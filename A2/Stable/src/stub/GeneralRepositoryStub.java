@@ -37,7 +37,7 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setRaceNumber<code> function in the remote location.
+     * execute the <code>setRaceNumber</code> function in the remote location.
      * Sends the message using the exchange method.
      *
      * @param raceNumber the argument required for the function. To be inserted
@@ -61,8 +61,8 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setHorseJockeyState<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>setHorseJockeyState</code> function in the remote
+     * location. Sends the message using the exchange method.
      *
      * @param horseJockeyState one of the arguments required for the function.
      *                         To be inserted into the message.

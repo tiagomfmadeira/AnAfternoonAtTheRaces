@@ -67,6 +67,8 @@ public class ControlCenter
      * waiting for a signal that the next race is starting or that there are no
      * more races. Returns weather there's a next race or not.
      *
+     * @param specId the ID of the spectator
+     *
      * @return <code>true</code> if there is a next race; <code>false</code>
      *         otherwise
      */
@@ -112,6 +114,8 @@ public class ControlCenter
     /**
      * Change Spectator state to WATCHING_A_RACE and sleep waiting for a signal
      * that the race has ended.
+     *
+     * @param specId the ID of the spectator
      */
     public synchronized void goWatchTheRace(int specId)
     {
@@ -157,6 +161,8 @@ public class ControlCenter
     /**
      * Change the Spectator state to CELEBRATING. Final state of their life
      * cycle.
+     *
+     * @param specId the ID of the spectator
      */
     public synchronized void relaxABit(int specId)
     {

@@ -37,7 +37,7 @@ public class StableStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>proceedToStable<code> function in the remote location.
+     * execute the <code>proceedToStable</code> function in the remote location.
      * Sends the message using the exchange method.
      */
     public void proceedToStable()
@@ -60,9 +60,9 @@ public class StableStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>proceedToStableFinal<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Horse/Jockey
-     * local thread state.
+     * execute the <code>proceedToStableFinal</code> function in the remote
+     * location. Sends the message using the exchange method. Updates the
+     * Horse/Jockey local thread state.
      */
     public void proceedToStableFinal()
     {

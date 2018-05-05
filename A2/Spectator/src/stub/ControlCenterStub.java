@@ -37,7 +37,7 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>waitForNextRace<code> function in the remote location.
+     * execute the <code>waitForNextRace</code> function in the remote location.
      * Sends the message using the exchange method. Processes the reply message.
      * Updates the Spectator local thread state.
      *
@@ -67,8 +67,8 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>lastToCheckHorses<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>lastToCheckHorses</code> function in the remote
+     * location. Sends the message using the exchange method.
      */
     public void lastToCheckHorses()
     {
@@ -85,7 +85,7 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>goWatchTheRace<code> function in the remote location.
+     * execute the <code>goWatchTheRace</code> function in the remote location.
      * Sends the message using the exchange method. Updates the Spectator local
      * thread state.
      */
@@ -112,8 +112,10 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>haveIWon<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply message.
+     * execute the <code>haveIWon</code> function in the remote location. Sends
+     * the message using the exchange method. Processes the reply message.
+     *
+     * @param horseJockey the ID of the Horse/Jockey pair
      *
      * @return the boolean value produced by the remote function
      */
@@ -135,7 +137,7 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>waitForNextRace<code> function in the remote location.
+     * execute the <code>waitForNextRace</code> function in the remote location.
      * Sends the message using the exchange method. Updates the Spectator local
      * thread state.
      */

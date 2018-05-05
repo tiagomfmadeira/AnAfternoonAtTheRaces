@@ -81,6 +81,9 @@ public class RaceTrack
      * waiting for a signal from the Broker that the race has started, or a
      * signal from a move of another Horse/Jockey pair. When woken up changes
      * the state of the Horse/Jockey pair to RUNNING.
+     *
+     * @param horseJockeyId the ID of the Horse/Jockey pair
+     * @param raceId        the ID of the race
      */
     public synchronized void proceedToStartLine(int horseJockeyId, int raceId)
     {
@@ -109,6 +112,11 @@ public class RaceTrack
      * whether it's the last Horse/Jockey pair to cross the finish line. If it's
      * the last Horse/Jockey pair crossing the finish line, wake up all the
      * Horse/Jockey pairs standing in the finish line.
+     *
+     * @param horseJockeyId the ID of the Horse/Jockey pair
+     * @param raceId        the ID of the race
+     *
+     * @param agility       the agility of the Horse/Jockey pair
      *
      * @return <code>true</code> if it's the last Horse/Jockey pair to cross the
      *         finish line; <code>false</code> otherwise
@@ -183,6 +191,8 @@ public class RaceTrack
     /**
      * Checks whether the race has ended or not.
      *
+     * @param raceId the ID of the race
+     *
      * @return <code>true</code> if the race has ended; <code>false</code>
      *         otherwise
      */
@@ -196,6 +206,8 @@ public class RaceTrack
     /**
      * Change the Broker state to SUPERVISING_THE_RACE. Wake up one of the
      * Horse/Jockey pairs from AT_THE_START_LINE.
+     *
+     * @param raceId the ID of the race
      */
     public synchronized void startTheRace(int raceId)
     {
@@ -208,6 +220,8 @@ public class RaceTrack
 
     /**
      * Checks which Horse/Jockey pairs have won the race.
+     *
+     * @param raceId the ID of the race
      *
      * @return array indicating for each Horse/Jockey pair if they have won the
      *         race, indexed by their ID

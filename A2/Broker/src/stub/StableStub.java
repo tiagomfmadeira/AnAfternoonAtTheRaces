@@ -37,8 +37,9 @@ public class StableStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>summonHorsesToPaddock<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Broker local thread state.
+     * execute the <code>summonHorsesToPaddock</code> function in the remote
+     * location. Sends the message using the exchange method. Updates the Broker
+     * local thread state.
      *
      * @param raceID the argument required for the function. To be inserted into
      *               the message.

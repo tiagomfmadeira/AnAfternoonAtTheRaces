@@ -37,9 +37,9 @@ public class RaceTrackStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>proceedToStartLine<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Horse/Jockey
-     * local thread state.
+     * execute the <code>proceedToStartLine</code> function in the remote
+     * location. Sends the message using the exchange method. Updates the
+     * Horse/Jockey local thread state.
      */
     public void proceedToStartLine()
     {
@@ -64,8 +64,8 @@ public class RaceTrackStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>makeAMove<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply.
+     * execute the <code>makeAMove</code> function in the remote location. Sends
+     * the message using the exchange method. Processes the reply.
      *
      * @return the boolean produced by the remote function
      */
@@ -92,7 +92,7 @@ public class RaceTrackStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>hasRaceEnded<code> function in the remote location.
+     * execute the <code>hasRaceEnded</code> function in the remote location.
      * Sends the message using the exchange method. Processes the reply.
      *
      * @return the boolean produced by the remote function

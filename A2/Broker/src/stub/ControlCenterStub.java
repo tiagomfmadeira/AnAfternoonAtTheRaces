@@ -37,8 +37,8 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>summonHorsesToPaddock<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>summonHorsesToPaddock</code> function in the remote
+     * location. Sends the message using the exchange method.
      */
     public void summonHorsesToPaddock()
     {
@@ -55,7 +55,7 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>startTheRace<code> function in the remote location.
+     * execute the <code>startTheRace</code> function in the remote location.
      * Sends the message using the exchange method.
      */
     public void startTheRace()
@@ -73,7 +73,7 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>reportResults<code> function in the remote location.
+     * execute the <code>reportResults</code> function in the remote location.
      * Sends the message using the exchange method.
      *
      * @param horseJockeysDeclaredWinners the argument required for the
@@ -96,8 +96,9 @@ public class ControlCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>entertainTheGuests<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Broker local thread state.
+     * execute the <code>entertainTheGuests</code> function in the remote
+     * location. Sends the message using the exchange method. Updates the Broker
+     * local thread state.
      */
     public void entertainTheGuests()
     {

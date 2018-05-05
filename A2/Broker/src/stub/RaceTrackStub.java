@@ -37,8 +37,9 @@ public class RaceTrackStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>startTheRace<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Broker local thread state.
+     * execute the <code>startTheRace</code> function in the remote location.
+     * Sends the message using the exchange method. Updates the Broker local
+     * thread state.
      */
     public void startTheRace()
     {
@@ -62,7 +63,7 @@ public class RaceTrackStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>reportResults<code> function in the remote location.
+     * execute the <code>reportResults</code> function in the remote location.
      * Sends the message using the exchange method. Processes the reply message.
      *
      * @return the array of booleans produced by the remote function

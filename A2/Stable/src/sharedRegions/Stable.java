@@ -56,6 +56,8 @@ public class Stable
     /**
      * Changes the horse/jockey pair state to AT_THE_STABLE and sleeps waiting
      * for a signal that the next race is starting.
+     *
+     * @param raceId the ID of the race
      */
     public synchronized void proceedToStable(int raceId)
     {
@@ -87,6 +89,9 @@ public class Stable
      * return to the stable, allowing the thread to finish its life cycle
      * instead of blocking again. This is used because the thread would never be
      * awoken again.
+     *
+     * @param horseId the ID of the Horse?jockey pair
+     * @param raceId  the ID of the race
      */
     public synchronized void proceedToStableFinal(int horseId, int raceId)
     {

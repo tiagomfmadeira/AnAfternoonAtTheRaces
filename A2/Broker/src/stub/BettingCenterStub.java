@@ -37,8 +37,9 @@ public class BettingCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>acceptTheBets<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Broker local thread state.
+     * execute the <code>acceptTheBets</code> function in the remote location.
+     * Sends the message using the exchange method. Updates the Broker local
+     * thread state.
      *
      * @param horseJockeyOdds the argument required for the function. To be
      *                        inserted into the message.
@@ -63,8 +64,9 @@ public class BettingCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>areThereAnyWinners<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply message.
+     * execute the <code>areThereAnyWinners</code> function in the remote
+     * location. Sends the message using the exchange method. Processes the
+     * reply message.
      *
      * @param horseJockeyWinners the argument required for the function. To be
      *                           inserted into the message.
@@ -90,8 +92,9 @@ public class BettingCenterStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>honourTheBets<code> function in the remote location.
-     * Sends the message using the exchange method. Updates the Broker local thread state.
+     * execute the <code>honourTheBets</code> function in the remote location.
+     * Sends the message using the exchange method. Updates the Broker local
+     * thread state.
      */
     public void honourTheBets()
     {

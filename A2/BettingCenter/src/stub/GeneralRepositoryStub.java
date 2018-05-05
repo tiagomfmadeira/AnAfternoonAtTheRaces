@@ -38,7 +38,7 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setBrokerState<code> function in the remote location.
+     * execute the <code>setBrokerState</code> function in the remote location.
      * Sends the message using the exchange method.
      *
      * @param brokerState the argument required for the function. To be inserted
@@ -61,7 +61,7 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setMoneyAmount<code> function in the remote location.
+     * execute the <code>setMoneyAmount</code> function in the remote location.
      * Sends the message using the exchange method.
      *
      * @param spectatorMoneyAmount one of the arguments required for the
@@ -88,8 +88,8 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setSpectatorState<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>setSpectatorState</code> function in the remote
+     * location. Sends the message using the exchange method.
      *
      * @param spectatorState one of the arguments required for the function. To
      *                       be inserted into the message.
@@ -113,7 +113,7 @@ public class GeneralRepositoryStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>setSpectatorBet<code> function in the remote location.
+     * execute the <code>setSpectatorBet</code> function in the remote location.
      * Sends the message using the exchange method.
      *
      * @param spectatorBetAmount    one of the arguments required for the

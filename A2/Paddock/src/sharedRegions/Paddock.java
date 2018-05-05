@@ -41,6 +41,11 @@ public class Paddock
      * Changes the state of the horse/jockey pair to AT_THE_PADDOCK and checks
      * whether or not it's the last pair to reach the paddock.
      *
+     * @param horseJockeyID the ID of the Horse/Jockey pair
+     * @param raceID        the ID of the race
+     * @param agility       the agility of the Horse/Jockey pair
+     *
+     *
      * @return <code>true</code> if it's called by the last horse to reach the
      *         paddock; <code>false</code> otherwise
      */
@@ -113,6 +118,8 @@ public class Paddock
      * the last Spectator to reach the paddock to appraise the horses, in which
      * case it wakes up the horses sleeping at the paddock.
      *
+     * @param specID the ID of the Spectator
+     *
      * @return <code>true</code> if it's called by the last Spectator to reach
      *         the paddock; <code>false</code> otherwise
      */
@@ -141,6 +148,8 @@ public class Paddock
      * the same agility as the best, or if there isn't such a Horse/Jockey pair,
      * on the second with most agility; Spectator 2 bets on the Horse/Jockey
      * pair with least agility; all other spectators bet randomly.
+     *
+     * @param specId the ID of the Spectator
      *
      * @return id of the Horse/Jockey pair the Spectator will bet on
      */

@@ -40,8 +40,9 @@ public class PaddockStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>proceedToPaddock<code> function in the remote location.
-     * Sends the message using the exchange method. Processes the reply.
+     * execute the <code>proceedToPaddock</code> function in the remote
+     * location. Sends the message using the exchange method. Processes the
+     * reply.
      *
      * @return the boolean produced by the remote function
      */
@@ -70,8 +71,8 @@ public class PaddockStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>sleepAtThePaddock<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>sleepAtThePaddock</code> function in the remote
+     * location. Sends the message using the exchange method.
      */
     public void sleepAtThePaddock()
     {
@@ -89,8 +90,8 @@ public class PaddockStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>proceedToStartLine<code> function in the remote location.
-     * Sends the message using the exchange method.
+     * execute the <code>proceedToStartLine</code> function in the remote
+     * location. Sends the message using the exchange method.
      */
     public void proceedToStartLine()
     {

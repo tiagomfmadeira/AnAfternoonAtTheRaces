@@ -35,7 +35,7 @@ public class PaddockStub
 
     /**
      * Creates a message containing the name and the required arguments to
-     * execute the <code>learnTheOdds<code> function in the remote location.
+     * execute the <code>learnTheOdds</code> function in the remote location.
      * Sends the message using the exchange method. Processes the reply message.
      *
      * @return the array of doubles produced by the remote function

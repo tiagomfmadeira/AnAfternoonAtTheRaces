@@ -171,7 +171,12 @@ public class BettingCenter
      * last Spectator to place the bet, in which case wakes up the Broker,
      * releasing him from the state of accepting bets.
      *
-     * @param horseJockeyID id of the Horse/Jockey pair to place a bet on
+     * @param horseJockeyID the id of the Horse/Jockey pair to place a bet on
+     * @param specId        the id of the spectator placing the bet
+     * @param walletValue   the value in the wallet of the spectator placing the
+     *                      bet
+     *
+     * @return the value of the wager placed
      */
     public synchronized int placeABet(int horseJockeyID, int specId, int walletValue)
     {
@@ -241,6 +246,12 @@ public class BettingCenter
      * Broker to accept the settling of the bet. Checks if it's the last
      * Spectator to settle their bet, in which case wakes up the Broker,
      * releasing him from the state of settling accounts.
+     *
+     * @param specID      the id of the spectator placing the bet
+     * @param walletValue the value in the wallet of the spectator placing the
+     *                    bet
+     *
+     * @return value won in the wager
      */
     public synchronized int goCollectTheGains(int specID, int walletValue)
     {
