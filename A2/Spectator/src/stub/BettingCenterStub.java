@@ -6,25 +6,28 @@ import entities.Spectator;
 import entities.SpectatorState;
 import static communication.Exchange.exchange;
 
+/**
+ * General description: Definition of the Betting Center stub.
+ */
 public class BettingCenterStub
 {
 
     /**
-     * Nome do sistema computacional onde está localizado o servidor.
+     * Name of the computer system where the server is located.
      */
     private static String serverHostName;
 
     /**
-     * Número do port de escuta do servidor.
+     * Number of the listener port of the server.
      */
     private static int serverPortNumb;
 
     /**
-     * Instanciação do stub.
+     * Constructor
      *
-     * @param hostName nome do sistema computacional onde está localizado o
-     *                 servidor
-     * @param port     número do port de escuta do servidor
+     * @param hostName the name of the computer system where the server is
+     *                 located
+     * @param port     the number of the listener port of the server
      */
     public BettingCenterStub(String hostName, int port)
     {
@@ -32,23 +35,15 @@ public class BettingCenterStub
         serverPortNumb = port;
     }
 
-    public boolean areThereAnyWinners(boolean[] horseJockeyWinners)
-    {
-
-        //conversão do metodo a invocar numa mensagem
-        Message msg = new Message(
-                MessageType.FUNCTION,
-                new Object()
-                {
-                }.getClass().getEnclosingMethod().getName(),
-                (Object) horseJockeyWinners
-        );
-
-        Message result = exchange(msg, serverHostName, serverPortNumb);
-
-        return (boolean) result.getReturnValue();
-    }
-
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>placeABet<code> function in the remote location.
+     * Sends the message using the exchange method. Processes the reply message.
+     * Updates the Spectator local thread state and wallet value.
+     *
+     * @param horseJockeyID the argument required for the function. To be
+     *                      inserted into the message.
+     */
     public void placeABet(int horseJockeyID)
     {
         //  Change Spectator state to PLACING_A_BET
@@ -73,6 +68,12 @@ public class BettingCenterStub
         spec.updateWalletValue((int) result.getReturnValue());
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>goCollectTheGains<code> function in the remote location.
+     * Sends the message using the exchange method. Processes the reply message.
+     * Updates the Spectator local thread state and wallet value.
+     */
     public void goCollectTheGains()
     {
         Spectator spec = ((Spectator) Thread.currentThread());
@@ -93,5 +94,4 @@ public class BettingCenterStub
 
         spec.updateWalletValue((int) result.getReturnValue());
     }
-
 }

@@ -29,7 +29,6 @@ public class BettingCenter
     private int numBets = 0,
             numBetsToBeSettled = 0;
     private final GeneralRepositoryStub logger;
-
     private boolean shutdownServer = false;
 
     /**

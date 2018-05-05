@@ -24,7 +24,6 @@ public class ControlCenter
             spectatorsWatchedRaceCounter = 0;
     private boolean[] horseJockeysWinners;
     private final GeneralRepositoryStub logger;
-
     private boolean shutdownServer = false;
 
     /**
@@ -239,11 +238,21 @@ public class ControlCenter
         notifyAll();
     }
 
+    /**
+     * Changes a boolean variable state to true, symbolising the conclusion of
+     * the service.
+     */
     public synchronized void shutdown()
     {
         shutdownServer = true;
     }
 
+    /**
+     * Checks whether the service has been completed.
+     *
+     * @return <code>true</code> if the service has been completed
+     *         <code>false</code> otherwise
+     */
     public synchronized boolean hasServiceFinished()
     {
         return shutdownServer;

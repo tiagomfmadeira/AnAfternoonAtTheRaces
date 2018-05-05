@@ -39,10 +39,10 @@ public class GeneralRepositoryStub
     /**
      * Creates a message containing the name and the required arguments to
      * execute the <code>setBrokerState<code> function in the remote location.
-     * Sends the message.
+     * Sends the message using the exchange method.
      *
-     * @param brokerState the argument required for the function to be inserted
-     *                    into the message
+     * @param brokerState the argument required for the function. To be inserted
+     *                    into the message.
      */
     public void setBrokerState(BrokerState brokerState)
     {
@@ -62,7 +62,7 @@ public class GeneralRepositoryStub
     /**
      * Creates a message containing the name and the required arguments to
      * execute the <code>setMoneyAmount<code> function in the remote location.
-     * Sends the message.
+     * Sends the message using the exchange method.
      *
      * @param spectatorMoneyAmount one of the arguments required for the
      *                             function. To be inserted into the message.
@@ -89,7 +89,7 @@ public class GeneralRepositoryStub
     /**
      * Creates a message containing the name and the required arguments to
      * execute the <code>setSpectatorState<code> function in the remote location.
-     * Sends the message.
+     * Sends the message using the exchange method.
      *
      * @param spectatorState one of the arguments required for the function. To
      *                       be inserted into the message.
@@ -114,7 +114,7 @@ public class GeneralRepositoryStub
     /**
      * Creates a message containing the name and the required arguments to
      * execute the <code>setSpectatorBet<code> function in the remote location.
-     * Sends the message.
+     * Sends the message using the exchange method.
      *
      * @param spectatorBetAmount    one of the arguments required for the
      *                              function. To be inserted into the message.
@@ -143,10 +143,11 @@ public class GeneralRepositoryStub
     }
 
     /**
-     * Requests the current settings in the General Repository for what address
-     * the server should be created at.
+     * Creates a message to request the current settings from the General
+     * Repository, in order to obtain the address where the server should be
+     * created at. Sends it using the exchange method. Processes the reply.
      *
-     * @return the settings instance
+     * @return the settings instance received
      */
     public Settings getSettings()
     {

@@ -2,7 +2,6 @@ package sharedRegions;
 
 import entities.BrokerState;
 import entities.HorseJockeyState;
-import main.SimulPar;
 import stub.GeneralRepositoryStub;
 import java.util.Arrays;
 import java.util.Random;
@@ -20,12 +19,12 @@ public class RaceTrack
      * Internal data
      */
     private final int[] distance;
-    private final boolean[][] raceTurn = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
-    private final boolean[][] crossedFinish = new boolean[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
-    private final int[][] racePosition = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
-    private final int[][] iterationCounter = new int[SimulPar.K_numRaces][SimulPar.N_numCompetitors];
-    private final boolean[] raceEnded = new boolean[SimulPar.K_numRaces];
-    private final int[] finishLineCount = new int[SimulPar.K_numRaces];
+    private final boolean[][] raceTurn = new boolean[K_numRaces][N_numCompetitors];
+    private final boolean[][] crossedFinish = new boolean[K_numRaces][N_numCompetitors];
+    private final int[][] racePosition = new int[K_numRaces][N_numCompetitors];
+    private final int[][] iterationCounter = new int[K_numRaces][N_numCompetitors];
+    private final boolean[] raceEnded = new boolean[K_numRaces];
+    private final int[] finishLineCount = new int[K_numRaces];
     private final GeneralRepositoryStub logger;
     private boolean shutdownServer = false;
 
@@ -163,7 +162,7 @@ public class RaceTrack
         }
 
         // wake up the next horse
-        raceTurn[raceId][(horseJockeyId + 1) % SimulPar.N_numCompetitors] = true;
+        raceTurn[raceId][(horseJockeyId + 1) % N_numCompetitors] = true;
         notifyAll();
 
         while (!raceTurn[raceId][horseJockeyId] && !raceEnded[raceId])
@@ -277,11 +276,21 @@ public class RaceTrack
         return winners;
     }
 
+    /**
+     * Changes a boolean variable state to true, symbolising the conclusion of
+     * the service.
+     */
     public synchronized void shutdown()
     {
         shutdownServer = true;
     }
 
+    /**
+     * Checks whether the service has been completed.
+     *
+     * @return <code>true</code> if the service has been completed
+     *         <code>false</code> otherwise
+     */
     public synchronized boolean hasServiceFinished()
     {
         return shutdownServer;

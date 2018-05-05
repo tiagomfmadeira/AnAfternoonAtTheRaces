@@ -1,33 +1,33 @@
 package stub;
 
-import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
 import entities.Spectator;
 import entities.SpectatorState;
 import static communication.Exchange.exchange;
 
+/**
+ * General description: Definition of the Control Center stub.
+ */
 public class ControlCenterStub
 {
 
     /**
-     * Nome do sistema computacional onde está localizado o servidor.
+     * Name of the computer system where the server is located.
      */
-    private String serverHostName;
+    private static String serverHostName;
 
     /**
-     * Número do port de escuta do servidor.
+     * Number of the listener port of the server.
      */
-    private int serverPortNumb;
-
-    private ClientCom com;
+    private static int serverPortNumb;
 
     /**
-     * Instanciação do stub.
+     * Constructor
      *
-     * @param hostName nome do sistema computacional onde está localizado o
-     *                 servidor
-     * @param port     número do port de escuta do servidor
+     * @param hostName the name of the computer system where the server is
+     *                 located
+     * @param port     the number of the listener port of the server
      */
     public ControlCenterStub(String hostName, int port)
     {
@@ -35,6 +35,14 @@ public class ControlCenterStub
         serverPortNumb = port;
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>waitForNextRace<code> function in the remote location.
+     * Sends the message using the exchange method. Processes the reply message.
+     * Updates the Spectator local thread state.
+     *
+     * @return the boolean value produced by the remote function
+     */
     public boolean waitForNextRace()
     {
         Spectator spec = ((Spectator) Thread.currentThread());
@@ -57,6 +65,11 @@ public class ControlCenterStub
         return (boolean) result.getReturnValue();
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>lastToCheckHorses<code> function in the remote location.
+     * Sends the message using the exchange method.
+     */
     public void lastToCheckHorses()
     {
         //conversão do metodo a invocar numa mensagem
@@ -70,6 +83,12 @@ public class ControlCenterStub
         exchange(msg, serverHostName, serverPortNumb);
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>goWatchTheRace<code> function in the remote location.
+     * Sends the message using the exchange method. Updates the Spectator local
+     * thread state.
+     */
     public void goWatchTheRace()
     {
         //conversão do metodo a invocar numa mensagem
@@ -91,6 +110,13 @@ public class ControlCenterStub
 
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>haveIWon<code> function in the remote location.
+     * Sends the message using the exchange method. Processes the reply message.
+     *
+     * @return the boolean value produced by the remote function
+     */
     public boolean haveIWon(int horseJockey)
     {
         //conversão do metodo a invocar numa mensagem
@@ -107,6 +133,12 @@ public class ControlCenterStub
         return (boolean) result.getReturnValue();
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>waitForNextRace<code> function in the remote location.
+     * Sends the message using the exchange method. Updates the Spectator local
+     * thread state.
+     */
     public void relaxABit()
     {
         //  Change Spectator state to CELEBRATING
@@ -127,6 +159,5 @@ public class ControlCenterStub
 
         //change state
         spec.setSpectatorState(SpectatorState.CELEBRATING);
-
     }
 }

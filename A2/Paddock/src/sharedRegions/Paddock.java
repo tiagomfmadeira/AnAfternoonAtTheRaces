@@ -252,11 +252,22 @@ public class Paddock
 
         return odds;
     }
+
+    /**
+     * Changes a boolean variable state to true, symbolising the conclusion of
+     * the service.
+     */
     public synchronized void shutdown()
     {
         shutdownServer = true;
     }
 
+    /**
+     * Checks whether the service has been completed.
+     *
+     * @return <code>true</code> if the service has been completed
+     *         <code>false</code> otherwise
+     */
     public synchronized boolean hasServiceFinished()
     {
         return shutdownServer;

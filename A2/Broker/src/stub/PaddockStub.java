@@ -1,32 +1,31 @@
 package stub;
 
-import communication.ClientCom;
 import communication.Message;
 import communication.MessageType;
-
 import static communication.Exchange.exchange;
 
+/**
+ * General description: Definition of the Paddock stub.
+ */
 public class PaddockStub
 {
 
     /**
-     * Nome do sistema computacional onde está localizado o servidor.
+     * Name of the computer system where the server is located.
      */
     private String serverHostName;
 
     /**
-     * Número do port de escuta do servidor.
+     * Number of the listener port of the server.
      */
     private int serverPortNumb;
 
-    private ClientCom com;
-
     /**
-     * Instanciação do stub.
+     * Constructor
      *
-     * @param hostName nome do sistema computacional onde está localizado o
-     *                 servidor
-     * @param port     número do port de escuta do servidor
+     * @param hostName the name of the computer system where the server is
+     *                 located
+     * @param port     the number of the listener port of the server
      */
     public PaddockStub(String hostName, int port)
     {
@@ -34,6 +33,13 @@ public class PaddockStub
         this.serverPortNumb = port;
     }
 
+    /**
+     * Creates a message containing the name and the required arguments to
+     * execute the <code>learnTheOdds<code> function in the remote location.
+     * Sends the message using the exchange method. Processes the reply message.
+     *
+     * @return the array of doubles produced by the remote function
+     */
     public double[] learnTheOdds()
     {
         //conversão do metodo a invocar numa mensagem
@@ -48,5 +54,4 @@ public class PaddockStub
 
         return (double[]) result.getReturnValue();
     }
-
 }

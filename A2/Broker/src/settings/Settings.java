@@ -2,6 +2,9 @@ package settings;
 
 import java.io.Serializable;
 
+/**
+ * General description: Definition of address settings of the servers.
+ */
 public class Settings implements Serializable
 {
 
