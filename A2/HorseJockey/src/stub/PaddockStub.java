@@ -50,9 +50,6 @@ public class PaddockStub
     {
         HorseJockey hj = ((HorseJockey) Thread.currentThread());
 
-        // change HorseJockey state to AT_THE_PADDOCK
-        hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
-
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
                 MessageType.FUNCTION,
@@ -65,6 +62,8 @@ public class PaddockStub
         );
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
+
+        hj.setHorseJockeyState(HorseJockeyState.AT_THE_PADDOCK);
 
         return (boolean) result.getReturnValue();
     }

@@ -45,9 +45,7 @@ public class PaddockStub
     public boolean goCheckHorses()
     {
 
-        //  Change Spectator state to APPRAISING_THE_HORSES
         Spectator spec = ((Spectator) Thread.currentThread());
-        spec.setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
 
         //conversão do metodo a invocar numa mensagem
         Message msg = new Message(
@@ -59,6 +57,8 @@ public class PaddockStub
         );
 
         Message result = exchange(msg, serverHostName, serverPortNumb);
+
+        spec.setSpectatorState(SpectatorState.APPRAISING_THE_HORSES);
 
         return (boolean) result.getReturnValue();
     }
