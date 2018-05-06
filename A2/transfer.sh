@@ -20,7 +20,8 @@ scp -r $rt/out/artifacts/$rt\_jar/$rt.jar sd0406@l040101-ws05.ua.pt:/home/sd0406
 
 scp -r $st/out/artifacts/$st\_jar/$st.jar sd0406@l040101-ws06.ua.pt:/home/sd0406/src
 
-scp -r $b/out/artifacts/$b\_jar/$b.jar sd0406@l040101-ws07.ua.pt:/home/sd0406/src
+# changed to ws10 for now
+scp -r $b/out/artifacts/$b\_jar/$b.jar sd0406@l040101-ws10.ua.pt:/home/sd0406/src
 
 scp -r $hj/out/artifacts/$hj\_jar/$hj.jar sd0406@l040101-ws08.ua.pt:/home/sd0406/src
 
