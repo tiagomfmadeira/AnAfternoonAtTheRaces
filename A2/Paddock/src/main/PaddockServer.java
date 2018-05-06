@@ -21,15 +21,15 @@ public class PaddockServer
     public static void main(String[] args)
     {
         // get settings from general repository
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings settings = generalRepositoryStub.getSettings();
 
         //Shared region
-        Paddock p = new Paddock(gr);
+        Paddock paddock = new Paddock(generalRepositoryStub);
 
         // connection
         ServerCom scon, sconi;
@@ -40,14 +40,14 @@ public class PaddockServer
         System.out.println("Paddock server is up!");
         System.out.println("Paddock server is listening...");
 
-        while (!p.hasServiceFinished())
+        while (!paddock.hasServiceFinished())
         {
             sconi = scon.accept();
             if (sconi == null)
             {
                 continue;
             }
-            aps = new ServerThread(sconi, p);  // lançar agente prestador de serviço
+            aps = new ServerThread(sconi, paddock);  // lançar agente prestador de serviço
             aps.start();
         }
         scon.close();

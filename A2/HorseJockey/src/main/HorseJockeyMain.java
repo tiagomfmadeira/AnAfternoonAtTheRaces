@@ -1,3 +1,4 @@
+package main;
 
 import entities.HorseJockey;
 import settings.Settings;
@@ -20,29 +21,29 @@ public class HorseJockeyMain
      */
     public static void main(String[] args)
     {
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings settings = generalRepositoryStub.getSettings();
 
-        ControlCenterStub controlCenter = new ControlCenterStub(
+        ControlCenterStub controlCenterStub = new ControlCenterStub(
                 settings.CONTROL_CENTER_HOST_NAME,
                 settings.CONTROL_CENTER_PORT_NUM
         );
 
-        PaddockStub paddock = new PaddockStub(
+        PaddockStub paddockStub = new PaddockStub(
                 settings.PADDOCK_HOST_NAME,
                 settings.PADDOCK_PORT_NUM
         );
 
-        RaceTrackStub raceTrack = new RaceTrackStub(
+        RaceTrackStub raceTrackStub = new RaceTrackStub(
                 settings.RACE_TRACK_HOST_NAME,
                 settings.RACE_TRACK_PORT_NUM
         );
 
-        StableStub stable = new StableStub(
+        StableStub stableStub = new StableStub(
                 settings.STABLE_HOST_NAME,
                 settings.STABLE_PORT_NUM
         );
@@ -60,7 +61,7 @@ public class HorseJockeyMain
 
                 horseJockey[i][j] = new HorseJockey("horse_jockey_"
                         + HJID + "_race_" + race, HJID, agility, race,
-                        stable, paddock, raceTrack, controlCenter, gr);
+                        stableStub, paddockStub, raceTrackStub, controlCenterStub, generalRepositoryStub);
                 horseJockey[i][j].start();
             }
         }
@@ -78,6 +79,6 @@ public class HorseJockeyMain
                 }
             }
         }
-        gr.shutdown();
+        generalRepositoryStub.shutdown();
     }
 }

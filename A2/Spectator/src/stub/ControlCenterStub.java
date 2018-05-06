@@ -15,12 +15,12 @@ public class ControlCenterStub
     /**
      * Name of the computer system where the server is located.
      */
-    private static String serverHostName;
+    private String serverHostName;
 
     /**
      * Number of the listener port of the server.
      */
-    private static int serverPortNumb;
+    private int serverPortNumb;
 
     /**
      * Constructor

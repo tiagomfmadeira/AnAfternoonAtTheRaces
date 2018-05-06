@@ -21,15 +21,15 @@ public class ControlCenterServer
     public static void main(String[] args)
     {
         // get settings from general repository
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings settings = generalRepositoryStub.getSettings();
 
         //Shared region
-        ControlCenter cc = new ControlCenter(gr);
+        ControlCenter controlCenter = new ControlCenter(generalRepositoryStub);
 
         // connection
         ServerCom scon, sconi;
@@ -43,14 +43,14 @@ public class ControlCenterServer
         /*
          * processamento de pedidos
          */
-        while (!cc.hasServiceFinished())
+        while (!controlCenter.hasServiceFinished())
         {
             sconi = scon.accept();              // entrar em processo de escuta
             if (sconi == null)
             {
                 continue;
             }
-            aps = new ServerThread(sconi, cc);  // lançar agente prestador de serviço
+            aps = new ServerThread(sconi, controlCenter);  // lançar agente prestador de serviço
             aps.start();
         }
         scon.close();

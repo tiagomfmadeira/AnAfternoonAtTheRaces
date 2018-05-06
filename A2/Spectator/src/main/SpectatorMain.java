@@ -19,24 +19,24 @@ public class SpectatorMain
      */
     public static void main(String[] args)
     {
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings settings = generalRepositoryStub.getSettings();
 
-        ControlCenterStub controlCenter = new ControlCenterStub(
+        ControlCenterStub controlCenterStub = new ControlCenterStub(
                 settings.CONTROL_CENTER_HOST_NAME,
                 settings.CONTROL_CENTER_PORT_NUM
         );
 
-        BettingCenterStub bettingCenter = new BettingCenterStub(
+        BettingCenterStub bettingCenterStub = new BettingCenterStub(
                 settings.BETTING_CENTER_HOST_NAME,
                 settings.BETTING_CENTER_PORT_NUM
         );
 
-        PaddockStub paddock = new PaddockStub(
+        PaddockStub paddockStub = new PaddockStub(
                 settings.PADDOCK_HOST_NAME,
                 settings.PADDOCK_PORT_NUM
         );
@@ -47,7 +47,7 @@ public class SpectatorMain
         {
             int wallet = 1000;
             spectator[i] = new Spectator("spectator_" + i, i, wallet,
-                    controlCenter, paddock, bettingCenter, gr);
+                    controlCenterStub, paddockStub, bettingCenterStub, generalRepositoryStub);
             spectator[i].start();
         }
 
@@ -60,6 +60,6 @@ public class SpectatorMain
             {
             }
         }
-        gr.shutdown();
+        generalRepositoryStub.shutdown();
     }
 }

@@ -162,5 +162,4 @@ public class GeneralRepositoryStub
         Message result = exchange(msg, serverHostName, serverPortNumb);
         return (Settings) result.getReturnValue();
     }
-
 }

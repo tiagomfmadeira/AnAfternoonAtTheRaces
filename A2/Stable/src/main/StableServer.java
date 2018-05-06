@@ -21,15 +21,15 @@ public class StableServer
     public static void main(String[] args)
     {
         // get settings from general repository
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings settings = generalRepositoryStub.getSettings();
 
         //Shared region
-        Stable s = new Stable(gr);
+        Stable stable = new Stable(generalRepositoryStub);
 
         // connection
         ServerCom scon, sconi;
@@ -43,14 +43,14 @@ public class StableServer
         /*
          * processamento de pedidos
          */
-        while (!s.hasServiceFinished())
+        while (!stable.hasServiceFinished())
         {
             // entrar em processo de escuta
             sconi = scon.accept();
 
             if (sconi != null)
             {
-                aps = new ServerThread(sconi, s);  // lançar agente prestador de serviço
+                aps = new ServerThread(sconi, stable);  // lançar agente prestador de serviço
                 aps.start();
             }
         }

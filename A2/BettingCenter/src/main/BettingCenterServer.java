@@ -21,15 +21,15 @@ public class BettingCenterServer
     public static void main(String[] args)
     {
         // get settings from general repository
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings set = gr.getSettings();
+        Settings set = generalRepositoryStub.getSettings();
 
         //Shared region
-        BettingCenter bc = new BettingCenter(gr);
+        BettingCenter bettingCenter = new BettingCenter(generalRepositoryStub);
 
         // connection
         ServerCom scon, sconi;
@@ -43,14 +43,14 @@ public class BettingCenterServer
         /*
          * processamento de pedidos
          */
-        while (!bc.hasServiceFinished())
+        while (!bettingCenter.hasServiceFinished())
         {
             sconi = scon.accept();              // entrar em processo de escuta
             if (sconi == null)
             {
                 continue;
             }
-            aps = new ServerThread(sconi, bc);  // lançar agente prestador de serviço
+            aps = new ServerThread(sconi, bettingCenter);  // lançar agente prestador de serviço
             aps.start();
         }
         scon.close();

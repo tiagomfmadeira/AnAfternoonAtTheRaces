@@ -28,7 +28,7 @@ public class GeneralRepositoryServer
 
         ServerThread aps;
 
-        GeneralRepository gr = new GeneralRepository();
+        GeneralRepository generalRepository = new GeneralRepository();
 
         System.out.println("GeneralRepository server is up!");
         System.out.println("GeneralRepository server is listening...");
@@ -36,13 +36,13 @@ public class GeneralRepositoryServer
         /*
          * processamento de pedidos
          */
-        while (!gr.hasServiceFinished())
+        while (!generalRepository.hasServiceFinished())
         {
             sconi = scon.accept();
 
             if (sconi != null)
             {
-                aps = new ServerThread(sconi, gr);  // lançar agente prestador de serviço
+                aps = new ServerThread(sconi, generalRepository);  // lançar agente prestador de serviço
                 aps.start();
             }
         }

@@ -19,39 +19,39 @@ public class BrokerMain
     public static void main(String[] args)
     {
 
-        GeneralRepositoryStub gr = new GeneralRepositoryStub(
+        GeneralRepositoryStub generalRepositoryStub = new GeneralRepositoryStub(
                 Settings.GENERAL_REPOSITORY_HOST_NAME,
                 Settings.GENERAL_REPOSITORY_PORT_NUM
         );
 
-        Settings settings = gr.getSettings();
+        Settings settings = generalRepositoryStub.getSettings();
 
-        ControlCenterStub controlCenter = new ControlCenterStub(
+        ControlCenterStub controlCenterStub = new ControlCenterStub(
                 settings.CONTROL_CENTER_HOST_NAME,
                 settings.CONTROL_CENTER_PORT_NUM
         );
 
-        BettingCenterStub bettingCenter = new BettingCenterStub(
+        BettingCenterStub bettingCenterStub = new BettingCenterStub(
                 settings.BETTING_CENTER_HOST_NAME,
                 settings.BETTING_CENTER_PORT_NUM
         );
 
-        PaddockStub paddock = new PaddockStub(
+        PaddockStub paddockStub = new PaddockStub(
                 settings.PADDOCK_HOST_NAME,
                 settings.PADDOCK_PORT_NUM
         );
 
-        RaceTrackStub raceTrack = new RaceTrackStub(
+        RaceTrackStub raceTrackStub = new RaceTrackStub(
                 settings.RACE_TRACK_HOST_NAME,
                 settings.RACE_TRACK_PORT_NUM
         );
 
-        StableStub stable = new StableStub(
+        StableStub stableStub = new StableStub(
                 settings.STABLE_HOST_NAME,
                 settings.STABLE_PORT_NUM
         );
 
-        Broker broker = new Broker("Broker", 1, raceTrack, stable, bettingCenter, paddock, controlCenter, gr);
+        Broker broker = new Broker("Broker", 1, raceTrackStub, stableStub, bettingCenterStub, paddockStub, controlCenterStub, generalRepositoryStub);
         broker.start();
 
         try
@@ -61,6 +61,6 @@ public class BrokerMain
         {
         }
 
-        gr.shutdown();
+        generalRepositoryStub.shutdown();
     }
 }
