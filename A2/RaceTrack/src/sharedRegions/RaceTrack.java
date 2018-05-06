@@ -219,7 +219,8 @@ public class RaceTrack
     }
 
     /**
-     * Checks which Horse/Jockey pairs have won the race.
+     * Checks which Horse/Jockey pairs have won the race. Logs the standings of
+     * the race.
      *
      * @param raceId the ID of the race
      *
@@ -230,61 +231,57 @@ public class RaceTrack
     {
 
         boolean[] winners = new boolean[N_numCompetitors];
-        int winningIteration = Integer.MAX_VALUE;
+        boolean[] checked = new boolean[N_numCompetitors];
         int maxDistance = 0;
         int order[] = new int[N_numCompetitors];
+        int stand = 1;
+        boolean placed;
 
-        Arrays.fill(winners, false);
-
-        // get the minimum iteration count
-        for (int i = 0; i < N_numCompetitors; i++)
-        {
-            if (iterationCounter[raceId][i] <= winningIteration)
-            {
-                winningIteration = iterationCounter[raceId][i];
-            }
-        }
-
-        // get the max value for the winning iteration
-        for (int i = 0; i < N_numCompetitors; i++)
-        {
-            if (iterationCounter[raceId][i] == winningIteration && racePosition[raceId][i] > maxDistance)
-            {
-                maxDistance = racePosition[raceId][i];
-            }
-        }
-
-        // check for multiple winners
-        for (int i = 0; i < N_numCompetitors; i++)
-        {
-            if (iterationCounter[raceId][i] == winningIteration && racePosition[raceId][i] == maxDistance)
-            {
-                winners[i] = true;
-                order[i] = 1;
-            }
-        }
+        Arrays.fill(checked, false);
 
         int[] iterC = iterationCounter[raceId].clone();
-        int place = 1;
         Arrays.sort(iterC);
 
-        // calculate the standings
-        for (int i = 0; i < N_numCompetitors; i++)
+        // standings
+        for (int j = 0; j < N_numCompetitors; j++)
         {
-            for (int j = 0; j < N_numCompetitors; j++)
-            {
+            placed = false;
 
-                if (winners[i] != true)
+            // get the max value for the iteration
+            for (int i = 0; i < N_numCompetitors; i++)
+            {
+                if (iterationCounter[raceId][i] == iterC[j])
                 {
-                    if (iterationCounter[raceId][i] == iterC[j])
+                    if (checked[i] == false && racePosition[raceId][i] > maxDistance)
                     {
-                        order[i] = ++place;
-                        break;
+                        maxDistance = racePosition[raceId][i];
                     }
                 }
-
             }
+
+            // check for multiple winners
+            for (int i = 0; i < N_numCompetitors; i++)
+            {
+                if (iterationCounter[raceId][i] == iterC[j] && racePosition[raceId][i] == maxDistance)
+                {
+                    checked[i] = true;
+                    order[i] = stand;
+                    placed = true;
+                }
+            }
+            if (placed)
+            {
+                stand++;
+            }
+            maxDistance = 0;
         }
+
+        // winners array
+        for (int i = 0; i < N_numCompetitors; i++)
+        {
+            winners[i] = order[i] == 1;
+        }
+
         logger.setHorseJockeyStands(order, raceId);
 
         return winners;
