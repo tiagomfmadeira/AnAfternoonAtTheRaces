@@ -17,7 +17,7 @@ public class Settings implements Serializable
     /*
      * General repository server host name
      */
-    public static final String GENERAL_REPOSITORY_HOST_NAME = "localhost";
+    public static final String GENERAL_REPOSITORY_HOST_NAME = "l040101-ws01.ua.pt";
 
     /*
      * General repository server port number
@@ -27,7 +27,7 @@ public class Settings implements Serializable
     /*
      * Betting Center server host name
      */
-    public final String BETTING_CENTER_HOST_NAME = "localhost";
+    public final String BETTING_CENTER_HOST_NAME = "l040101-ws02.ua.pt";
 
     /*
      * Betting Center server port number
@@ -37,7 +37,7 @@ public class Settings implements Serializable
     /*
      * Control Center server host name
      */
-    public final String CONTROL_CENTER_HOST_NAME = "localhost";
+    public final String CONTROL_CENTER_HOST_NAME = "l040101-ws03.ua.pt";
     /*
      * Control Center server port number
      */
@@ -46,7 +46,7 @@ public class Settings implements Serializable
     /*
      * Paddock server host name
      */
-    public final String PADDOCK_HOST_NAME = "localhost";
+    public final String PADDOCK_HOST_NAME = "l040101-ws04.ua.pt";
     /*
      * Paddock server server port number
      */
@@ -55,7 +55,7 @@ public class Settings implements Serializable
     /*
      * Race Track server host name
      */
-    public final String RACE_TRACK_HOST_NAME = "localhost";
+    public final String RACE_TRACK_HOST_NAME = "l040101-ws05.ua.pt";
     /*
      * Race Track server port number
      */
@@ -64,7 +64,7 @@ public class Settings implements Serializable
     /*
      * Stable server host name
      */
-    public final String STABLE_HOST_NAME = "localhost";
+    public final String STABLE_HOST_NAME = "l040101-ws06.ua.pt";
     /*
      * Stable server port number
      */
