@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 javac src/interfaces/*.java src/registry/*.java serverSide/*.java clientSide/*.java
 cp interfaces/Register.class dir_registry/interfaces/
 cp registry/*.class dir_registry/registry/

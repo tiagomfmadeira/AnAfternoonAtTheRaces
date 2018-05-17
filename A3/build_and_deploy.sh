@@ -1,27 +1,57 @@
-javac src/interfaces/*.java src/registry/*.java src/main/*.java src/settings/*.java src/sharedRegions/*.java src/entities/*.java
+#!/usr/bin/env bash
+javac src/interfaces/*.java src/registry/*.java src/settings/*.java src/serverSide/*/*.java src/clientSide/*/*.java \
+src/states/*.java
 
 # Registry
+#
 cp src/interfaces/Register.class dir_registry/interfaces/
 cp src/registry/*.class dir_registry/registry/
-cp src/settings/*.class dir_registry/registry/settings/
+cp src/settings/*.class dir_registry/settings/
+
+
 
 # Server side
+#
 cp src/interfaces/*.class dir_serverSide/interfaces/
-cp src/main/*Server.class src/sharedRegions/*.class src/settings/*.class  dir_serverSide/serverSide/
-cp src/settings/*.class dir_serverSide/serverSide/settings/
+
+for sharedRegion in "bettingCenter" "controlCenter" "generalRepository" "paddock" "raceTrack" "stable"; do 
+    cp src/serverSide/$sharedRegion/*.class  dir_serverSide/serverSide/$sharedRegion/
+done
+
+cp src/settings/*.class dir_serverSide/settings/
+cp src/states/*.class dir_serverSide/states/
+
 
 # Client side
+#
 cp src/interfaces/I*.class  dir_clientSide/interfaces/
-cp src/entities/*.class src/settings/*.class dir_clientSide/clientSide/
-cp src/settings/*.class dir_clientSide/clientSide/settings/
+
+for entity in "broker" "horseJockey" "spectator"; do
+    cp src/clientSide/$entity/*.class  dir_clientSide/clientSide/$entity/
+done
+
+cp src/settings/*.class dir_clientSide/settings/
+cp src/states/*.class dir_clientSide/states/
+
+
 
 # Public 
+#
 mkdir -p /home/sd0406/Public/classes
 mkdir -p /home/sd0406/Public/classes/interfaces
 mkdir -p /home/sd0406/Public/classes/clientSide
 
 cp src/interfaces/*.class /home/sd0406/Public/classes/interfaces
-cp src/entities/*.class /home/sd0406/Public/classes/clientSide
+
+for entity in "broker" "horseJockey" "spectator"; do
+    mkdir -p /home/sd0406/Public/classes/clientSide/$entity
+done
+
+
+for entity in "broker" "horseJockey" "spectator"; do
+    rsync -a src/clientSide/$entity/*.class /home/sd0406/Public/classes/clientSide/$entity --exclude=*Main*
+done
+
 cp set_rmiregistry.sh /home/sd0406
 cp set_rmiregistry_alt.sh /home/sd0406
-~                                          
+

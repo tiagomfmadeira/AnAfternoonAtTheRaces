@@ -44,7 +44,8 @@ public class ServerRegisterRemoteObject
 
         RegisterRemoteObject regEngine = new RegisterRemoteObject (rmiRegHostName, rmiRegPortNumb);
         Register regEngineStub = null;
-        int listeningPort = 22000;                            /* it should be set accordingly in each case */
+        int listeningPort = Settings.REGISTER_PORT_NUM;/* it should be set accordingly in each case */
+
 
         try
         { regEngineStub = (Register) UnicastRemoteObject.exportObject (regEngine, listeningPort);
@@ -57,7 +58,7 @@ public class ServerRegisterRemoteObject
 
         /* register it with the local registry service */
 
-        String nameEntry = "RegisterHandler";
+        String nameEntry = Settings.NAME_ENTRY_BASE;
         Registry registry = null;
 
         try

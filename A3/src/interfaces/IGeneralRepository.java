@@ -1,8 +1,8 @@
 package interfaces;
 
-import entities.BrokerState;
-import entities.HorseJockeyState;
-import entities.SpectatorState;
+import states.BrokerState;
+import states.HorseJockeyState;
+import states.SpectatorState;
 import settings.Settings;
 
 import java.rmi.Remote;

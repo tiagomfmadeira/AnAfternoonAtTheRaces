@@ -29,11 +29,16 @@ public class Settings implements Serializable
      */
     public static final String NAME_ENTRY_BASE = "RegisterHandler";
 
+    /*
+     * Register listening port.
+     */
+    public static final int REGISTER_PORT_NUM = portNumb(9);
+
 
     /*
      * General repository name entry on the registry.
      */
-    public static final String GENERAL_REPOSITORY_NAME_ENTRY = "GeneralRepository";
+    public static final String GENERAL_REPOSITORY_NAME_ENTRY = "IGeneralRepository";
 
     /*
      * General repository listening port.
@@ -44,7 +49,7 @@ public class Settings implements Serializable
     /*
      * Betting center name entry on the registry.
      */
-    public final String BETTING_CENTER_NAME_ENTRY = "BettingCenter";
+    public final String BETTING_CENTER_NAME_ENTRY = "IBettingCenter";
 
     /*
      * Betting center listening port.
@@ -55,7 +60,7 @@ public class Settings implements Serializable
     /*
      * Control center name entry on the registry.
      */
-    public final String CONTROL_CENTER_NAME_ENTRY = "ControlCenter";
+    public final String CONTROL_CENTER_NAME_ENTRY = "IControlCenter";
 
     /*
      * Control center listening port.
@@ -66,7 +71,7 @@ public class Settings implements Serializable
     /*
      * Paddock name entry on the registry.
      */
-    public final String PADDOCK_NAME_ENTRY = "Paddock";
+    public final String PADDOCK_NAME_ENTRY = "IPaddock";
 
     /*
      * Paddock listening port.
@@ -77,7 +82,7 @@ public class Settings implements Serializable
     /*
      * Race track name entry on the registry.
      */
-    public final String RACE_TRACK_NAME_ENTRY = "RaceTrack";
+    public final String RACE_TRACK_NAME_ENTRY = "IRaceTrack";
 
     /*
      * Race track listening port.
@@ -88,12 +93,17 @@ public class Settings implements Serializable
     /*
      * Stable name entry on the registry.
      */
-    public final String STABLE_NAME_ENTRY = "Stable";
+    public final String STABLE_NAME_ENTRY = "IStable";
 
     /*
      * Stable name listening port.
      */
     public final int STABLE_LISTENING_PORT = portNumb(6);
+
+
+
+
+
 
 
     /**
