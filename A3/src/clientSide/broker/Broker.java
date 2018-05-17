@@ -2,6 +2,7 @@ package clientSide.broker;
 
 import genclass.GenericIO;
 import interfaces.*;
+import settings.SimulPar;
 import states.BrokerState;
 
 import java.rmi.RemoteException;

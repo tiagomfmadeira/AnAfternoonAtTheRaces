@@ -9,8 +9,8 @@ import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import static clientSide.broker.SimulPar.K_numRaces;
-import static clientSide.broker.SimulPar.N_numCompetitors;
+import static settings.SimulPar.K_numRaces;
+import static settings.SimulPar.N_numCompetitors;
 
 /**
  * General description: Definition of the Race Track information sharing region.

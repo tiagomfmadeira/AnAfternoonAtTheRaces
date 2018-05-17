@@ -6,7 +6,7 @@ import interfaces.IGeneralRepository;
 
 import java.rmi.RemoteException;
 
-import static clientSide.broker.SimulPar.M_numSpectators;
+import static settings.SimulPar.M_numSpectators;
 
 /**
  * General description: Definition of the Control Center/Watching Stand

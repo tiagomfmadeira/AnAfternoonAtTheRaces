@@ -5,8 +5,8 @@ import interfaces.IGeneralRepository;
 
 import java.rmi.RemoteException;
 
-import static clientSide.broker.SimulPar.K_numRaces;
-import static clientSide.broker.SimulPar.N_numCompetitors;
+import static settings.SimulPar.K_numRaces;
+import static settings.SimulPar.N_numCompetitors;
 
 /**
  * General description: Definition of the Stable information sharing region.

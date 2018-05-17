@@ -1,4 +1,4 @@
-package clientSide.broker;
+package settings;
 
 /**
  * General description: Initialisation of certain key parameters used to run the

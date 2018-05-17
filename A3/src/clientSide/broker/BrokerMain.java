@@ -39,7 +39,8 @@ public class BrokerMain
         Settings settings = null;
 
         try
-        { registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+        {
+            registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
         }
         catch (RemoteException e)
         {   GenericIO.writelnString ("RMI registry creation exception: " + e.getMessage ());
@@ -48,7 +49,8 @@ public class BrokerMain
         }
 
         try
-        { gr = (IGeneralRepository) registry.lookup (Settings.GENERAL_REPOSITORY_NAME_ENTRY);
+        {
+            gr = (IGeneralRepository) registry.lookup (Settings.GENERAL_REPOSITORY_NAME_ENTRY);
         }
         catch (RemoteException e)
         {   GenericIO.writelnString ("GeneralRepository look up exception: " + e.getMessage ());
@@ -71,37 +73,83 @@ public class BrokerMain
             System.exit (1);
         }
 
-        System.out.println(settings.BETTING_CENTER_NAME_ENTRY);
-        System.out.println(settings.CONTROL_CENTER_NAME_ENTRY);
-        System.out.println(settings.PADDOCK_NAME_ENTRY);
+        try
+        {
+            cc = (IControlCenter) registry.lookup (settings.CONTROL_CENTER_NAME_ENTRY);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("ControlCenter look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("ControlCenter not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
-        /*
-        ControlCenterStub controlCenterStub = new ControlCenterStub(
-                settings.CONTROL_CENTER_HOST_NAME,
-                settings.CONTROL_CENTER_PORT_NUM
-        );
+        try
+        {
+            bc = (IBettingCenter) registry.lookup (settings.BETTING_CENTER_NAME_ENTRY);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("BettingCenter look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("BettingCenter not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
-        BettingCenterStub bettingCenterStub = new BettingCenterStub(
-                settings.BETTING_CENTER_HOST_NAME,
-                settings.BETTING_CENTER_PORT_NUM
-        );
+        try
+        {
+            pd = (IPaddock) registry.lookup (settings.PADDOCK_NAME_ENTRY);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("Paddock look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("Paddock not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
-        PaddockStub paddockStub = new PaddockStub(
-                settings.PADDOCK_HOST_NAME,
-                settings.PADDOCK_PORT_NUM
-        );
+        try
+        {
+            rt = (IRaceTrack) registry.lookup (settings.RACE_TRACK_NAME_ENTRY);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("Paddock look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("Paddock not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
-        RaceTrackStub raceTrackStub = new RaceTrackStub(
-                settings.RACE_TRACK_HOST_NAME,
-                settings.RACE_TRACK_PORT_NUM
-        );
+        try
+        {
+            st = (IStable) registry.lookup (settings.STABLE_NAME_ENTRY);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("Stable look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("Stable not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
-        StableStub stableStub = new StableStub(
-                settings.STABLE_HOST_NAME,
-                settings.STABLE_PORT_NUM
-        );
 
-        Broker broker = new Broker("Broker", 1, raceTrackStub, stableStub, bettingCenterStub, paddockStub, controlCenterStub, generalRepositoryStub);
+        Broker broker = new Broker("Broker", 1, rt, st, bc, pd, cc, gr);
         broker.start();
 
         try
@@ -111,6 +159,6 @@ public class BrokerMain
         {
         }
 
-        generalRepositoryStub.shutdown();*/
+        //gr.shutdown();
     }
 }

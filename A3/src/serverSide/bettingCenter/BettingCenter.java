@@ -6,8 +6,8 @@ import interfaces.IGeneralRepository;
 
 import java.rmi.RemoteException;
 import java.util.concurrent.ThreadLocalRandom;
-import static clientSide.broker.SimulPar.M_numSpectators;
-import static clientSide.broker.SimulPar.N_numCompetitors;
+import static settings.SimulPar.M_numSpectators;
+import static settings.SimulPar.N_numCompetitors;
 
 /**
  * General description: Definition of the Betting Center information sharing
