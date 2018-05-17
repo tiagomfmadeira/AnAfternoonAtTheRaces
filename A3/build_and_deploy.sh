@@ -38,9 +38,13 @@ cp src/states/*.class dir_clientSide/states/
 #
 mkdir -p /home/sd0406/Public/classes
 mkdir -p /home/sd0406/Public/classes/interfaces
+mkdir -p /home/sd0406/Public/classes/settings
+mkdir -p /home/sd0406/Public/classes/states
 mkdir -p /home/sd0406/Public/classes/clientSide
 
 cp src/interfaces/*.class /home/sd0406/Public/classes/interfaces
+cp src/settings/*.class /home/sd0406/Public/classes/settings
+cp src/states/*.class /home/sd0406/Public/classes/states
 
 for entity in "broker" "horseJockey" "spectator"; do
     mkdir -p /home/sd0406/Public/classes/clientSide/$entity

@@ -17,7 +17,7 @@ public class Settings implements Serializable
     /*
      * Registry host name
      */
-    public static final String REGISTRY_HOST_NAME = "localhost";
+    public static final String REGISTRY_HOST_NAME = "192.168.8.171";
 
     /*
      * Registry port number
