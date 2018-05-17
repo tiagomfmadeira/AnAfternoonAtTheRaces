@@ -1,8 +1,9 @@
 package interfaces;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface IPaddock {
+public interface IPaddock extends Remote {
     boolean proceedToPaddock(int horseJockeyID, int raceID, int agility) throws RemoteException;
 
     void sleepAtThePaddock() throws RemoteException;

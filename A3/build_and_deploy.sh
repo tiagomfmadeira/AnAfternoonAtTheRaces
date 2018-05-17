@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-javac src/interfaces/*.java src/registry/*.java src/settings/*.java src/serverSide/*/*.java src/clientSide/*/*.java \
-src/states/*.java
+javac src/interfaces/*.java src/states/*.java  src/registry/*.java src/settings/*.java src/serverSide/*/*.java src/clientSide/*/*.java src/serverSide/*.java src/serverSide/*.java
 
 # Registry
 #
-cp src/interfaces/Register.class dir_registry/interfaces/
+cp src/interfaces/*.class dir_registry/interfaces/
 cp src/registry/*.class dir_registry/registry/
 cp src/settings/*.class dir_registry/settings/
-
+cp src/states/*.class dir_registry/states/
 
 
 # Server side
@@ -24,7 +23,7 @@ cp src/states/*.class dir_serverSide/states/
 
 # Client side
 #
-cp src/interfaces/I*.class  dir_clientSide/interfaces/
+cp src/interfaces/*.class  dir_clientSide/interfaces/
 
 for entity in "broker" "horseJockey" "spectator"; do
     cp src/clientSide/$entity/*.class  dir_clientSide/clientSide/$entity/
