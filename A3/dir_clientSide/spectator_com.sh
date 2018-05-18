@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-java xspectator.SpectatorMain
+java clientSide.spectator.SpectatorMain
+l
