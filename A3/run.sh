@@ -12,19 +12,22 @@ declare -A entityLocation=( [broker]=7
                             [spectator]=9
                         )
 
-ssh sd0406@l040101-ws01.ua.pt<< EOF
+ssh  sd0406@l040101-ws01.ua.pt<< EOF
 	./unpack.sh
     cd /home/sd0406/A3
     ./build_and_deploy.sh
     ./deploy_remote.sh
     cd
-    ./set_rmiregistry.sh 22450 &
+    nohup ./set_rmiregistry.sh 22450 > /dev/null  &
+    sleep 1
     cd /home/sd0406/A3/dir_registry
-    ./registry_com.sh &
+    nohup ./registry_com.sh > /dev/null  &
+    sleep 1
     cd /home/sd0406/A3/dir_serverSide
-    ./generalRepository_com.sh &
+    nohup ./generalRepository_com.sh > /dev/null &
+	
 EOF
-
+ 
 for sharedRegion in "${!sharedRegionLocation[@]}"; do
 
 	ws="${sharedRegionLocation[$sharedRegion]}"
@@ -33,7 +36,7 @@ for sharedRegion in "${!sharedRegionLocation[@]}"; do
 	ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
 		./unpack_remote_server.sh
 		cd /home/sd0406/dir_serverSide
-		./${name}_com.sh &
+		nohup ./${name}_com.sh  > /dev/null  &
 EOF
 done
 
@@ -45,7 +48,7 @@ for entity in "${!entityLocation[@]}"; do
     ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
         ./unpack_remote_client.sh
         cd /home/sd0406/dir_clientSide
-		./${name}_com.sh &
+		nohup  ./${name}_com.sh > /dev/null  &
 EOF
 done
 
