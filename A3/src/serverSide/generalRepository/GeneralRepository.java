@@ -1,15 +1,22 @@
 package serverSide.generalRepository;
 
+import genclass.GenericIO;
+import interfaces.*;
 import states.BrokerState;
 import states.HorseJockeyState;
 import states.SpectatorState;
-import interfaces.IGeneralRepository;
 import settings.Settings;
 import static settings.SimulPar.M_numSpectators;
 import static settings.SimulPar.N_numCompetitors;
 import static settings.SimulPar.K_numRaces;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.rmi.NoSuchObjectException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
 
 /**
@@ -417,18 +424,177 @@ public class GeneralRepository implements IGeneralRepository {
     @Override
     public synchronized void shutdown()
     {
-        /*
+
         shutdownSignals++;
         if (shutdownSignals == 3)
         {
 
-            (new BettingCenterStub(settings.BETTING_CENTER_HOST_NAME, settings.BETTING_CENTER_PORT_NUM)).shutdown();
-            (new ControlCenterStub(settings.CONTROL_CENTER_HOST_NAME, settings.CONTROL_CENTER_PORT_NUM)).shutdown();
-            (new PaddockStub(settings.PADDOCK_HOST_NAME, settings.PADDOCK_PORT_NUM)).shutdown();
-            (new RaceTrackStub(settings.RACE_TRACK_HOST_NAME, settings.RACE_TRACK_PORT_NUM)).shutdown();
-            (new StableStub(settings.STABLE_HOST_NAME, settings.STABLE_PORT_NUM)).shutdown();
+
+            //(new BettingCenterStub(settings.BETTING_CENTER_HOST_NAME, settings.BETTING_CENTER_PORT_NUM)).shutdown();
+            //(new ControlCenterStub(settings.CONTROL_CENTER_HOST_NAME, settings.CONTROL_CENTER_PORT_NUM)).shutdown();
+            //(new PaddockStub(settings.PADDOCK_HOST_NAME, settings.PADDOCK_PORT_NUM)).shutdown();
+            //(new RaceTrackStub(settings.RACE_TRACK_HOST_NAME, settings.RACE_TRACK_PORT_NUM)).shutdown();
+            //(new StableStub(settings.STABLE_HOST_NAME, settings.STABLE_PORT_NUM)).shutdown();
+            shutdownAllServers();
             shutdownAllServers = true;
-        }*/
+        }
+    }
+
+    private void shutdownAllServers(){
+
+        String rmiRegHostName = Settings.REGISTRY_HOST_NAME;
+        int rmiRegPortNumb = Settings.REGISTRY_PORT_NUM;
+
+        String nameEntryBase = Settings.NAME_ENTRY_BASE;
+        String nameEntryObject = Settings.GENERAL_REPOSITORY_NAME_ENTRY;
+
+        Register reg = null;
+
+        Settings settings = getSettings();
+
+        IBettingCenter bc = null;
+        IControlCenter cc = null;
+        IPaddock pd = null;
+        IRaceTrack rt = null;
+        IStable st = null;
+
+        Registry registry = null;
+
+        try
+        {
+            registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("RMI registry creation exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        // shutdown BettingCenter
+        try
+        {
+            bc = (IBettingCenter) registry.lookup (settings.BETTING_CENTER_NAME_ENTRY);
+            bc.shutdown();
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("BettingCenter look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("BettingCenter not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        // shutdown ControlCenter
+        try
+        {
+            cc = (IControlCenter) registry.lookup (settings.CONTROL_CENTER_NAME_ENTRY);
+            cc.shutdown();
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("ControlCenter look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("ControlCenter not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        // shutdown Paddock
+        try
+        {
+            pd = (IPaddock) registry.lookup (settings.PADDOCK_NAME_ENTRY);
+            pd.shutdown();
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("Paddock look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("Paddock not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        // shutdown RaceTrack
+        try
+        {
+            rt = (IRaceTrack) registry.lookup (settings.RACE_TRACK_NAME_ENTRY);
+            rt.shutdown();
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("Paddock look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("Paddock not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+
+        // shutdown Stable
+        try
+        {
+            st = (IStable) registry.lookup (settings.STABLE_NAME_ENTRY);
+            st.shutdown();
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("Stable look up exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("Stable not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        // shutdown General Repository
+        try
+        { reg = (Register) registry.lookup (nameEntryBase);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("RegisterRemoteObject lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        System.out.println("Shutting gr down");
+
+        try {
+            // Unregister ourself
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (NoSuchObjectException e) {
+            GenericIO.writelnString ("GeneralRepository unexport object exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        System.out.println("Done Shutting gr down");
+
     }
 
     @Override

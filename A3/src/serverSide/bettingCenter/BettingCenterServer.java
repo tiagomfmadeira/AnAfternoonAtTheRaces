@@ -36,7 +36,6 @@ public class BettingCenterServer
             System.setSecurityManager (new SecurityManager ());
         GenericIO.writelnString ("Security manager was installed!");
 
-
         // get settings from general repository
         IGeneralRepository logger = null;
         Registry registry = null;
@@ -118,5 +117,7 @@ public class BettingCenterServer
         }
 
         GenericIO.writelnString ("BettingCenter object was registered!");
+
+
     }
 }

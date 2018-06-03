@@ -18,12 +18,18 @@ for sharedRegion in "${!sharedRegionLocation[@]}"; do
     zip -r dir_serverSide_"$sharedRegion".zip dir_serverSide/ -x "*.sh" -x "*log*" -x "dir_serverSide/serverSide/*"
     zip -ur dir_serverSide_"$sharedRegion".zip dir_serverSide/"$sharedRegion"* dir_serverSide/serverSide/"$sharedRegion"/
 
-    scp -r dir_serverSide_"$sharedRegion".zip sd0406@l040101-ws0"$ws".ua.pt:/home/sd0406/
-	scp -r remoteScripts/unpack_remote_server.sh sd0406@l040101-ws0"$ws".ua.pt:/home/sd0406/
+    if [ "$ws" -eq 10 ]
+    then
+        scp -r dir_serverSide_"$sharedRegion".zip sd0406@l040101-ws"$ws".ua.pt:/home/sd0406/
+        scp -r remoteScripts/unpack_remote_server.sh sd0406@l040101-ws"$ws".ua.pt:/home/sd0406/
+    else
+        scp -r dir_serverSide_"$sharedRegion".zip sd0406@l040101-ws0"$ws".ua.pt:/home/sd0406/
+        scp -r remoteScripts/unpack_remote_server.sh sd0406@l040101-ws0"$ws".ua.pt:/home/sd0406/
+    fi
+
 
     rm dir_serverSide_"$sharedRegion".zip
 done
-
 
 for entity in "${!entityLocation[@]}"; do
     ws="${entityLocation[$entity]}"

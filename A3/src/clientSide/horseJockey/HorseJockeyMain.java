@@ -171,6 +171,14 @@ public class HorseJockeyMain
             }
         }
 
-        //gr.shutdown();
+        try
+        {
+            gr.shutdown();
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("GeneralRepository remote invocation exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
     }
 }

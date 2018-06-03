@@ -1,10 +1,18 @@
 package serverSide.paddock;
 
+import genclass.GenericIO;
+import interfaces.Register;
+import settings.Settings;
 import states.SpectatorState;
 import states.HorseJockeyState;
 import interfaces.IGeneralRepository;
 
+import java.rmi.NoSuchObjectException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ThreadLocalRandom;
 import static settings.SimulPar.M_numSpectators;
 import static settings.SimulPar.N_numCompetitors;
@@ -274,8 +282,66 @@ public class Paddock implements interfaces.IPaddock {
      * the service.
      */
     @Override
-    public synchronized void shutdown()
+    public synchronized void shutdown() throws RemoteException
     {
+        Settings settings = logger.getSettings();
+
+        String rmiRegHostName = Settings.REGISTRY_HOST_NAME;
+        int rmiRegPortNumb = Settings.REGISTRY_PORT_NUM;
+
+        String nameEntryBase = Settings.NAME_ENTRY_BASE;
+        String nameEntryObject = settings.PADDOCK_NAME_ENTRY;
+
+        Register reg = null;
+        Registry registry = null;
+
+
+        try
+        {
+            registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("RMI registry creation exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try
+        {
+            reg = (Register) registry.lookup (nameEntryBase);
+        }
+        catch (RemoteException e)
+        { GenericIO.writelnString ("RegisterRemoteObject lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+
+        try {
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (NoSuchObjectException e) {
+            GenericIO.writelnString ("Paddock unexport object exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
         shutdownServer = true;
     }
 
