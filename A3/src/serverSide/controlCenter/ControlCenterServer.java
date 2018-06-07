@@ -7,6 +7,7 @@ import interfaces.Register;
 import settings.Settings;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -117,5 +118,27 @@ public class ControlCenterServer
         }
 
         GenericIO.writelnString ("ControlCenter object was registered!");
+
+        cc.waitForShutSignal();
+
+        try {
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject(cc, true);
+        } catch (NoSuchObjectException e) {
+            GenericIO.writelnString ("ControlCenter unexport object exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
     }
 }

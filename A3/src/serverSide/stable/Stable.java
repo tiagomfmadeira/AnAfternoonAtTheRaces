@@ -113,71 +113,29 @@ public class Stable implements interfaces.IStable {
     }
 
     /**
+     * Waits for shutdown signal boolean, symbolising the conclusion of
+     * the service.
+     */
+    public synchronized void waitForShutSignal()
+    {
+        try {
+            while(!shutdownServer){
+                this.wait();
+            }
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Changes a boolean variable state to true, symbolising the conclusion of
      * the service.
      */
     @Override
     public synchronized void shutdown() throws RemoteException
     {
-        Settings settings = logger.getSettings();
-
-        String rmiRegHostName = Settings.REGISTRY_HOST_NAME;
-        int rmiRegPortNumb = Settings.REGISTRY_PORT_NUM;
-
-        String nameEntryBase = Settings.NAME_ENTRY_BASE;
-        String nameEntryObject = settings.STABLE_NAME_ENTRY;
-
-        Register reg = null;
-        Registry registry = null;
-
-
-        try
-        {
-            registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
-        }
-        catch (RemoteException e)
-        { GenericIO.writelnString ("RMI registry creation exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-
-        try
-        {
-            reg = (Register) registry.lookup (nameEntryBase);
-        }
-        catch (RemoteException e)
-        { GenericIO.writelnString ("RegisterRemoteObject lookup exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-        catch (NotBoundException e)
-        { GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-
-
-        try {
-            reg.unbind(nameEntryObject);
-        } catch (RemoteException e) {
-            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        } catch (NotBoundException e) {
-            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-
-        try {
-            UnicastRemoteObject.unexportObject(this, true);
-        } catch (NoSuchObjectException e) {
-            GenericIO.writelnString ("Stable unexport object exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-
         shutdownServer = true;
+        notifyAll();
     }
     /**
      * Checks whether the service has been completed.

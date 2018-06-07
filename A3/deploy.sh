@@ -12,37 +12,31 @@ declare -A entityLocation=( [broker]=7
                             [spectator]=9
                         )
 
+
 ssh  sd0406@l040101-ws01.ua.pt<< EOF
-    nohup ./set_rmiregistry.sh 22450 > /dev/null  &
-    sleep 1
-    cd /home/sd0406/A3/dir_registry
-    nohup ./registry_com.sh > /dev/null  &
-    sleep 1
-    cd /home/sd0406/A3/dir_serverSide
-    nohup ./generalRepository_com.sh > /dev/null &
-	
+    ./unpack.sh
+    cd /home/sd0406/A3
+    ./build_and_deploy.sh
+    ./deploy_remote.sh
 EOF
- 
+
 for sharedRegion in "${!sharedRegionLocation[@]}"; do
 
-	ws="${sharedRegionLocation[$sharedRegion]}"
-	name="$sharedRegion"
-	
-	ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
-		cd /home/sd0406/dir_serverSide
-		nohup ./${name}_com.sh  > /dev/null  &
+    ws="${sharedRegionLocation[$sharedRegion]}"
+    name="$sharedRegion"
+
+    ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
+        ./unpack_remote_server.sh
 EOF
 done
 
 for entity in "${!entityLocation[@]}"; do
 
     ws="${entityLocation[$entity]}"
-	name="$entity"
+    name="$entity"
 
     ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
-        cd /home/sd0406/dir_clientSide
-		nohup  ./${name}_com.sh > /dev/null  &
+        ./unpack_remote_client.sh
 EOF
 done
-
 

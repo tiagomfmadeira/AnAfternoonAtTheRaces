@@ -420,6 +420,16 @@ public class GeneralRepository implements IGeneralRepository {
         return Settings.getInstance();
     }
 
+    public synchronized void waitForShutSignal()
+    {
+        try {
+            while(!shutdownAllServers){
+                this.wait();
+            }
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public synchronized void shutdown()
@@ -428,15 +438,7 @@ public class GeneralRepository implements IGeneralRepository {
         shutdownSignals++;
         if (shutdownSignals == 3)
         {
-
-
-            //(new BettingCenterStub(settings.BETTING_CENTER_HOST_NAME, settings.BETTING_CENTER_PORT_NUM)).shutdown();
-            //(new ControlCenterStub(settings.CONTROL_CENTER_HOST_NAME, settings.CONTROL_CENTER_PORT_NUM)).shutdown();
-            //(new PaddockStub(settings.PADDOCK_HOST_NAME, settings.PADDOCK_PORT_NUM)).shutdown();
-            //(new RaceTrackStub(settings.RACE_TRACK_HOST_NAME, settings.RACE_TRACK_PORT_NUM)).shutdown();
-            //(new StableStub(settings.STABLE_HOST_NAME, settings.STABLE_PORT_NUM)).shutdown();
             shutdownAllServers();
-            shutdownAllServers = true;
         }
     }
 
@@ -556,44 +558,11 @@ public class GeneralRepository implements IGeneralRepository {
             System.exit (1);
         }
 
-        // shutdown General Repository
-        try
-        { reg = (Register) registry.lookup (nameEntryBase);
-        }
-        catch (RemoteException e)
-        { GenericIO.writelnString ("RegisterRemoteObject lookup exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-        catch (NotBoundException e)
-        { GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
 
         System.out.println("Shutting gr down");
 
-        try {
-            // Unregister ourself
-            reg.unbind(nameEntryObject);
-        } catch (RemoteException e) {
-            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        } catch (NotBoundException e) {
-            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-
-        try {
-            UnicastRemoteObject.unexportObject(this, true);
-        } catch (NoSuchObjectException e) {
-            GenericIO.writelnString ("GeneralRepository unexport object exception: " + e.getMessage ());
-            e.printStackTrace ();
-            System.exit (1);
-        }
-        System.out.println("Done Shutting gr down");
+        shutdownAllServers = true;
+        notifyAll();
 
     }
 

@@ -9,6 +9,7 @@ import serverSide.bettingCenter.BettingCenter;
 import settings.Settings;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -121,5 +122,28 @@ public class RaceTrackServer
         }
 
         GenericIO.writelnString ("RaceTrack object was registered!");
+
+        rt.waitForShutSignal();
+
+        try {
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject(rt, true);
+        } catch (NoSuchObjectException e) {
+            GenericIO.writelnString ("RaceTrack unexport object exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
     }
 }

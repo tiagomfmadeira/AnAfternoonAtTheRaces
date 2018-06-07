@@ -6,6 +6,7 @@ import settings.Settings;
 import interfaces.IGeneralRepository;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -94,6 +95,29 @@ public class GeneralRepositoryServer
             System.exit (1);
         }
         GenericIO.writelnString ("General Repository object was registered!");
+
+        gr.waitForShutSignal();
+
+        try {
+            // Unregister ourself
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject(gr, true);
+        } catch (NoSuchObjectException e) {
+            GenericIO.writelnString ("GeneralRepository unexport object exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
     }
 }

@@ -8,6 +8,7 @@ import serverSide.generalRepository.GeneralRepository;
 import settings.Settings;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -118,6 +119,28 @@ public class BettingCenterServer
 
         GenericIO.writelnString ("BettingCenter object was registered!");
 
+
+        bc.waitForShutSignal();
+
+        try {
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            GenericIO.writelnString ("RegisterRemoteObject unbind exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            GenericIO.writelnString ("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject(bc, true);
+        } catch (NoSuchObjectException e) {
+            GenericIO.writelnString ("BettingCenter unexport object exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
     }
 }
