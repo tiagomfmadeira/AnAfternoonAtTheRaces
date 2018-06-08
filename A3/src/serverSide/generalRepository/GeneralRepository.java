@@ -425,6 +425,9 @@ public class GeneralRepository implements IGeneralRepository {
         return Settings.getInstance();
     }
 
+    /**
+     * Sleep awaiting for the condition that marks all servers have been shutdown.
+     */
     public synchronized void waitForShutSignal()
     {
         try {
@@ -437,7 +440,8 @@ public class GeneralRepository implements IGeneralRepository {
     }
 
     /**
-p
+     * Receive and count the votes to decide on whether to start shutdown routine. Execute shutdown on all servers if
+     * all entities have voted to do so.
      */
     @Override
     public synchronized void shutdown()

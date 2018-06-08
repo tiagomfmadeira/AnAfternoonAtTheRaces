@@ -14,10 +14,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BrokerMain.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BrokerMain.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clientSide/broker/BrokerMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-850">
+            <state relative-caret-position="-210">
               <caret line="27" column="29" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="29" />
             </state>
           </provider>
@@ -26,7 +26,7 @@
       <file leaf-file-name="Broker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clientSide/broker/Broker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-722">
+            <state relative-caret-position="756">
               <caret line="47" column="43" selection-start-line="47" selection-start-column="43" selection-end-line="47" selection-end-column="43" />
             </state>
           </provider>
@@ -35,8 +35,8 @@
       <file leaf-file-name="IBettingCenter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/interfaces/IBettingCenter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="859">
-              <caret line="72" column="72" selection-start-line="72" selection-start-column="72" selection-end-line="72" selection-end-column="72" />
+            <state relative-caret-position="342">
+              <caret line="97" selection-start-line="97" selection-end-line="97" />
             </state>
           </provider>
         </entry>
@@ -44,8 +44,8 @@
       <file leaf-file-name="IGeneralRepository.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/interfaces/IGeneralRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2431">
-              <caret line="149" column="43" selection-start-line="149" selection-start-column="43" selection-end-line="149" selection-end-column="43" />
+            <state relative-caret-position="594">
+              <caret line="160" selection-start-line="160" selection-end-line="160" />
             </state>
           </provider>
         </entry>
@@ -53,17 +53,17 @@
       <file leaf-file-name="GeneralRepositoryServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepositoryServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="35" column="21" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="21" />
+            <state relative-caret-position="540">
+              <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeneralRepository.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GeneralRepository.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5967">
-              <caret line="471" column="15" selection-start-line="471" selection-start-column="8" selection-end-line="471" selection-end-column="15" />
+            <state relative-caret-position="2733">
+              <caret line="553" lean-forward="true" selection-start-line="553" selection-end-line="553" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#setHorseJockeyInitialState#0;class#GeneralRepository#0" />
@@ -77,8 +77,8 @@
       <file leaf-file-name="BettingCenterServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/serverSide/bettingCenter/BettingCenterServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="67" column="90" selection-start-line="67" selection-start-column="86" selection-end-line="67" selection-end-column="90" />
+            <state relative-caret-position="1080">
+              <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -86,7 +86,7 @@
       <file leaf-file-name="BettingCenter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/serverSide/bettingCenter/BettingCenter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
+            <state relative-caret-position="918">
               <caret line="69" selection-start-line="69" selection-end-line="69" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -98,8 +98,8 @@
       <file leaf-file-name="ControlCenterServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/serverSide/controlCenter/ControlCenterServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="67" column="90" selection-start-line="67" selection-start-column="86" selection-end-line="67" selection-end-column="90" />
+            <state relative-caret-position="1098">
+              <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -107,8 +107,8 @@
       <file leaf-file-name="ControlCenter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/serverSide/controlCenter/ControlCenter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4641">
-              <caret line="293" selection-start-line="293" selection-end-line="296" selection-end-column="43" />
+            <state relative-caret-position="4536">
+              <caret line="272" selection-start-line="272" selection-end-line="272" />
             </state>
           </provider>
         </entry>
@@ -187,7 +187,6 @@
         <option value="$PROJECT_DIR$/src/serverSide/stable/Stable.java" />
         <option value="$PROJECT_DIR$/src/clientSide/broker/BrokerMain.java" />
         <option value="$PROJECT_DIR$/src/interfaces/IGeneralRepository.java" />
-        <option value="$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepository.java" />
         <option value="$PROJECT_DIR$/src/serverSide/paddock/Paddock.java" />
         <option value="$PROJECT_DIR$/src/interfaces/IPaddock.java" />
         <option value="$PROJECT_DIR$/src/interfaces/IStable.java" />
@@ -217,6 +216,7 @@
         <option value="$PROJECT_DIR$/src/clientSide/horseJockey/package-info.java" />
         <option value="$PROJECT_DIR$/src/registry/package-info.java" />
         <option value="$PROJECT_DIR$/src/interfaces/package-info.java" />
+        <option value="$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepository.java" />
       </list>
     </option>
   </component>
@@ -235,36 +235,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A3" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A3" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A3" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="clientSide" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A3" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="clientSide" type="462c0819:PsiDirectoryNode" />
-              <item name="broker" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane>
@@ -282,6 +252,36 @@
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="A3" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="A3" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="A3" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="serverSide" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="A3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="A3" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="serverSide" type="462c0819:PsiDirectoryNode" />
+              <item name="generalRepository" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -470,7 +470,7 @@
     <option name="totallyTimeSpent" value="93493000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="30" width="1920" height="1050" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -479,8 +479,8 @@
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32903227" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.30393198" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32903227" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
@@ -490,35 +490,35 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.11290322" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32903227" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.11290322" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30483872" />
+      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23187311" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32903227" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30483872" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32903227" />
       <window_info anchor="right" id="Database" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32903227" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -624,34 +624,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/bettingCenter/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="3" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/controlCenter/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="33" lean-forward="true" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/paddock/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="27" lean-forward="true" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/serverSide/bettingCenter/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/serverSide/controlCenter/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/serverSide/paddock/package-info.java" />
     <entry file="file://$PROJECT_DIR$/src/serverSide/package-info.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -663,9 +639,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="24" column="7" lean-forward="true" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -676,20 +649,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/raceTrack/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="29" lean-forward="true" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/stable/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="26" lean-forward="true" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/serverSide/raceTrack/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/serverSide/stable/package-info.java" />
     <entry file="file://$PROJECT_DIR$/src/settings/package-info.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -700,9 +661,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/package-info.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/package-info.java" />
     <entry file="file://$PROJECT_DIR$/src/serverSide/stable/StableServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -738,20 +697,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/clientSide/spectator/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="43" selection-start-line="1" selection-start-column="43" selection-end-line="1" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/clientSide/horseJockey/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="46" selection-start-line="1" selection-start-column="46" selection-end-line="1" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clientSide/spectator/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/clientSide/horseJockey/package-info.java" />
     <entry file="file://$PROJECT_DIR$/src/clientSide/package-info.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -759,27 +706,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/clientSide/broker/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="3" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/interfaces/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/registry/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="3" lean-forward="true" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clientSide/broker/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/interfaces/package-info.java" />
+    <entry file="file://$PROJECT_DIR$/src/registry/package-info.java" />
     <entry file="file://$PROJECT_DIR$/src/registry/ServerRegisterRemoteObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="397">
@@ -817,55 +746,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/serverSide/controlCenter/ControlCenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4641">
-          <caret line="293" selection-start-line="293" selection-end-line="296" selection-end-column="43" />
+        <state relative-caret-position="4536">
+          <caret line="272" selection-start-line="272" selection-end-line="272" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/serverSide/controlCenter/ControlCenterServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="67" column="90" selection-start-line="67" selection-start-column="86" selection-end-line="67" selection-end-column="90" />
+        <state relative-caret-position="1098">
+          <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/interfaces/IGeneralRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2431">
-          <caret line="149" column="43" selection-start-line="149" selection-start-column="43" selection-end-line="149" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5967">
-          <caret line="471" column="15" selection-start-line="471" selection-start-column="8" selection-end-line="471" selection-end-column="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setHorseJockeyInitialState#0;class#GeneralRepository#0" />
-            <element signature="method#setHorseJockeyStands#0;class#GeneralRepository#0" />
-            <element signature="method#logState#0;class#GeneralRepository#0" />
-          </folding>
+        <state relative-caret-position="594">
+          <caret line="160" selection-start-line="160" selection-end-line="160" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepositoryServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="35" column="21" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="21" />
+        <state relative-caret-position="540">
+          <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/interfaces/IBettingCenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="859">
-          <caret line="72" column="72" selection-start-line="72" selection-start-column="72" selection-end-line="72" selection-end-column="72" />
+        <state relative-caret-position="342">
+          <caret line="97" selection-start-line="97" selection-end-line="97" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/serverSide/bettingCenter/BettingCenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
+        <state relative-caret-position="918">
           <caret line="69" selection-start-line="69" selection-end-line="69" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -875,22 +791,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/serverSide/bettingCenter/BettingCenterServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="67" column="90" selection-start-line="67" selection-start-column="86" selection-end-line="67" selection-end-column="90" />
+        <state relative-caret-position="1080">
+          <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/clientSide/broker/Broker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-722">
+        <state relative-caret-position="756">
           <caret line="47" column="43" selection-start-line="47" selection-start-column="43" selection-end-line="47" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/clientSide/broker/BrokerMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-850">
+        <state relative-caret-position="-210">
           <caret line="27" column="29" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/serverSide/generalRepository/GeneralRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2733">
+          <caret line="553" lean-forward="true" selection-start-line="553" selection-end-line="553" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setHorseJockeyInitialState#0;class#GeneralRepository#0" />
+            <element signature="method#setHorseJockeyStands#0;class#GeneralRepository#0" />
+            <element signature="method#logState#0;class#GeneralRepository#0" />
+          </folding>
         </state>
       </provider>
     </entry>
