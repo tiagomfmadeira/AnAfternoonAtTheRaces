@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# make sure no pending process 
+./kill.sh
 
 declare -A sharedRegionLocation=(   [bettingCenter]=2
                                     [controlCenter]=3
@@ -12,7 +14,7 @@ declare -A entityLocation=( [broker]=7
                             [spectator]=9
                         )
 
-ssh  sd0406@l040101-ws01.ua.pt<< EOF
+ssh -T sd0406@l040101-ws01.ua.pt<< EOF
     nohup ./set_rmiregistry.sh 22450 > /dev/null  &
     sleep 1
     cd /home/sd0406/A3/dir_registry
@@ -28,7 +30,7 @@ for sharedRegion in "${!sharedRegionLocation[@]}"; do
 	ws="${sharedRegionLocation[$sharedRegion]}"
 	name="$sharedRegion"
 	
-	ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
+	ssh -T sd0406@l040101-ws0"$ws".ua.pt<< EOF
 		cd /home/sd0406/dir_serverSide
 		nohup ./${name}_com.sh  > /dev/null  &
 EOF
@@ -39,7 +41,7 @@ for entity in "${!entityLocation[@]}"; do
     ws="${entityLocation[$entity]}"
 	name="$entity"
 
-    ssh sd0406@l040101-ws0"$ws".ua.pt<< EOF
+    ssh -T sd0406@l040101-ws0"$ws".ua.pt<< EOF
         cd /home/sd0406/dir_clientSide
 		nohup  ./${name}_com.sh > /dev/null  &
 EOF

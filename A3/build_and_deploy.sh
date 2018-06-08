@@ -14,7 +14,8 @@ cp src/states/*.class dir_registry/states/
 cp src/interfaces/*.class dir_serverSide/interfaces/
 
 for sharedRegion in "bettingCenter" "controlCenter" "generalRepository" "paddock" "raceTrack" "stable"; do 
-    cp src/serverSide/$sharedRegion/*.class  dir_serverSide/serverSide/$sharedRegion/
+    mkdir -p dir_serverSide/serverSide/$sharedRegion/
+	cp src/serverSide/$sharedRegion/*.class  dir_serverSide/serverSide/$sharedRegion/
 done
 
 cp src/settings/*.class dir_serverSide/settings/
@@ -26,6 +27,7 @@ cp src/states/*.class dir_serverSide/states/
 cp src/interfaces/*.class  dir_clientSide/interfaces/
 
 for entity in "broker" "horseJockey" "spectator"; do
+	mkdir -p dir_clientSide/clientSide/$entity/ 
     cp src/clientSide/$entity/*.class  dir_clientSide/clientSide/$entity/
 done
 
