@@ -44,7 +44,7 @@ public class GeneralRepository implements IGeneralRepository {
     private int[][] horsePosition = new int[K_numRaces][N_numCompetitors];
     private int[][] maxMovingLength = new int[K_numRaces][N_numCompetitors];
 
-    private String logFileName = "log";
+    private String logFileName = "../log";
 
     /**
      * Constructor

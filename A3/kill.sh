@@ -1,11 +1,11 @@
-ssh sd0406@l040101-ws01.ua.pt "killall rmiregistry"
-ssh sd0406@l040101-ws01.ua.pt "killall java" 
-ssh sd0406@l040101-ws02.ua.pt "killall java" 
-ssh sd0406@l040101-ws03.ua.pt "killall java" 
-ssh sd0406@l040101-ws04.ua.pt "killall java" 
-ssh sd0406@l040101-ws05.ua.pt "killall java" 
-#ssh sd0406@l040101-ws06.ua.pt "killall java" 
-ssh sd0406@l040101-ws07.ua.pt "killall java" 
-ssh sd0406@l040101-ws08.ua.pt "killall java" 
-ssh sd0406@l040101-ws09.ua.pt "killall java" 
-ssh sd0406@l040101-ws10.ua.pt "killall java" 
+ssh sd0406@l040101-ws01.ua.pt "killall rmiregistry" 2> /dev/null
+ssh sd0406@l040101-ws01.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws02.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws03.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws04.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws05.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws06.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws07.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws08.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws09.ua.pt "killall java" 2> /dev/null
+ssh sd0406@l040101-ws10.ua.pt "killall java" 2> /dev/null
