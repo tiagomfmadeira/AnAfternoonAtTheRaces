@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 import interfaces.Register;
 
 /**
- *  This data type defines a generic functionality to register remote objects in the local registry service.
+ *  General description: This data type defines a generic functionality to register remote objects in the local registry service.
  *  Communication is based in Java RMI.
  */
 

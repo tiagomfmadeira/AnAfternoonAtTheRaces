@@ -14,7 +14,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * General description: Main class.
+ * General description: This datatype implements the server side protocol for the General Repository Server.
  */
 public class GeneralRepositoryServer
 {

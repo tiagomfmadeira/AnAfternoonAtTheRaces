@@ -1,4 +1,4 @@
 /**
- * Contains the definition of the Broker, Spectator, and Horse/Jockey entity states.
+ * Contains the definition of the entities.
  */
 package clientSide;

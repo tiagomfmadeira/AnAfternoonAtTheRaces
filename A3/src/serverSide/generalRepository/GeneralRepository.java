@@ -414,12 +414,20 @@ public class GeneralRepository implements IGeneralRepository {
 
     }
 
+    /**
+     * Return the settings defined.
+     *
+     * @return an instance of the settings
+     */
     @Override
     public synchronized Settings getSettings()
     {
         return Settings.getInstance();
     }
 
+    /**
+     * Sleep awaiting for the condition that marks all servers have been shutdown.
+     */
     public synchronized void waitForShutSignal()
     {
         try {
@@ -431,6 +439,10 @@ public class GeneralRepository implements IGeneralRepository {
         }
     }
 
+    /**
+     * Receive and count the votes to decide on whether to start shutdown routine. Execute shutdown on all servers if
+     * all entities have voted to do so.
+     */
     @Override
     public synchronized void shutdown()
     {
@@ -442,6 +454,9 @@ public class GeneralRepository implements IGeneralRepository {
         }
     }
 
+    /**
+     * Shutdown all the servers.
+     */
     private void shutdownAllServers(){
 
         String rmiRegHostName = Settings.REGISTRY_HOST_NAME;
@@ -566,6 +581,12 @@ public class GeneralRepository implements IGeneralRepository {
 
     }
 
+    /**
+     * Return whether all the servers have been shutdown.
+     *
+     * @return <code>true</code> if all the servers have been shutdown;
+     *         <code>false</code> otherwise
+     */
     @Override
     public synchronized boolean hasServiceFinished()
     {

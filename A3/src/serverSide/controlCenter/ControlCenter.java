@@ -279,7 +279,6 @@ public class ControlCenter implements interfaces.IControlCenter {
         }
     }
 
-
     /**
      * Changes a boolean variable state to true, symbolising the conclusion of
      * the service.
@@ -290,8 +289,6 @@ public class ControlCenter implements interfaces.IControlCenter {
         shutdownServer = true;
         notifyAll();
     }
-
-
 
     /**
      * Checks whether the service has been completed.
