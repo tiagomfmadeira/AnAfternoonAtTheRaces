@@ -321,7 +321,6 @@ public class BettingCenter implements interfaces.IBettingCenter {
         }
     }
 
-
     /**
      * Changes a boolean variable state to true, symbolising the conclusion of
      * the service.

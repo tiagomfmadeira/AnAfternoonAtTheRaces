@@ -10,7 +10,7 @@ import interfaces.Register;
 import settings.Settings;
 
 /**
- *  This data type instantiates and registers a remote object that enables the registration of other remote objects
+ *  General description: This data type instantiates and registers a remote object that enables the registration of other remote objects
  *  located in the same or other processing nodes in the local registry service.
  *  Communication is based in Java RMI.
  */
@@ -20,8 +20,8 @@ public class ServerRegisterRemoteObject
     /**
      *  Main task.
      *
+     * @param args command line arguments not used
      */
-
     public static void main(String[] args)
     {
         /* get location of the registry service */

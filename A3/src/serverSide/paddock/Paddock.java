@@ -292,8 +292,6 @@ public class Paddock implements interfaces.IPaddock {
         }
     }
 
-
-
     /**
      * Changes a boolean variable state to true, symbolising the conclusion of
      * the service.

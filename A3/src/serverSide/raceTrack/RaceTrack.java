@@ -43,6 +43,7 @@ public class RaceTrack implements IRaceTrack {
      *
      * @param logger General Repository of information, keeping a copy of the
      *               internal state of the problem
+     * @throws RemoteException may be thrown in execution of the remote method call
      */
     public RaceTrack(IGeneralRepository logger) throws RemoteException
     {
