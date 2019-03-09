@@ -1,17 +1,17 @@
-#ant specific
+# ant specific
 dist/
 build/
 
-#netbeans specific
+# netbeans specific
 core
 nbproject/*
 !nbproject/project.properties
 !nbproject/project.xml
 
-#java specific
+# java specific
 *.class
 
-#general swap/backup files
+# general swap/backup files
 *.so
 *.log
 *.out
@@ -21,4 +21,7 @@ nbproject/*
 *.lock
 *.iml
 ../.idea/*
+
+# project specific
+log
 
