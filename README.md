@@ -1,2 +1,3 @@
 # AnAfternoonAtTheRaces
-Project developed in the context of Distributed Systems, a subject that is part of the 4th year of Engenharia de Computadores e Telemática, a course taught at the University of Aveiro.
+A concurrent object-oriented programming project based on an horse racing event.\
+Showcases the sequence of internal states by printing out a log file, the format of which is described in logFileFormat.pdf
